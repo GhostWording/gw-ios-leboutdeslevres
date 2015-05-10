@@ -1,5 +1,5 @@
 //
-//  RootViewController.h
+//  SettingsViewController.h
 //  MaCherie
 //
 //  Created by Mathieu Skulason on 03/05/15.
@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RootViewController : UIViewController 
+@interface SettingsViewController : UIViewController
 
 @end
-

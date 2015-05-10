@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7549" systemVersion="14D136" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Image" representedClassName="Image" syncable="YES">
+        <attribute name="application" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="imageId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="size" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="theme" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="TagId" representedClassName="TagId" syncable="YES">
+        <attribute name="tagId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="text" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Text" inverseName="tagIds" inverseEntity="Text" syncable="YES"/>
+    </entity>
+    <entity name="Text" representedClassName="Text" syncable="YES">
+        <attribute name="abstract" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="culture" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="impersonal" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="intentionId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="intentionLabel" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isQuote" optional="YES" attributeType="Boolean" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="politeForm" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="prototypeId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="proximity" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sender" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sortBy" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="target" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="textId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="tagIds" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="TagId" inverseName="text" inverseEntity="TagId" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="TagId" positionX="-54" positionY="126" width="128" height="75"/>
+        <element name="Text" positionX="-63" positionY="-18" width="128" height="330"/>
+        <element name="Image" positionX="-54" positionY="135" width="128" height="120"/>
+    </elements>
+</model>
