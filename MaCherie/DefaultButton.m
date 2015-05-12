@@ -9,7 +9,9 @@
 #import "DefaultButton.h"
 #import "UIColor+Extension.h"
 
+
 @implementation DefaultButton
+
 
 -(id)initWithFrame:(CGRect)frame
 {
@@ -28,26 +30,17 @@
     return self;
 }
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    self.selected = !self.selected;
+
+-(void)setSelected:(BOOL)selected {
+    [super setSelected:selected];
     
-    if (self.selected) {
+    if (self.isSelected) {
         self.layer.backgroundColor = [UIColor appBlueColor].CGColor;
-    }
-    else
-    {
+    } else {
         self.layer.backgroundColor = [UIColor whiteColor].CGColor;
     }
+    
 }
 
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
 
 @end

@@ -25,6 +25,9 @@ typedef enum {
 
 @interface UserDefaults : NSObject
 
++(NSNumber*)firstLaunchOfApp;
++(void)setFirstLaunchOfApp:(BOOL)firstLaunch;
+
 +(NSNumber*)userAgeSegment;
 +(void)setUserAgeSegment:(NSNumber*)ageSegment;
 
@@ -33,6 +36,16 @@ typedef enum {
 
 +(NSNumber*)userWantsNotification;
 +(void)setUserWantsNotification:(BOOL)wantsNotification;
+
+// get the hour and minutes separately
++(int)notificationHour;
++(void)setNotificationHour:(int)hour;
++(int)notificationMinutes;
++(void)setNotificationMinutes:(int)minutes;
+
+// currently not in use for simplicities sake
++(NSDate*)notificationTime;
++(void)setNotificationTime:(NSDate*)notificationTime;
 
 
 

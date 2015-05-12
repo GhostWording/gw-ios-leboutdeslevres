@@ -8,10 +8,12 @@
 
 #import "TimePicker.h"
 #import "UIColor+Extension.h"
+#import "UserDefaults.h"
 
 @interface TimePicker () <UIPickerViewDataSource, UIPickerViewDelegate> {
     NSMutableArray *hours;
     NSMutableArray *minutes;
+    NSDateFormatter *formatter;
 }
 
 @end
@@ -24,6 +26,7 @@
         self.delegate = self;
         self.dataSource = self;
         self.showsSelectionIndicator = YES;
+        formatter = [[NSDateFormatter alloc] init];
         
         hours = [[NSMutableArray alloc] init];
         
@@ -60,6 +63,11 @@
 }
 
 
+-(void)setHour:(int)hour andMinute:(int)minute {
+    [self selectRow:hour inComponent:0 animated:YES];
+    [self selectRow:minute inComponent:2 animated:YES];
+}
+
 #pragma mark - 
 #pragma mark Picker View Delegate
 
@@ -78,6 +86,24 @@
     return 35;
 }
 
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+    
+    if (component == 2) {
+        //int hour = (int) row/60;
+        //[self selectRow:hour inComponent:0 animated:YES];
+        
+        // TODO: get this into the view controller with a delegate or block
+        // save the row
+    }
+    
+    NSLog(@"saving notification time");
+    NSInteger hourToSave = [pickerView selectedRowInComponent:0];
+    [UserDefaults setNotificationHour:(int)hourToSave];
+    NSInteger minutesToSave = [pickerView selectedRowInComponent:2];
+    [UserDefaults setNotificationMinutes:(int)minutesToSave];
+    
+}
+
 -(UIView*)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
 {
     CGFloat width = [[pickerView delegate] pickerView:pickerView widthForComponent:component];
@@ -86,6 +112,7 @@
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, height)];
     label.textColor = [UIColor appBlueColor];
     
+    //int hourValue = (int) row/60;
     
     if (component == 0) {
         label.frame = CGRectMake(0, 0, width - 10, height);
@@ -132,17 +159,18 @@
     return 0;
 }
 
+/*
 -(NSInteger)numberOfRowsInComponent:(NSInteger)component
 {
     if (component == 0) {
         return 24;
     }
     else if(component == 1) {
-        return 60;
+        return 60*24;
     }
     
     return 0;
-}
+}*/
 
 /*
 // Only override drawRect: if you perform custom drawing.

@@ -7,6 +7,7 @@
 //
 
 #import "SettingsViewController.h"
+#import "UserDefaults.h"
 #import "UIColor+Extension.h"
 #import "UIFont+ArialAndHelveticaNeue.h"
 #import "DefaultButton.h"
@@ -14,7 +15,21 @@
 
 const float heightOffset = 20.0;
 
-@interface SettingsViewController ()
+@interface SettingsViewController () {
+    
+    // gender buttons
+    DefaultButton *femaleButton;
+    DefaultButton *maleButton;
+    
+    // age buttons
+    DefaultButton *lessThan17Button;
+    DefaultButton *between18And39Button;
+    DefaultButton *between40And64Button;
+    DefaultButton *over65Button;
+    
+    // Add UIScrollView for iPhone 4 devices
+    UIScrollView *scrollView;
+}
 
 @end
 
@@ -22,12 +37,22 @@ const float heightOffset = 20.0;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     // Do any additional setup after loading the view.
     UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     closeButton.frame = CGRectMake(CGRectGetWidth(self.view.frame) - 32, heightOffset + 12, 18, 18);
     [closeButton setImage:[UIImage imageNamed:@"cancel.png"] forState:UIControlStateNormal];
-    [closeButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
+    //[closeButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:closeButton];
+    
+    UIView *overlayCancelTouchView = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame) - CGRectGetWidth(self.view.frame)*0.15, heightOffset - 2, CGRectGetWidth(self.view.frame)*0.15, 44)];
+    overlayCancelTouchView.backgroundColor = [UIColor clearColor];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss)];
+    [overlayCancelTouchView addGestureRecognizer:tapGesture];
+    
+    [self.view addSubview:overlayCancelTouchView];
+    
     
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame) - CGRectGetMinX(closeButton.frame), heightOffset + 10, CGRectGetWidth(self.view.frame) - 2*(CGRectGetWidth(self.view.frame) - CGRectGetMinX(closeButton.frame)), 22)];
     title.text = @"Mon profil";
@@ -40,47 +65,80 @@ const float heightOffset = 20.0;
     topSeparator.backgroundColor = [UIColor appBlueColor];
     [self.view addSubview:topSeparator];
     
+    
+    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(topSeparator.frame), CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame) - CGRectGetHeight(topSeparator.frame))];
+    [self.view addSubview:scrollView];
+    
+    
     UILabel *genderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(topSeparator.frame) + 15, CGRectGetWidth(self.view.frame), 20)];
     genderLabel.text = @"Je suis";
     genderLabel.textAlignment = NSTextAlignmentCenter;
     genderLabel.textColor = [UIColor appBlueColor];
     [self.view addSubview:genderLabel];
     
-    DefaultButton *button = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) - 90, CGRectGetMaxY(genderLabel.frame) + 15, 60, 60)];
-    [button setImage:[UIImage imageNamed:@"maleGender.png"] forState:UIControlStateNormal];
-    [button setImage:[UIImage imageNamed:@"maleGenderSelected.png"] forState:UIControlStateSelected];
-    [button setImage:[UIImage imageNamed:@"maleGenderSelected.png"] forState:UIControlStateHighlighted];
-    [self.view addSubview:button];
+    maleButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) - 90, CGRectGetMaxY(genderLabel.frame) + 15, 60, 60)];
+    [maleButton setImage:[UIImage imageNamed:@"maleGender.png"] forState:UIControlStateNormal];
+    [maleButton setImage:[UIImage imageNamed:@"maleGenderSelected.png"] forState:UIControlStateSelected];
+    [maleButton setImage:[UIImage imageNamed:@"maleGenderSelected.png"] forState:UIControlStateHighlighted];
+    [maleButton addTarget:self action:@selector(maleButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:maleButton];
     
-    DefaultButton *buttonTwo = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) + 30, CGRectGetMaxY(genderLabel.frame) + 15, 60, 60)];
-    [buttonTwo setImage:[UIImage imageNamed:@"femaleGender.png"] forState:UIControlStateNormal];
-    [buttonTwo setImage:[UIImage imageNamed:@"femaleGenderSelected.png"] forState:UIControlStateHighlighted];
-    [buttonTwo setImage:[UIImage imageNamed:@"femaleGenderSelected.png"] forState:UIControlStateSelected];
-    [self.view addSubview:buttonTwo];
+    femaleButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) + 30, CGRectGetMaxY(genderLabel.frame) + 15, 60, 60)];
+    [femaleButton setImage:[UIImage imageNamed:@"femaleGender.png"] forState:UIControlStateNormal];
+    [femaleButton setImage:[UIImage imageNamed:@"femaleGenderSelected.png"] forState:UIControlStateHighlighted];
+    [femaleButton setImage:[UIImage imageNamed:@"femaleGenderSelected.png"] forState:UIControlStateSelected];
+    [femaleButton addTarget:self action:@selector(femaleButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:femaleButton];
     
-    UILabel *ageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(buttonTwo.frame) + 20, CGRectGetWidth(self.view.frame), 20)];
+    
+    // Set the state of the button
+    if ([[UserDefaults userGender] intValue] == kGenderMale) {
+        [maleButton setSelected:YES];
+    } else if([[UserDefaults userGender] intValue] == kGenderFemale) {
+        [femaleButton setSelected:YES];
+    }
+    
+    
+    UILabel *ageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(femaleButton.frame) + 20, CGRectGetWidth(self.view.frame), 20)];
     ageLabel.text = @"Age";
     ageLabel.textAlignment = NSTextAlignmentCenter;
     ageLabel.textColor = [UIColor appBlueColor];
     [self.view addSubview:ageLabel];
     
-    DefaultButton *firstAgeButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) - 80 - 60 - 10, CGRectGetMaxY(ageLabel.frame) + 15, 54, 36)];
-    [firstAgeButton setTitle:@"17-" forState:UIControlStateNormal];
-    [self.view addSubview:firstAgeButton];
+    lessThan17Button = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) - 80 - 60 - 10, CGRectGetMaxY(ageLabel.frame) + 15, 54, 36)];
+    [lessThan17Button setTitle:@"17-" forState:UIControlStateNormal];
+    [lessThan17Button addTarget:self action:@selector(ageButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:lessThan17Button];
     
-    DefaultButton *secondAgeButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) - 84, CGRectGetMaxY(ageLabel.frame) + 15, 76, 36)];
-    [secondAgeButton setTitle:@"18-39" forState:UIControlStateNormal];
-    [self.view addSubview:secondAgeButton];
+    between18And39Button = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) - 84, CGRectGetMaxY(ageLabel.frame) + 15, 76, 36)];
+    [between18And39Button setTitle:@"18-39" forState:UIControlStateNormal];
+    [between18And39Button addTarget:self action:@selector(ageButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:between18And39Button];
     
-    DefaultButton *thirdAgeButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) + 8, CGRectGetMaxY(ageLabel.frame) + 15, 76, 36)];
-    [thirdAgeButton setTitle:@"40-64" forState:UIControlStateNormal];
-    [self.view addSubview:thirdAgeButton];
+    between40And64Button = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) + 8, CGRectGetMaxY(ageLabel.frame) + 15, 76, 36)];
+    [between40And64Button setTitle:@"40-64" forState:UIControlStateNormal];
+    [between40And64Button addTarget:self action:@selector(ageButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:between40And64Button];
     
-    DefaultButton *fourthAgeButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) + 96, CGRectGetMaxY(ageLabel.frame) + 15, 54, 36)];
-    [fourthAgeButton setTitle:@"65+" forState:UIControlStateNormal];
-    [self.view addSubview:fourthAgeButton];
+    over65Button = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) + 96, CGRectGetMaxY(ageLabel.frame) + 15, 54, 36)];
+    [over65Button setTitle:@"65+" forState:UIControlStateNormal];
+    [over65Button addTarget:self action:@selector(ageButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:over65Button];
     
-    UILabel *notificationLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(fourthAgeButton.frame) + 25, CGRectGetWidth(self.view.frame), 20)];
+    
+    // set the initial state of the age buttons
+    if ([[UserDefaults userAgeSegment] intValue] == kAgeLessThan17) {
+        [lessThan17Button setSelected:YES];
+    } else if([[UserDefaults userAgeSegment] intValue] == kAgeBetween18And39) {
+        [between18And39Button setSelected:YES];
+    } else if([[UserDefaults userAgeSegment] intValue] == kAgeBetween40And64) {
+        [between40And64Button setSelected:YES];
+    } else if([[UserDefaults userAgeSegment] intValue] == kAgeOver65) {
+        [over65Button setSelected:YES];
+    }
+    
+    
+    UILabel *notificationLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(over65Button.frame) + 25, CGRectGetWidth(self.view.frame), 20)];
     notificationLabel.text = @"Notifications";
     notificationLabel.textAlignment = NSTextAlignmentCenter;
     notificationLabel.textColor = [UIColor appBlueColor];
@@ -89,7 +147,15 @@ const float heightOffset = 20.0;
     UISwitch *notificationSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
     notificationSwitch.center = CGPointMake(CGRectGetMidX(self.view.frame), CGRectGetMaxY(notificationLabel.frame) + CGRectGetHeight(notificationSwitch.frame)*0.5 + 15);
     notificationSwitch.onTintColor = [UIColor appBlueColor];
+    [notificationSwitch addTarget:self action:@selector(wantsLocalNotification:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:notificationSwitch];
+    
+    
+    // set the initial state of the notifications
+    if ([[UserDefaults userWantsNotification] boolValue] == YES) {
+        [notificationSwitch setOn:YES animated:YES];
+    }
+    
     
     UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(notificationSwitch.frame) + 25, CGRectGetWidth(self.view.frame), 20)];
     dateLabel.text = @"Notification time";
@@ -100,7 +166,12 @@ const float heightOffset = 20.0;
     
     TimePicker *timePicker = [[TimePicker alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(dateLabel.frame), CGRectGetWidth(self.view.frame), 80)];
     [self.view addSubview:timePicker];
-     
+    
+    if ([UserDefaults firstLaunchOfApp] != nil) {
+        int minutes = [UserDefaults notificationMinutes];
+        int hours = [UserDefaults notificationHour];
+        [timePicker setHour:hours andMinute:minutes];
+    }
     
     /*
     UIDatePicker *datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(dateLabel.frame) + 10, CGRectGetWidth(self.view.frame), 200)];
@@ -120,6 +191,62 @@ const float heightOffset = 20.0;
 -(void)dismiss
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - 
+#pragma mark Notification Switch Value Changed
+
+-(void)wantsLocalNotification:(UISwitch*)sender {
+    
+    [UserDefaults setUserWantsNotification:sender.isOn];
+    
+}
+
+
+#pragma mark - 
+#pragma mark Age Buttons pressed
+
+-(void)ageButtonPressed:(DefaultButton*)sender {
+    
+    [lessThan17Button setSelected:NO];
+    [between18And39Button setSelected:NO];
+    [between40And64Button setSelected:NO];
+    [over65Button setSelected:NO];
+    
+    if (sender == lessThan17Button) {
+        [lessThan17Button setSelected:YES];
+        [UserDefaults setUserAgeSegment:[NSNumber numberWithInt:kAgeLessThan17]];
+    } else if(sender == between18And39Button) {
+        [between18And39Button setSelected:YES];
+        [UserDefaults setUserAgeSegment:[NSNumber numberWithInt:kAgeBetween18And39]];
+    } else if(sender == between40And64Button) {
+        [between40And64Button setSelected:YES];
+        [UserDefaults setUserAgeSegment:[NSNumber numberWithInt:kAgeBetween40And64]];
+    } else if(sender == over65Button) {
+        [over65Button setSelected:YES];
+        [UserDefaults setUserAgeSegment:[NSNumber numberWithInt:kAgeOver65]];
+    }
+    
+}
+
+#pragma mark -
+#pragma mark Gender Buttons pressed
+
+-(void)maleButtonPressed:(DefaultButton*)sender {
+    if (!sender.isSelected) {
+        [sender setSelected:YES];
+        [femaleButton setSelected:NO];
+        [UserDefaults setUserGender:[NSNumber numberWithInt:kGenderMale]];
+        
+    }
+}
+
+-(void)femaleButtonPressed:(DefaultButton*)sender {
+    if (!sender.isSelected) {
+        [sender setSelected:YES];
+        [maleButton setSelected:NO];
+        [UserDefaults setUserGender:[NSNumber numberWithInt:kGenderFemale]];
+    }
 }
 
 /*

@@ -55,8 +55,8 @@
 -(void)downloadNumImages:(int)numImages withCompletion:(void (^)(BOOL finished, NSError *))block {
     [block copy];
     
-    __block int numberOfImagesLoaded = 0;
-    
+    NSLog(@"downloading images");
+        
     //NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/container/cvd/sweetheart?size=small", IMAGE_PREFIX]];
     NSURL *url = [NSURL URLWithString:@"http://gw-static.azurewebsites.net/container/cvd/sweetheart/istockpairs?size=small"];
     

@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 #import "ServerComm.h"
+#import "NotificationManager.h"
+#import "UserDefaults.h"
 
 @interface AppDelegate ()
 
@@ -21,9 +23,15 @@
     
     ServerComm *comm = [[ServerComm alloc] init];
     [comm downloadTexts];
-    [comm downloadNumImages:10 withCompletion:^(BOOL finished, NSError *error){
+    [comm downloadNumImages:10 withCompletion:^(BOOL finished, NSError *error) {
         
     }];
+    
+    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)])
+    {
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge|UIUserNotificationTypeAlert|UIUserNotificationTypeSound) categories:nil];
+        [application registerUserNotificationSettings:settings];
+    }
     
     // seed the random generator
     srand((unsigned int)time(NULL));
@@ -39,6 +47,12 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    NotificationManager *notifMan = [[NotificationManager alloc] init];
+    [notifMan scheduleNotification:[UserDefaults notificationHour] andMinute:[UserDefaults notificationMinutes]];
+    
+    NSLog(@"scheduled notification: %d", [[UIApplication sharedApplication] scheduledLocalNotifications].count);
+    
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {

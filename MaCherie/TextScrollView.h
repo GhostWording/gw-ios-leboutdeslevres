@@ -18,5 +18,6 @@
 
 -(void)setFont:(UIFont*)newTextFont;
 -(NSString*)selectedText;
+-(void)updateTexts:(NSArray*)theTexts;
 
 @end

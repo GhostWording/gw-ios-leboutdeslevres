@@ -10,5 +10,6 @@
 
 @interface TimePicker : UIPickerView
 
+-(void)setHour:(int)hour andMinute:(int)minute;
 
 @end

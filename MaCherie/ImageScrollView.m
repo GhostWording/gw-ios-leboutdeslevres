@@ -14,6 +14,7 @@
 
 @interface ImageScrollView () <UIScrollViewDelegate> {
     ImageScrollViewModel *model;
+    NSMutableArray *imageSubviewsArray;
     UIScrollView *imageScrollView;
     UIPageControl *pageControl;
     NSInteger numPages;
@@ -29,12 +30,6 @@
     if (self = [super initWithFrame:frame]) {
         model = [[ImageScrollViewModel alloc] initWithArray:imageArray];
         
-        pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(frame) - 20, CGRectGetWidth(frame), 20)];
-        pageControl.numberOfPages = imageArray.count;
-        pageControl.pageIndicatorTintColor = [UIColor appLightGrayColor];
-        pageControl.currentPageIndicatorTintColor = [UIColor appBlueColor];
-        [self addSubview:pageControl];
-        
         imageScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame))];
         imageScrollView.pagingEnabled = YES;
         imageScrollView.showsHorizontalScrollIndicator = NO;
@@ -42,13 +37,36 @@
         imageScrollView.delegate = self;
         [self addSubview:imageScrollView];
         
+        pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(frame) - 20, CGRectGetWidth(frame), 20)];
+        pageControl.numberOfPages = imageArray.count;
+        pageControl.pageIndicatorTintColor = [UIColor appLightGrayColor];
+        pageControl.currentPageIndicatorTintColor = [UIColor appBlueColor];
+        [self addSubview:pageControl];
+        
         numPages = 0;
         currentPage = 0;
+        
+        imageSubviewsArray = [[NSMutableArray alloc] init];
         
         [self populateScrollView:model.numberOfImages];
         
     }
     return self;
+}
+
+-(void)updateImages:(NSArray *)images {
+    
+    for (UIView *view in imageSubviewsArray) {
+        [view removeFromSuperview];
+    }
+    
+    model = [[ImageScrollViewModel alloc] initWithArray:images];
+    
+    numPages = 0;
+    currentPage = 0;
+    pageControl.numberOfPages = images.count;
+    
+    [self populateScrollView:model.numberOfImages];
 }
 
 -(void)populateScrollView:(NSInteger)numberOfImages {
@@ -58,10 +76,12 @@
 }
 
 -(void)addImageAtIndex:(int)index {
-    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(index * CGRectGetWidth(self.frame), 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame) - 20)];
+    
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(index * CGRectGetWidth(self.frame), 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame))];
     imgView.contentMode = UIViewContentModeScaleAspectFit;
     imgView.image = [model imageAtIndex:index];
     [imageScrollView addSubview:imgView];
+    [imageSubviewsArray addObject:imgView];
     
     numPages++;
     
@@ -76,6 +96,7 @@
 #pragma mark Scroll View Delegate
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    
     float position = scrollView.contentOffset.x / CGRectGetWidth(self.frame);
     int pos = roundf(position);
     

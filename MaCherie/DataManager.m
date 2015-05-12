@@ -35,7 +35,7 @@
     
     NSLog(@"all texts: %d", allTexts.count);
     
-    if (gender == nil && allTexts != nil) {
+    if (gender == nil && allTexts != nil && mutableTexts.count != 0) {
         
         NSMutableArray *tmpRandomTexts = [NSMutableArray array];
         
@@ -59,6 +59,10 @@
     
     NSMutableArray *tmpRandomImages = [NSMutableArray array];
     
+    if (mutableImageArray.count == 0) {
+        return nil;
+    }
+    
     for (int i = 0; i < numImages; i++) {
         int randomPos = rand() % mutableImageArray.count;
         [tmpRandomImages addObject:[mutableImageArray objectAtIndex:randomPos]];
@@ -67,6 +71,16 @@
     
     return tmpRandomImages;
     
+}
+
+-(NSInteger)numTexts {
+    NSArray *textsArray = [context executeFetchRequest:[[NSFetchRequest alloc] initWithEntityName:@"Text"] error:nil];
+    return textsArray.count;
+}
+
+-(NSInteger)numImages {
+    NSArray *imagesArray = [context executeFetchRequest:[[NSFetchRequest alloc] initWithEntityName:@"Image"] error:nil];
+    return imagesArray.count;
 }
 
 @end

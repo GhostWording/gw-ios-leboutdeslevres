@@ -58,6 +58,21 @@
     return self;
 }
 
+-(void)updateTexts:(NSArray*)theTexts {
+    
+    for (UIView *view in scrollViewContents) {
+        [view removeFromSuperview];
+    }
+    
+    model = [[TextScrollViewModel alloc] initWithTextArray:theTexts];
+    
+    currentPage = 0;
+    numPages = 0;
+    pageControl.numberOfPages = theTexts.count;
+    
+    [self populateScrollView:theTexts];
+}
+
 -(void)populateScrollView:(NSArray*)textArray {
     for (int i = 0; i < textArray.count; i++) {
         [self addTextAtIndex:i];

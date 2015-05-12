@@ -13,5 +13,6 @@
 -(id)initWithFrame:(CGRect)frame andImages:(NSArray*)imageArray;
 
 -(UIImage*)selectedImage;
+-(void)updateImages:(NSArray*)images;
 
 @end

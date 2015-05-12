@@ -30,7 +30,9 @@
 -(NSString*)textContentAtIndex:(NSInteger)index {
     
     if (index < texts.count) {
+        
         Text *text = [texts objectAtIndex:index];
+        
         return text.content;
     }
     else {
