@@ -23,6 +23,10 @@
 		885047CF1AF9803D00B7293A /* UIView+RenderViewToImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 885047CE1AF9803D00B7293A /* UIView+RenderViewToImage.m */; };
 		885047D21AF981AC00B7293A /* NSString+TextHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 885047D11AF981AC00B7293A /* NSString+TextHeight.m */; };
 		886B84CA1AFA9BD4005152D6 /* UserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 886B84C91AFA9BD4005152D6 /* UserDefaults.m */; };
+		8885568A1B05484B00795DF9 /* IntentionObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 888556891B05484B00795DF9 /* IntentionObject.m */; };
+		888C188C1B06C80800FD8C91 /* RootViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 888C188B1B06C80800FD8C91 /* RootViewModel.m */; };
+		888C18901B077A9E00FD8C91 /* TextObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 888C188F1B077A9E00FD8C91 /* TextObject.m */; };
+		888C18931B079A4B00FD8C91 /* TextFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 888C18921B079A4B00FD8C91 /* TextFilter.m */; };
 		888EB4BC1AF6676300C99587 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 888EB4BB1AF6676300C99587 /* main.m */; };
 		888EB4BF1AF6676300C99587 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 888EB4BE1AF6676300C99587 /* AppDelegate.m */; };
 		888EB4C21AF6676300C99587 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 888EB4C11AF6676300C99587 /* RootViewController.m */; };
@@ -92,6 +96,14 @@
 		885047D11AF981AC00B7293A /* NSString+TextHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TextHeight.m"; sourceTree = "<group>"; };
 		886B84C81AFA9BD4005152D6 /* UserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDefaults.h; sourceTree = "<group>"; };
 		886B84C91AFA9BD4005152D6 /* UserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDefaults.m; sourceTree = "<group>"; };
+		888556881B05484B00795DF9 /* IntentionObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntentionObject.h; sourceTree = "<group>"; };
+		888556891B05484B00795DF9 /* IntentionObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntentionObject.m; sourceTree = "<group>"; };
+		888C188A1B06C80800FD8C91 /* RootViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewModel.h; sourceTree = "<group>"; };
+		888C188B1B06C80800FD8C91 /* RootViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewModel.m; sourceTree = "<group>"; };
+		888C188E1B077A9E00FD8C91 /* TextObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextObject.h; sourceTree = "<group>"; };
+		888C188F1B077A9E00FD8C91 /* TextObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextObject.m; sourceTree = "<group>"; };
+		888C18911B079A4B00FD8C91 /* TextFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFilter.h; sourceTree = "<group>"; };
+		888C18921B079A4B00FD8C91 /* TextFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFilter.m; sourceTree = "<group>"; };
 		888EB4B61AF6676300C99587 /* MaCherie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MaCherie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		888EB4BA1AF6676300C99587 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		888EB4BB1AF6676300C99587 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -185,6 +197,10 @@
 		886B84C71AFA9BAC005152D6 /* Data Management Layer */ = {
 			isa = PBXGroup;
 			children = (
+				888C18911B079A4B00FD8C91 /* TextFilter.h */,
+				888C18921B079A4B00FD8C91 /* TextFilter.m */,
+				888C188D1B077A6D00FD8C91 /* Middle Data Layer */,
+				888556871B05479700795DF9 /* Non Persistent Objects */,
 				88B5FDC51AFC430C00D596B2 /* Managed Objects And Model */,
 				886B84C81AFA9BD4005152D6 /* UserDefaults.h */,
 				886B84C91AFA9BD4005152D6 /* UserDefaults.m */,
@@ -196,6 +212,35 @@
 				8810D9F71B017C5F00095E27 /* NotificationManager.m */,
 			);
 			name = "Data Management Layer";
+			sourceTree = "<group>";
+		};
+		888556871B05479700795DF9 /* Non Persistent Objects */ = {
+			isa = PBXGroup;
+			children = (
+				888556881B05484B00795DF9 /* IntentionObject.h */,
+				888556891B05484B00795DF9 /* IntentionObject.m */,
+			);
+			name = "Non Persistent Objects";
+			sourceTree = "<group>";
+		};
+		888C18891B06C79B00FD8C91 /* View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				888C188A1B06C80800FD8C91 /* RootViewModel.h */,
+				888C188B1B06C80800FD8C91 /* RootViewModel.m */,
+				888EB4C01AF6676300C99587 /* RootViewController.h */,
+				888EB4C11AF6676300C99587 /* RootViewController.m */,
+			);
+			name = "View Controller";
+			sourceTree = "<group>";
+		};
+		888C188D1B077A6D00FD8C91 /* Middle Data Layer */ = {
+			isa = PBXGroup;
+			children = (
+				888C188E1B077A9E00FD8C91 /* TextObject.h */,
+				888C188F1B077A9E00FD8C91 /* TextObject.m */,
+			);
+			name = "Middle Data Layer";
 			sourceTree = "<group>";
 		};
 		888EB4AD1AF6676300C99587 = {
@@ -283,9 +328,8 @@
 		888EB4E91AF6748900C99587 /* View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				888C18891B06C79B00FD8C91 /* View Controller */,
 				88A228051AFED35A00223685 /* Controls */,
-				888EB4C01AF6676300C99587 /* RootViewController.h */,
-				888EB4C11AF6676300C99587 /* RootViewController.m */,
 				888EB4EA1AF674C100C99587 /* SettingsViewController.h */,
 				888EB4EB1AF674C100C99587 /* SettingsViewController.m */,
 				882F5BA01AF9438F00B8A26E /* TimePicker.h */,
@@ -488,6 +532,7 @@
 			files = (
 				88A2280C1AFED8DD00223685 /* TextScrollViewModel.m in Sources */,
 				88B9E8CB1AFFE30800B1213A /* ImageScrollView.m in Sources */,
+				888C18901B077A9E00FD8C91 /* TextObject.m in Sources */,
 				882F5BA21AF9438F00B8A26E /* TimePicker.m in Sources */,
 				885047CF1AF9803D00B7293A /* UIView+RenderViewToImage.m in Sources */,
 				888EB4BF1AF6676300C99587 /* AppDelegate.m in Sources */,
@@ -499,9 +544,11 @@
 				88A228041AFE9C8500223685 /* DataManager.m in Sources */,
 				88A228081AFED66B00223685 /* TextScrollView.m in Sources */,
 				88B5FDC41AFBF87000D596B2 /* DataModel.xcdatamodeld in Sources */,
+				8885568A1B05484B00795DF9 /* IntentionObject.m in Sources */,
 				882F5B8F1AF8372400B8A26E /* DefaultButton.m in Sources */,
 				888EB4EC1AF674C100C99587 /* SettingsViewController.m in Sources */,
 				88CC383B1AF6C52300DCECD8 /* UIFont+ArialAndHelveticaNeue.m in Sources */,
+				888C18931B079A4B00FD8C91 /* TextFilter.m in Sources */,
 				88B9E8CE1AFFE41F00B1213A /* ImageScrollViewModel.m in Sources */,
 				886B84CA1AFA9BD4005152D6 /* UserDefaults.m in Sources */,
 				8810D9F81B017C5F00095E27 /* NotificationManager.m in Sources */,
@@ -509,6 +556,7 @@
 				888EB4E71AF66DA700C99587 /* UIColor+Extension.m in Sources */,
 				88B5FDCB1AFC435C00D596B2 /* TagId.m in Sources */,
 				88B5FDC11AFBF18600D596B2 /* ServerComm.m in Sources */,
+				888C188C1B06C80800FD8C91 /* RootViewModel.m in Sources */,
 				885047CC1AF97EA000B7293A /* UIImage+RenderViewToImage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

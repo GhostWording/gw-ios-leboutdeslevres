@@ -10,6 +10,11 @@
 
 @interface DataManager : NSObject
 
+-(NSArray*)allTexts;
+
+// this gives us a filtered array of texts based on the gender in the user defaults
+-(NSArray*)allTextsFilteredWithUserDefaults;
+
 -(NSArray*)randomTextsForGender:(NSString*)gender numTexts:(NSInteger)numTexts;
 -(NSArray*)randomImagesForNumberOfImages:(NSInteger)numImages;
 

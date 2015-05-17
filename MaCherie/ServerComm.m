@@ -145,7 +145,6 @@
     }
 }
 
-// -(void)downloadImagesWithURLArray:(NSMutableArray*)array andManagedContext:(NSManagedObjectContext*)managedContext withCompletion:(void (^)(BOOL succeeded, NSError *error))block
 
 -(void)downloadImagesWithURLArray:(NSMutableArray*)array andManagedContext:(NSManagedObjectContext*)managedContext {
     
@@ -202,19 +201,23 @@
                 NSMutableArray *jsonDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                 //NSLog(@"the dictionary: %@", jsonDict);
                 
-                NSEntityDescription *textEntity = [NSEntityDescription entityForName:@"Text" inManagedObjectContext:context];
+                NSEntityDescription *textEntity = [NSEntityDescription entityForName:@"Text" inManagedObjectContext:newContext];
                 NSFetchRequest *fetch = [[NSFetchRequest alloc] initWithEntityName:textEntity.name];
                 NSArray *textsArray = [newContext executeFetchRequest:fetch error:nil];
                 
+                __weak typeof (self) xSelf = self;
+                
                 for (NSDictionary *textDict in jsonDict) {
-                    [self textExists:textDict withArray:textsArray andContext:newContext update:YES];
+                    [xSelf textExists:textDict withArray:textsArray andContext:newContext update:YES];
                 }
                 
-                [self saveContextChanges:newContext];
+                [xSelf saveContextChanges:newContext];
                 
-                NSLog(@"index is: %d", index);
+                //NSLog(@"first object is: %@", [jsonDict objectAtIndex:0]);
+                NSLog(@"intention is: %@ with number of texts: %d", intentions, jsonDict.count);
                 
-                [self downloadTextsArray:array atIndex:index + 1];
+                
+                [xSelf downloadTextsArray:array atIndex:index + 1];
                 
             }
             else {
@@ -228,8 +231,11 @@
 
 -(BOOL)textExists:(NSDictionary*)textDict withArray:(NSArray*)array andContext:(NSManagedObjectContext*)tmpContext update:(BOOL)shouldUpdate {
     
+    //NSLog(@"text dictionary: %@", textDict);
+    //NSLog(@"updating");
+    
     for (Text *text in array) {
-        if (![[text textId] isEqualToString:[textDict valueForKey:@"TextId"]]) {
+        if ([[text textId] isEqualToString:[textDict valueForKey:@"TextId"]]) {
             
             if (shouldUpdate) {
                 [self updateText:text andNewTextData:textDict andContext:tmpContext];
@@ -238,12 +244,13 @@
 
         }
     }
-    
+    NSLog(@"Adding text");
     [self addText:textDict andContext:tmpContext];
     return NO;
 }
 
 -(void)addText:(NSDictionary*)textDict andContext:(NSManagedObjectContext*)bkgContext {
+    
     Text *text = [NSEntityDescription insertNewObjectForEntityForName:@"Text" inManagedObjectContext:bkgContext];
     
     [self updateText:text andNewTextData:textDict andContext:bkgContext];

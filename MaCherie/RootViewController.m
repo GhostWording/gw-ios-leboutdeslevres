@@ -10,6 +10,7 @@
 #import "TextScrollView.h"
 #import "ImageScrollView.h"
 #import "DataManager.h"
+#import "RootViewModel.h"
 #import "UserDefaults.h"
 #import "DefaultButton.h"
 #import "UIColor+Extension.h"
@@ -23,7 +24,7 @@
 
 const float bottomHeight = 50.0f;
 const int numberOfImagesToLoad = 10;
-const int numberOfTextsToLoad = 12;
+const int numberOfTextsToLoad = 10;
 
 @interface RootViewController ()
 {
@@ -32,6 +33,7 @@ const int numberOfTextsToLoad = 12;
     UILabel *firstLabel;
     UIView *firstLaunView;
     UIView *newView;
+    RootViewModel *model;
 }
 
 @end
@@ -45,6 +47,9 @@ const int numberOfTextsToLoad = 12;
     // Configure the page view controller and add it as a child view controller.
     
     DataManager *dataMan = [[DataManager alloc] init];
+    model = [[RootViewModel alloc] init];
+    
+    NSArray *randomText = [model randomtTextWithNum:numberOfTextsToLoad];
     
     theImageScrollView = [[ImageScrollView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)*0.5 + 20) andImages:[dataMan randomImagesForNumberOfImages:numberOfImagesToLoad]];
     [self.view addSubview:theImageScrollView];
@@ -64,7 +69,8 @@ const int numberOfTextsToLoad = 12;
     [settingsView addSubview:button];
     
     
-    theScrollView = [[TextScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(theImageScrollView.frame), CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)*0.5 - bottomHeight - 20) andTexts:[dataMan randomTextsForGender:nil numTexts:numberOfTextsToLoad]];
+    //theScrollView = [[TextScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(theImageScrollView.frame), CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)*0.5 - bottomHeight - 20) andTexts:[dataMan randomTextsForGender:nil numTexts:numberOfTextsToLoad]];
+    theScrollView = [[TextScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(theImageScrollView.frame), CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)*0.5 - bottomHeight - 20) andTexts:randomText];
     [self.view addSubview:theScrollView];
     
     UIButton *bottomButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -82,6 +88,7 @@ const int numberOfTextsToLoad = 12;
     UserDefaults *defaults = [[UserDefaults alloc] init];
     
     NSLog(@"is first launch: %@", [UserDefaults firstLaunchOfApp]);
+    NSLog(@"number of texts are: %d", [dataMan numTexts]);
     
     if ([[UserDefaults firstLaunchOfApp] boolValue] == YES) {
         
@@ -135,11 +142,22 @@ const int numberOfTextsToLoad = 12;
     
     [theImageScrollView updateImages:[dataMan randomImagesForNumberOfImages:numberOfImagesToLoad]];
     [theScrollView updateTexts:[dataMan randomTextsForGender:nil numTexts:numberOfTextsToLoad]];
+    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+        
+    // update the texts in case we have chosen a different gender and the texts need
+    // to be re-filtered
+    NSArray *randomText = [model randomtTextWithNum:numberOfTextsToLoad];
+    [theScrollView updateTexts:randomText];
+    
 }
 
 -(void)login:(id)sender
@@ -256,6 +274,10 @@ const int numberOfTextsToLoad = 12;
     if ([FBSDKMessengerSharer messengerPlatformCapabilities] & FBSDKMessengerPlatformCapabilityImage) {
         
         [FBSDKMessengerSharer shareImage:snapshotImage withOptions:nil];
+    } else {
+        // Messenger isn't installed. Redirect the person to the App Store.
+        NSString *appStoreLink = @"https://itunes.apple.com/us/app/facebook-messenger/id454638411?mt=8";
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:appStoreLink]];
     }
 }
 

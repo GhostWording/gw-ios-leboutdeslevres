@@ -9,6 +9,7 @@
 #import "TextScrollView.h"
 #import "TextScrollViewModel.h"
 #import "UIFont+ArialAndHelveticaNeue.h"
+#import "NSString+TextHeight.h"
 #import "UIColor+Extension.h"
 
 @interface TextScrollView () <UIScrollViewDelegate> {
@@ -40,7 +41,7 @@
         [self addSubview:pageControl];
         
         
-        textScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame)-20)];
+        textScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame))];
         textScrollView.pagingEnabled = YES;
         textScrollView.showsHorizontalScrollIndicator = NO;
         textScrollView.showsVerticalScrollIndicator = NO;
@@ -81,13 +82,16 @@
 
 -(void)addTextAtIndex:(int)index {
     
-    UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(index*CGRectGetWidth(self.frame) + CGRectGetWidth(self.frame)*0.1, 0, CGRectGetWidth(self.frame)*0.8, CGRectGetHeight(self.frame))];
+    UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(index*CGRectGetWidth(self.frame) + CGRectGetWidth(self.frame)*0.1, 20, CGRectGetWidth(self.frame)*0.8, CGRectGetHeight(self.frame) - 20)];
     textLabel.font = textFont;
     textLabel.text = [model textContentAtIndex:index];
     textLabel.textAlignment = NSTextAlignmentCenter;
     NSLog(@"Text is: %@", [model textContentAtIndex:index]);
     textLabel.textColor = [UIColor blackColor];
-    textLabel.numberOfLines = 0;
+    
+    NSLog(@"number of lines: %f", CGRectGetHeight(textLabel.frame) / textFont.lineHeight);
+    
+    textLabel.numberOfLines = CGRectGetHeight(textLabel.frame) / textFont.lineHeight;
     textLabel.minimumScaleFactor = 0.7;
     
     [textScrollView addSubview:textLabel];

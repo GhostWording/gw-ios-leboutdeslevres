@@ -8,6 +8,9 @@
 
 #import "DataManager.h"
 #import "AppDelegate.h"
+#import "TextObject.h"
+#import "UserDefaults.h"
+#import "TextFilter.h"
 
 @interface DataManager () {
     NSManagedObjectContext *context;
@@ -26,6 +29,38 @@
     }
     
     return self;
+}
+
+-(NSArray*)allTexts {
+    
+    NSArray *allTexts = [context executeFetchRequest:[[NSFetchRequest alloc] initWithEntityName:@"Text"] error:nil];
+    
+    return allTexts;
+}
+
+-(NSArray*)allTextsFilteredWithUserDefaults {
+    
+    NSArray *allTexts = [context executeFetchRequest:[[NSFetchRequest alloc] initWithEntityName:@"Text"] error:nil];
+    
+    TextFilter *textFilter = [[TextFilter alloc] init];
+    
+    allTexts = [textFilter filterTextsFromArray:allTexts];
+    
+    return allTexts;
+}
+
+-(NSArray*)allMutatedTexts {
+    NSArray *allTexts = [context executeFetchRequest:[[NSFetchRequest alloc] initWithEntityName:@"Text"] error:nil];
+    
+    NSMutableArray *mutatedTexts = [NSMutableArray array];
+    
+    for (int i = 0; i < allTexts.count; i++) {
+        Text *text = [allTexts objectAtIndex:i];
+        TextObject *textObj = [[TextObject alloc] initWithWeight:1.0 andText:text];
+        [mutatedTexts addObject:textObj];
+    }
+    
+    return mutatedTexts;
 }
 
 -(NSArray*)randomTextsForGender:(NSString *)gender numTexts:(NSInteger)numTexts {

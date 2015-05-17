@@ -70,26 +70,37 @@ const float heightOffset = 20.0;
     [self.view addSubview:scrollView];
     
     
-    UILabel *genderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(topSeparator.frame) + 15, CGRectGetWidth(self.view.frame), 20)];
+    UILabel *genderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 + 15, CGRectGetWidth(self.view.frame), 20)];
     genderLabel.text = @"Je suis";
     genderLabel.textAlignment = NSTextAlignmentCenter;
     genderLabel.textColor = [UIColor appBlueColor];
-    [self.view addSubview:genderLabel];
+    [scrollView addSubview:genderLabel];
     
     maleButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) - 90, CGRectGetMaxY(genderLabel.frame) + 15, 60, 60)];
     [maleButton setImage:[UIImage imageNamed:@"maleGender.png"] forState:UIControlStateNormal];
     [maleButton setImage:[UIImage imageNamed:@"maleGenderSelected.png"] forState:UIControlStateSelected];
     [maleButton setImage:[UIImage imageNamed:@"maleGenderSelected.png"] forState:UIControlStateHighlighted];
     [maleButton addTarget:self action:@selector(maleButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:maleButton];
+    [scrollView addSubview:maleButton];
     
-    femaleButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) + 30, CGRectGetMaxY(genderLabel.frame) + 15, 60, 60)];
+    femaleButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) + 40, CGRectGetMaxY(genderLabel.frame) + 15, 60, 60)];
     [femaleButton setImage:[UIImage imageNamed:@"femaleGender.png"] forState:UIControlStateNormal];
     [femaleButton setImage:[UIImage imageNamed:@"femaleGenderSelected.png"] forState:UIControlStateHighlighted];
     [femaleButton setImage:[UIImage imageNamed:@"femaleGenderSelected.png"] forState:UIControlStateSelected];
     [femaleButton addTarget:self action:@selector(femaleButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:femaleButton];
+    [scrollView addSubview:femaleButton];
     
+    UILabel *maleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) - 94, CGRectGetMaxY(maleButton.frame) + 7, 70, 20)];
+    maleLabel.text = @"Homme";
+    maleLabel.textAlignment = NSTextAlignmentCenter;
+    maleLabel.textColor = [UIColor appBlueColor];
+    [scrollView addSubview:maleLabel];
+    
+    UILabel *femaleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) + 36, CGRectGetMaxY(femaleButton.frame) + 7, 70, 20)];
+    femaleLabel.text = @"Femme";
+    femaleLabel.textAlignment = NSTextAlignmentCenter;
+    femaleLabel.textColor = [UIColor appBlueColor];
+    [scrollView addSubview:femaleLabel];
     
     // Set the state of the button
     if ([[UserDefaults userGender] intValue] == kGenderMale) {
@@ -99,31 +110,31 @@ const float heightOffset = 20.0;
     }
     
     
-    UILabel *ageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(femaleButton.frame) + 20, CGRectGetWidth(self.view.frame), 20)];
+    UILabel *ageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(femaleLabel.frame) + 20, CGRectGetWidth(self.view.frame), 20)];
     ageLabel.text = @"Age";
     ageLabel.textAlignment = NSTextAlignmentCenter;
     ageLabel.textColor = [UIColor appBlueColor];
-    [self.view addSubview:ageLabel];
+    [scrollView addSubview:ageLabel];
     
     lessThan17Button = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) - 80 - 60 - 10, CGRectGetMaxY(ageLabel.frame) + 15, 54, 36)];
     [lessThan17Button setTitle:@"17-" forState:UIControlStateNormal];
     [lessThan17Button addTarget:self action:@selector(ageButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:lessThan17Button];
+    [scrollView addSubview:lessThan17Button];
     
     between18And39Button = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) - 84, CGRectGetMaxY(ageLabel.frame) + 15, 76, 36)];
     [between18And39Button setTitle:@"18-39" forState:UIControlStateNormal];
     [between18And39Button addTarget:self action:@selector(ageButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:between18And39Button];
+    [scrollView addSubview:between18And39Button];
     
     between40And64Button = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) + 8, CGRectGetMaxY(ageLabel.frame) + 15, 76, 36)];
     [between40And64Button setTitle:@"40-64" forState:UIControlStateNormal];
     [between40And64Button addTarget:self action:@selector(ageButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:between40And64Button];
+    [scrollView addSubview:between40And64Button];
     
     over65Button = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) + 96, CGRectGetMaxY(ageLabel.frame) + 15, 54, 36)];
     [over65Button setTitle:@"65+" forState:UIControlStateNormal];
     [over65Button addTarget:self action:@selector(ageButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:over65Button];
+    [scrollView addSubview:over65Button];
     
     
     // set the initial state of the age buttons
@@ -142,13 +153,13 @@ const float heightOffset = 20.0;
     notificationLabel.text = @"Notifications";
     notificationLabel.textAlignment = NSTextAlignmentCenter;
     notificationLabel.textColor = [UIColor appBlueColor];
-    [self.view addSubview:notificationLabel];
+    [scrollView addSubview:notificationLabel];
     
     UISwitch *notificationSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
     notificationSwitch.center = CGPointMake(CGRectGetMidX(self.view.frame), CGRectGetMaxY(notificationLabel.frame) + CGRectGetHeight(notificationSwitch.frame)*0.5 + 15);
     notificationSwitch.onTintColor = [UIColor appBlueColor];
     [notificationSwitch addTarget:self action:@selector(wantsLocalNotification:) forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:notificationSwitch];
+    [scrollView addSubview:notificationSwitch];
     
     
     // set the initial state of the notifications
@@ -161,17 +172,19 @@ const float heightOffset = 20.0;
     dateLabel.text = @"Notification time";
     dateLabel.textAlignment = NSTextAlignmentCenter;
     dateLabel.textColor = [UIColor appBlueColor];
-    [self.view addSubview:dateLabel];
+    [scrollView addSubview:dateLabel];
     
     
     TimePicker *timePicker = [[TimePicker alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(dateLabel.frame), CGRectGetWidth(self.view.frame), 80)];
-    [self.view addSubview:timePicker];
+    [scrollView addSubview:timePicker];
     
     if ([UserDefaults firstLaunchOfApp] != nil) {
         int minutes = [UserDefaults notificationMinutes];
         int hours = [UserDefaults notificationHour];
         [timePicker setHour:hours andMinute:minutes];
     }
+    
+    [scrollView setContentSize:CGSizeMake(CGRectGetWidth(self.view.frame), CGRectGetMaxY(timePicker.frame) + 50)];
     
     /*
     UIDatePicker *datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(dateLabel.frame) + 10, CGRectGetWidth(self.view.frame), 200)];
