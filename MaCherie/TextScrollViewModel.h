@@ -20,5 +20,6 @@
 -(NSString*)textIdForTextAtIndex:(NSInteger)index;
 -(BOOL)wantsFacebookShareForTextAtIndex:(int)index;
 -(Text*)textObjectAtIndex:(NSInteger)index;
+-(NSArray*)theTexts;
 
 @end

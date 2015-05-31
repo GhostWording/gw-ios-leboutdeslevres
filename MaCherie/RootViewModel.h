@@ -12,5 +12,6 @@
 
 -(NSArray*)randomtTextWithNum:(int)numTexts;
 -(NSArray*)randomImagesWithNum:(int)numImages;
+-(NSArray*)randomImagesWithImagesBasedOnTexts:(NSArray*)theTexts WithNum:(int)numImages;
 
 @end

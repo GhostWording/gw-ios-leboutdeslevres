@@ -80,8 +80,11 @@
     [comm downloadTexts];
     [comm downloadNumImages:20 withCompletion:^(BOOL finished, NSError *error) {
         if (finished) {
+            NSLog(@"finished downloading images");
             __weak typeof (self) wSelf = self;
-            [wSelf performSelector:@selector(downloadAdditionalImages) withObject:nil afterDelay:15.0];
+            dispatch_async(dispatch_get_main_queue(), ^{
+               [wSelf performSelector:@selector(downloadAdditionalImages) withObject:nil afterDelay:20.0];
+            });
         }
     }];
     
@@ -106,8 +109,9 @@
 -(void)downloadAdditionalImages {
     [comm downloadNumImages:10 withCompletion:^(BOOL finished, NSError *error) {
         if (finished) {
+            NSLog(@"downloading extra images");
             __weak typeof (self) wSelf = self;
-            [wSelf performSelector:@selector(downloadAdditionalImages) withObject:nil afterDelay:15.0];
+            [wSelf performSelector:@selector(downloadAdditionalImages) withObject:nil afterDelay:20.0];
         }
     }];
 }
@@ -146,8 +150,11 @@
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"DataModel.sqlite"];
     NSError *error = nil;
+    NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES,
+                              NSInferMappingModelAutomaticallyOption: @YES
+                              };
     NSString *failureReason = @"There was an error creating or loading the application's saved data.";
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
         // Report any error we got.
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
         dict[NSLocalizedDescriptionKey] = @"Failed to initialize the application's saved data";

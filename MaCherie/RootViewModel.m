@@ -54,6 +54,15 @@
     return [dataMan randomImagesForNumberOfImages:numImages];
 }
 
+// image fetching by adding two images from text image urls
+// to the last two images, if the texts have image urls, if
+// we have images that correspond to that url and we don't have
+// them in the image scroll view already.
+-(NSArray*)randomImagesWithImagesBasedOnTexts:(NSArray*)theTexts WithNum:(int)numImages {
+    NSLog(@"special random Images");
+    return [dataMan randomImagesWithSpecialImagesForTexts:theTexts withNumImages:numImages];
+}
+
 #pragma mark - Text Filtering and Fetching
 
 -(NSArray*)randomtTextWithNum:(int)numTexts {

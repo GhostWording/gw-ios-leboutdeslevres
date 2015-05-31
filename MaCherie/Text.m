@@ -16,6 +16,7 @@
 @dynamic abstract;
 @dynamic created;
 @dynamic culture;
+@dynamic imageUrl;
 @dynamic impersonal;
 @dynamic intentionId;
 @dynamic intentionLabel;
@@ -23,6 +24,7 @@
 @dynamic politeForm;
 @dynamic prototypeId;
 @dynamic proximity;
+@dynamic referenceUrl;
 @dynamic sender;
 @dynamic sortBy;
 @dynamic status;

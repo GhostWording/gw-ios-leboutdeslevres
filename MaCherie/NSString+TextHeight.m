@@ -26,4 +26,12 @@ const CGFloat maxHeight = 600;
     return 0;
 }
 
+-(NSString*)lastSeperatedComponentWithSeparator:(NSString*)separator {
+    
+    NSArray *separatedStrings = [self componentsSeparatedByString:separator];
+    
+    return [separatedStrings objectAtIndex:separatedStrings.count -1];
+    
+}
+
 @end

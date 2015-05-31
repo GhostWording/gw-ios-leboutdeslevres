@@ -79,6 +79,8 @@
                 [wekSelf downloadImagesWithURLArray:imagePaths andManagedContext:newContext];
             }
             
+            block(YES, nil);
+            
         }
     }];
     
@@ -305,6 +307,14 @@
     
     if (textDict[@"IntentionLabel"] != [NSNull null]) {
         [theText setIntentionLabel:textDict[@"IntentionLabel"]];
+    }
+    
+    if (textDict[@"ImageUrl"] != [NSNull null]) {
+        [theText setImageUrl:textDict[@"ImageUrl"]];
+    }
+    
+    if (textDict[@"ReferenceUrl"] != [NSNull null]) {
+        [theText setReferenceUrl:textDict[@"ReferenceUrl"]];
     }
     
     [theText setIsQuote:textDict[@"IsQuote"]];

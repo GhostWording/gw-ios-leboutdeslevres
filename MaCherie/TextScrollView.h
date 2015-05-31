@@ -31,6 +31,7 @@
 -(void)setFont:(UIFont*)newTextFont;
 -(NSString*)selectedText;
 -(NSString*)selectedTextId;
+-(NSArray*)theTexts;
 -(BOOL)wantsFacebookShareForCurrentText;
 -(void)reloadData;
 -(void)reloadDataAnimated:(BOOL)animated;

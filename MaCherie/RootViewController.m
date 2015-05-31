@@ -26,6 +26,7 @@
 #import "NavigationSlideAnimator.h"
 #import "GoogleAnalyticsCommunication.h"
 #import "CustomAnalytics.h"
+#import "ServerComm.h"
 
 const float bottomHeight = 60.0f;
 const int numberOfImagesToLoad = 10;
@@ -52,6 +53,7 @@ const int numberOfTextsToLoad = 10;
     UIAlertView *alert;
     
     RootViewModel *model;
+    ServerComm *serverComm;
 }
 
 @end
@@ -66,12 +68,11 @@ const int numberOfTextsToLoad = 10;
     editTextView = nil;
     
     DataManager *dataMan = [[DataManager alloc] init];
+    serverComm = [[ServerComm alloc] init];
     model = [[RootViewModel alloc] init];
     
     NSArray *randomText = [model randomtTextWithNum:numberOfTextsToLoad];
     
-    // TODO: should not call the data manager instead the model should handle
-    // all data calls
     theImagePagedView = [[ImageScrollView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)*0.5 + 20) andImages:nil];
     theImagePagedView.imageScrollViewDataSource = self;
     [self.view addSubview:theImagePagedView];
@@ -211,7 +212,6 @@ const int numberOfTextsToLoad = 10;
         
     }
     
-    
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -223,9 +223,9 @@ const int numberOfTextsToLoad = 10;
 -(void)updateViewData {
     
     NSLog(@"update view Data");
-        
-    [theImagePagedView reloadDataAnimated:YES];
+    
     [theTextPagedView reloadDataAnimated:YES];
+    [theImagePagedView reloadDataAnimated:YES];
     
 }
 
@@ -530,9 +530,7 @@ const int numberOfTextsToLoad = 10;
 }
 
 -(void)textFacebookShareCompatible:(BOOL)shareCompatibility {
-    
-    NSLog(@"share delegate called");
-    
+        
     if (shareCompatibility) {
         [UIView animateWithDuration:0.3 animations:^{
             shareButton.alpha = 1.0f;
@@ -597,7 +595,8 @@ const int numberOfTextsToLoad = 10;
 #pragma mark - Image Paged View Data Source
 
 -(NSArray*)updateImageScrollViewImages {
-    return [model randomImagesWithNum:numberOfImagesToLoad];
+    //return [model randomImagesWithNum:numberOfImagesToLoad];
+    return [model randomImagesWithImagesBasedOnTexts:[theTextPagedView theTexts] WithNum:numberOfImagesToLoad];
 }
 
 #pragma mark Prepare for Segue and Controller Animations

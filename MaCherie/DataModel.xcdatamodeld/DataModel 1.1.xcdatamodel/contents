@@ -17,6 +17,7 @@
         <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="culture" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="impersonal" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="intentionId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="intentionLabel" optional="YES" attributeType="String" syncable="YES"/>
@@ -24,6 +25,7 @@
         <attribute name="politeForm" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="prototypeId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="proximity" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="referenceUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sender" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sortBy" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
@@ -33,8 +35,8 @@
         <relationship name="tagIds" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="TagId" inverseName="text" inverseEntity="TagId" syncable="YES"/>
     </entity>
     <elements>
-        <element name="TagId" positionX="-54" positionY="126" width="128" height="75"/>
-        <element name="Text" positionX="-63" positionY="-18" width="128" height="330"/>
         <element name="Image" positionX="-54" positionY="135" width="128" height="120"/>
+        <element name="TagId" positionX="-54" positionY="126" width="128" height="75"/>
+        <element name="Text" positionX="-63" positionY="-18" width="128" height="360"/>
     </elements>
 </model>

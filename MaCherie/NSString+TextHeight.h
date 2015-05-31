@@ -12,5 +12,6 @@
 @interface NSString (TextHeight)
 
 -(CGFloat)heightForTextWithdWidth:(CGFloat)theWidth andFont:(UIFont*)theFont;
+-(NSString*)lastSeperatedComponentWithSeparator:(NSString*)separator;
 
 @end

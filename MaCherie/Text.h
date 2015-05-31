@@ -18,6 +18,7 @@
 @property (nonatomic, retain) NSString * abstract;
 @property (nonatomic, retain) NSDate * created;
 @property (nonatomic, retain) NSString * culture;
+@property (nonatomic, retain) NSString * imageUrl;
 @property (nonatomic, retain) NSString * impersonal;
 @property (nonatomic, retain) NSString * intentionId;
 @property (nonatomic, retain) NSString * intentionLabel;
@@ -25,6 +26,7 @@
 @property (nonatomic, retain) NSString * politeForm;
 @property (nonatomic, retain) NSString * prototypeId;
 @property (nonatomic, retain) NSString * proximity;
+@property (nonatomic, retain) NSString * referenceUrl;
 @property (nonatomic, retain) NSString * sender;
 @property (nonatomic, retain) NSNumber * sortBy;
 @property (nonatomic, retain) NSString * status;

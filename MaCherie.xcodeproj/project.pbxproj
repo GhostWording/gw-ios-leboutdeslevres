@@ -274,6 +274,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		881ECEBF1B1AA50200DACAEF /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				886B84C81AFA9BD4005152D6 /* UserDefaults.h */,
+				886B84C91AFA9BD4005152D6 /* UserDefaults.m */,
+				88B5FDBF1AFBF18600D596B2 /* ServerComm.h */,
+				88B5FDC01AFBF18600D596B2 /* ServerComm.m */,
+				88A228021AFE9C8500223685 /* DataManager.h */,
+				88A228031AFE9C8500223685 /* DataManager.m */,
+				8810D9F61B017C5F00095E27 /* NotificationManager.h */,
+				8810D9F71B017C5F00095E27 /* NotificationManager.m */,
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
 		882F5B8C1AF836F600B8A26E /* Subclasses */ = {
 			isa = PBXGroup;
 			children = (
@@ -311,17 +326,10 @@
 			children = (
 				888C18911B079A4B00FD8C91 /* TextFilter.h */,
 				888C18921B079A4B00FD8C91 /* TextFilter.m */,
+				881ECEBF1B1AA50200DACAEF /* Managers */,
 				888C188D1B077A6D00FD8C91 /* Middle Data Layer */,
 				888556871B05479700795DF9 /* Non Persistent Objects */,
 				88B5FDC51AFC430C00D596B2 /* Managed Objects And Model */,
-				886B84C81AFA9BD4005152D6 /* UserDefaults.h */,
-				886B84C91AFA9BD4005152D6 /* UserDefaults.m */,
-				88B5FDBF1AFBF18600D596B2 /* ServerComm.h */,
-				88B5FDC01AFBF18600D596B2 /* ServerComm.m */,
-				88A228021AFE9C8500223685 /* DataManager.h */,
-				88A228031AFE9C8500223685 /* DataManager.m */,
-				8810D9F61B017C5F00095E27 /* NotificationManager.h */,
-				8810D9F71B017C5F00095E27 /* NotificationManager.m */,
 			);
 			name = "Data Management Layer";
 			sourceTree = "<group>";
@@ -1025,7 +1033,7 @@
 				88E4141F1B16618800487698 /* DataModel 1.1.xcdatamodel */,
 				88B5FDC31AFBF87000D596B2 /* DataModel.xcdatamodel */,
 			);
-			currentVersion = 88B5FDC31AFBF87000D596B2 /* DataModel.xcdatamodel */;
+			currentVersion = 88E4141F1B16618800487698 /* DataModel 1.1.xcdatamodel */;
 			path = DataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

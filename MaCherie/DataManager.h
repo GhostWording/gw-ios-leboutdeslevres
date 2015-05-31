@@ -17,6 +17,7 @@
 
 -(NSArray*)randomTextsForGender:(NSString*)gender numTexts:(NSInteger)numTexts;
 -(NSArray*)randomImagesForNumberOfImages:(NSInteger)numImages;
+-(NSArray*)randomImagesWithSpecialImagesForTexts:(NSArray*)theTexts withNumImages:(NSInteger)numImages;
 
 -(NSInteger)numTexts;
 -(NSInteger)numImages;

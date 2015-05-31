@@ -166,6 +166,10 @@
     
 }
 
+-(NSArray*)theTexts {
+    return [model theTexts];
+}
+
 #pragma mark - Reload Data
 
 -(void)reloadData {

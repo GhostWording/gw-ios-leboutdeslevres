@@ -72,14 +72,18 @@
     return nil;
 }
 
+-(NSArray*)theTexts {
+    return texts;
+}
+
 -(BOOL)wantsFacebookShareForTextAtIndex:(int)index {
     
-    NSLog(@"wants facebook share");
+    //NSLog(@"wants facebook share");
     
     if (index < texts.count) {
         Text *text = [texts objectAtIndex:index];
         
-        NSLog(@"impersonal is: %@", text.impersonal);
+        //NSLog(@"impersonal is: %@", text.impersonal);
         if (![text.impersonal isEqualToString:@"false"]) {
             return YES;
         }
