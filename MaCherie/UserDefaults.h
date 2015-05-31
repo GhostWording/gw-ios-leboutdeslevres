@@ -25,6 +25,8 @@ typedef enum {
 
 @interface UserDefaults : NSObject
 
++(NSString*)userUniqueId;
+
 +(NSNumber*)firstLaunchOfApp;
 +(void)setFirstLaunchOfApp:(BOOL)firstLaunch;
 

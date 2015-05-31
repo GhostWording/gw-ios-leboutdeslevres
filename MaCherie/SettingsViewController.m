@@ -13,6 +13,7 @@
 #import "DefaultButton.h"
 #import "TimePicker.h"
 #import "GoogleAnalyticsCommunication.h"
+#import "CustomAnalytics.h"
 
 const float heightOffset = 20.0;
 
@@ -217,6 +218,13 @@ const float heightOffset = 20.0;
     // Dispose of any resources that can be recreated.
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [[GoogleAnalyticsCommunication sharedInstance] setScreenName:GA_SCREEN_SETTINGS];
+    [[CustomAnalytics sharedInstance] postActionWithType:@"init" actionLocation:GA_SCREEN_SETTINGS targetType:@"init" targetId:@"init" targetParameter:@""];
+}
+
 -(void)dismiss
 {
     //activityIndicatorView.hidden = NO;
@@ -226,6 +234,7 @@ const float heightOffset = 20.0;
         NSString *minute = [timePicker currentStringInComponent:2];
         NSString *time = [NSString stringWithFormat:@"%@:%@", hour, minute];
         [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_LABEL_USER_NOTIFICATION_TIME withLabel:time wtihValue:nil];
+        [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTiON_PICKER_SELECTION actionLocation:GA_SCREEN_SETTINGS targetType:@"Command" targetId:@"UserNotification" targetParameter:time];
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -239,7 +248,7 @@ const float heightOffset = 20.0;
     [UserDefaults setUserWantsNotification:sender.isOn];
     
     [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_ACTION_SWITCH_PRESSED withLabel:GA_LABEL_USER_WANTS_NOTIFICATION wtihValue:[NSNumber numberWithBool:sender.isOn]];
-    
+    [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_SETTINGS targetType:@"Command" targetId:@"UserWantsNotification" targetParameter:[NSString stringWithFormat:@"%d", sender.isOn]];
 }
 
 
@@ -258,22 +267,26 @@ const float heightOffset = 20.0;
         [UserDefaults setUserAgeSegment:[NSNumber numberWithInt:kAgeLessThan17]];
         
         [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_ACTION_BUTTON_PRESSED withLabel:GA_LABEL_AGE_LESS_18 wtihValue:nil];
+        [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_SETTINGS targetType:@"Command" targetId:@"UserAge" targetParameter:GA_LABEL_AGE_LESS_18];
         
     } else if(sender == between18And39Button) {
         [between18And39Button setSelected:YES];
         [UserDefaults setUserAgeSegment:[NSNumber numberWithInt:kAgeBetween18And39]];
         
         [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_ACTION_BUTTON_PRESSED withLabel:GA_LABEL_AGE_BETWEEN_18_40 wtihValue:nil];
+        [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_SETTINGS targetType:@"Command" targetId:@"UserAge" targetParameter:GA_LABEL_AGE_BETWEEN_18_40];
     } else if(sender == between40And64Button) {
         [between40And64Button setSelected:YES];
         [UserDefaults setUserAgeSegment:[NSNumber numberWithInt:kAgeBetween40And64]];
         
         [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_ACTION_BUTTON_PRESSED withLabel:GA_LABEL_AGE_BETWEEN_40_64 wtihValue:nil];
+        [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_SETTINGS targetType:@"Command" targetId:@"UserAge" targetParameter:GA_LABEL_AGE_BETWEEN_40_64];
     } else if(sender == over65Button) {
         [over65Button setSelected:YES];
         [UserDefaults setUserAgeSegment:[NSNumber numberWithInt:kAgeOver65]];
         
         [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_ACTION_BUTTON_PRESSED withLabel:GA_LABEL_AGE_OVER_65 wtihValue:nil];
+        [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_SETTINGS targetType:@"Command" targetId:@"UserAge" targetParameter:GA_LABEL_AGE_OVER_65];
     }
     
 }
@@ -288,6 +301,7 @@ const float heightOffset = 20.0;
         [UserDefaults setUserGender:[NSNumber numberWithInt:kGenderMale]];
         
         [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_ACTION_BUTTON_PRESSED withLabel:GA_LABEL_GENDER_MALE wtihValue:nil];
+        [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_SETTINGS targetType:@"Command" targetId:@"UserGender" targetParameter:@"H"];
         
     }
 }
@@ -299,6 +313,7 @@ const float heightOffset = 20.0;
         [UserDefaults setUserGender:[NSNumber numberWithInt:kGenderFemale]];
         
         [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_ACTION_BUTTON_PRESSED withLabel:GA_LABEL_GENDER_FEMALE wtihValue:nil];
+        [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_SETTINGS targetType:@"Command" targetId:@"UserGender" targetParameter:@"F"];
     }
 }
 

@@ -7,6 +7,7 @@
 //
 
 #import "UserDefaults.h"
+#import "NSString+RandomString.h"
 
 @implementation UserDefaults
 
@@ -26,6 +27,14 @@
     }
     
     return self;
+}
+
++(NSString*)userUniqueId {
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"uniqueId"] == nil) {
+        return [NSString generateRandStringWithLength:8];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"uniqueId"];
 }
 
 +(NSNumber*)firstLaunchOfApp {

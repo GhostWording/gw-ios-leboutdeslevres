@@ -25,6 +25,7 @@
 #import "TimeOutManager.h"
 #import "NavigationSlideAnimator.h"
 #import "GoogleAnalyticsCommunication.h"
+#import "CustomAnalytics.h"
 
 const float bottomHeight = 60.0f;
 const int numberOfImagesToLoad = 10;
@@ -249,6 +250,9 @@ const int numberOfTextsToLoad = 10;
     
     NSLog(@"View will appear");
     
+    [[GoogleAnalyticsCommunication sharedInstance] setScreenName:GA_SCREEN_MAIN];
+    [[CustomAnalytics sharedInstance] postActionWithType:@"init" actionLocation:GA_SCREEN_MAIN targetType:@"init" targetId:@"init" targetParameter:@""];
+    
     [[TimeOutManager shareTimeOutManager] startTime];
     [self updateViewData];
 }
@@ -471,12 +475,18 @@ const int numberOfTextsToLoad = 10;
                 [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_TEXT_SENT withAction:GA_ACTION_BUTTON_PRESSED withLabel:selectedTextId wtihValue:nil];
                 [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_IMAGE_SENT withAction:GA_ACTION_BUTTON_PRESSED withLabel:selectedImageId wtihValue:nil];
                 
+                [[CustomAnalytics sharedInstance] postActionWithType:@"Send" actionLocation:GA_SCREEN_MAIN targetType:@"Text" targetId:selectedTextId targetParameter:@""];
+                [[CustomAnalytics sharedInstance] postActionWithType:@"Send" actionLocation:GA_SCREEN_MAIN targetType:@"Image" targetId:selectedImageId targetParameter:@""];
+                
             }
             else if([sender isEqual:editedTextSendButton]) {
                 selectedText = textView.text;
                 
                 [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_TEXT_EDIT withAction:GA_ACTION_BUTTON_PRESSED withLabel:selectedTextId wtihValue:nil];
                 [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_IMAGE_EDIT withAction:GA_ACTION_BUTTON_PRESSED withLabel:selectedImageId wtihValue:nil];
+                
+                [[CustomAnalytics sharedInstance] postActionWithType:@"EditedSend" actionLocation:GA_SCREEN_MAIN targetType:@"Text" targetId:selectedTextId targetParameter:@""];
+                [[CustomAnalytics sharedInstance] postActionWithType:@"EditedSend" actionLocation:GA_SCREEN_MAIN targetType:@"Image" targetId:selectedImageId targetParameter:@""];
             }
             
             UIImage *snapshotImage = [self createImageWithText:selectedText];
@@ -508,8 +518,12 @@ const int numberOfTextsToLoad = 10;
     
     NSString *selectedTextId = [theTextPagedView selectedTextId];
     NSString *selectedImageId = [theImagePagedView selectedImageId];
+    
     [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_TEXT_SHARE withAction:GA_ACTION_BUTTON_PRESSED withLabel:selectedTextId wtihValue:nil];
     [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_IMAGE_SHARE withAction:GA_ACTION_BUTTON_PRESSED withLabel:selectedImageId wtihValue:nil];
+    
+    [[CustomAnalytics sharedInstance] postActionWithType:@"FacebookShare" actionLocation:GA_SCREEN_MAIN targetType:@"Text" targetId:selectedTextId targetParameter:@""];
+    [[CustomAnalytics sharedInstance] postActionWithType:@"FacebookShare" actionLocation:GA_SCREEN_MAIN targetType:@"Image" targetId:selectedImageId targetParameter:@""];
     
     [FBSDKShareDialog showFromViewController:self withContent:photoContent delegate:nil];
     

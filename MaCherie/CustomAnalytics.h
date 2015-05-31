@@ -12,4 +12,7 @@
 
 +(instancetype)sharedInstance;
 
+-(void)postActionWithType:(NSString*)actionType actionLocation:(NSString*)actionLocation targetType:(NSString*)targetType targetId:(NSString*)targetId targetParameter:(NSString*)targetParameter;
+
+
 @end

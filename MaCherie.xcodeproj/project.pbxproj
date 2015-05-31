@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8810D9F81B017C5F00095E27 /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8810D9F71B017C5F00095E27 /* NotificationManager.m */; };
 		881ECEBB1B1A827C00DACAEF /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 881ECEBA1B1A827C00DACAEF /* libGoogleAnalyticsServices.a */; };
+		881ECEBE1B1A9F8200DACAEF /* NSString+RandomString.m in Sources */ = {isa = PBXBuildFile; fileRef = 881ECEBD1B1A9F8200DACAEF /* NSString+RandomString.m */; };
 		882F5B8F1AF8372400B8A26E /* DefaultButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 882F5B8E1AF8372400B8A26E /* DefaultButton.m */; };
 		882F5B981AF8436000B8A26E /* femaleGender@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 882F5B901AF8436000B8A26E /* femaleGender@2x.png */; };
 		882F5B991AF8436000B8A26E /* femaleGender@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 882F5B911AF8436000B8A26E /* femaleGender@3x.png */; };
@@ -117,6 +118,8 @@
 		8810D9F61B017C5F00095E27 /* NotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationManager.h; sourceTree = "<group>"; };
 		8810D9F71B017C5F00095E27 /* NotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationManager.m; sourceTree = "<group>"; };
 		881ECEBA1B1A827C00DACAEF /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalyticsServices.a; path = MaCherie/libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
+		881ECEBC1B1A9F8200DACAEF /* NSString+RandomString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+RandomString.h"; sourceTree = "<group>"; };
+		881ECEBD1B1A9F8200DACAEF /* NSString+RandomString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+RandomString.m"; sourceTree = "<group>"; };
 		882F5B8D1AF8372400B8A26E /* DefaultButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultButton.h; sourceTree = "<group>"; };
 		882F5B8E1AF8372400B8A26E /* DefaultButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultButton.m; sourceTree = "<group>"; };
 		882F5B901AF8436000B8A26E /* femaleGender@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "femaleGender@2x.png"; sourceTree = "<group>"; };
@@ -470,6 +473,8 @@
 				885047CE1AF9803D00B7293A /* UIView+RenderViewToImage.m */,
 				885047D01AF981AC00B7293A /* NSString+TextHeight.h */,
 				885047D11AF981AC00B7293A /* NSString+TextHeight.m */,
+				881ECEBC1B1A9F8200DACAEF /* NSString+RandomString.h */,
+				881ECEBD1B1A9F8200DACAEF /* NSString+RandomString.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -477,10 +482,10 @@
 		888EB4E91AF6748900C99587 /* View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				88A228051AFED35A00223685 /* Controls */,
 				88A768001B09896F00D3B7CE /* TimeOutManager.h */,
 				88A768011B09896F00D3B7CE /* TimeOutManager.m */,
 				888C18891B06C79B00FD8C91 /* View Controller */,
-				88A228051AFED35A00223685 /* Controls */,
 				888EB4EA1AF674C100C99587 /* SettingsViewController.h */,
 				888EB4EB1AF674C100C99587 /* SettingsViewController.m */,
 				882F5BA01AF9438F00B8A26E /* TimePicker.h */,
@@ -735,6 +740,7 @@
 				882F5B8F1AF8372400B8A26E /* DefaultButton.m in Sources */,
 				888EB4EC1AF674C100C99587 /* SettingsViewController.m in Sources */,
 				88CC383B1AF6C52300DCECD8 /* UIFont+ArialAndHelveticaNeue.m in Sources */,
+				881ECEBE1B1A9F8200DACAEF /* NSString+RandomString.m in Sources */,
 				8882C2C61B1A317000B0DA0D /* GoogleAnalyticsCommunication.m in Sources */,
 				888C18931B079A4B00FD8C91 /* TextFilter.m in Sources */,
 				88B9E8CE1AFFE41F00B1213A /* ImageScrollViewModel.m in Sources */,
