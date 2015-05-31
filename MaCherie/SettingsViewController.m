@@ -12,6 +12,7 @@
 #import "UIFont+ArialAndHelveticaNeue.h"
 #import "DefaultButton.h"
 #import "TimePicker.h"
+#import "GoogleAnalyticsCommunication.h"
 
 const float heightOffset = 20.0;
 
@@ -29,6 +30,10 @@ const float heightOffset = 20.0;
     
     // Add UIScrollView for iPhone 4 devices
     UIScrollView *scrollView;
+    
+    UIActivityIndicatorView *activityIndicator;
+    UIView *activityIndicatorView;
+    TimePicker *timePicker;
 }
 
 @end
@@ -38,7 +43,7 @@ const float heightOffset = 20.0;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Do any additional setup after loading the view.
+    
     UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     closeButton.frame = CGRectMake(CGRectGetWidth(self.view.frame) - 32, heightOffset + 12, 18, 18);
     [closeButton setImage:[UIImage imageNamed:@"cancel.png"] forState:UIControlStateNormal];
@@ -57,7 +62,7 @@ const float heightOffset = 20.0;
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame) - CGRectGetMinX(closeButton.frame), heightOffset + 10, CGRectGetWidth(self.view.frame) - 2*(CGRectGetWidth(self.view.frame) - CGRectGetMinX(closeButton.frame)), 22)];
     title.text = @"Mon profil";
     title.textAlignment = NSTextAlignmentCenter;
-    title.font = [UIFont helveticaNeueMediumWitihSize:17.0f];
+    title.font = [UIFont helveticaNeueBoldWithSize:17.0f];
     title.textColor = [UIColor appBlueColor];
     [self.view addSubview:title];
     
@@ -73,31 +78,32 @@ const float heightOffset = 20.0;
     UILabel *genderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 + 15, CGRectGetWidth(self.view.frame), 20)];
     genderLabel.text = @"Je suis";
     genderLabel.textAlignment = NSTextAlignmentCenter;
+    genderLabel.font = [UIFont helveticaNeueBoldWithSize:16.0f];
     genderLabel.textColor = [UIColor appBlueColor];
     [scrollView addSubview:genderLabel];
     
-    maleButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) - 90, CGRectGetMaxY(genderLabel.frame) + 15, 60, 60)];
+    maleButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) - 90, CGRectGetMaxY(genderLabel.frame) + 20, 60, 60)];
     [maleButton setImage:[UIImage imageNamed:@"maleGender.png"] forState:UIControlStateNormal];
     [maleButton setImage:[UIImage imageNamed:@"maleGenderSelected.png"] forState:UIControlStateSelected];
     [maleButton setImage:[UIImage imageNamed:@"maleGenderSelected.png"] forState:UIControlStateHighlighted];
     [maleButton addTarget:self action:@selector(maleButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:maleButton];
     
-    femaleButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) + 40, CGRectGetMaxY(genderLabel.frame) + 15, 60, 60)];
+    femaleButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) + 40, CGRectGetMaxY(genderLabel.frame) + 20, 60, 60)];
     [femaleButton setImage:[UIImage imageNamed:@"femaleGender.png"] forState:UIControlStateNormal];
     [femaleButton setImage:[UIImage imageNamed:@"femaleGenderSelected.png"] forState:UIControlStateHighlighted];
     [femaleButton setImage:[UIImage imageNamed:@"femaleGenderSelected.png"] forState:UIControlStateSelected];
     [femaleButton addTarget:self action:@selector(femaleButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:femaleButton];
     
-    UILabel *maleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) - 94, CGRectGetMaxY(maleButton.frame) + 7, 70, 20)];
-    maleLabel.text = @"Homme";
+    UILabel *maleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) - 114, CGRectGetMaxY(maleButton.frame) + 7, 100, 20)];
+    maleLabel.text = @"un homme";
     maleLabel.textAlignment = NSTextAlignmentCenter;
     maleLabel.textColor = [UIColor appBlueColor];
     [scrollView addSubview:maleLabel];
     
-    UILabel *femaleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) + 36, CGRectGetMaxY(femaleButton.frame) + 7, 70, 20)];
-    femaleLabel.text = @"Femme";
+    UILabel *femaleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) + 22, CGRectGetMaxY(femaleButton.frame) + 7, 100, 20)];
+    femaleLabel.text = @"une femme";
     femaleLabel.textAlignment = NSTextAlignmentCenter;
     femaleLabel.textColor = [UIColor appBlueColor];
     [scrollView addSubview:femaleLabel];
@@ -110,9 +116,10 @@ const float heightOffset = 20.0;
     }
     
     
-    UILabel *ageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(femaleLabel.frame) + 20, CGRectGetWidth(self.view.frame), 20)];
-    ageLabel.text = @"Age";
+    UILabel *ageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(femaleLabel.frame) + 25, CGRectGetWidth(self.view.frame), 20)];
+    ageLabel.text = @"Mon âge";
     ageLabel.textAlignment = NSTextAlignmentCenter;
+    ageLabel.font = [UIFont helveticaNeueBoldWithSize:16.0f];
     ageLabel.textColor = [UIColor appBlueColor];
     [scrollView addSubview:ageLabel];
     
@@ -150,13 +157,14 @@ const float heightOffset = 20.0;
     
     
     UILabel *notificationLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(over65Button.frame) + 25, CGRectGetWidth(self.view.frame), 20)];
-    notificationLabel.text = @"Notifications";
+    notificationLabel.text = @"Recevoir les rappels";
     notificationLabel.textAlignment = NSTextAlignmentCenter;
+    notificationLabel.font = [UIFont helveticaNeueBoldWithSize:16.0f];
     notificationLabel.textColor = [UIColor appBlueColor];
     [scrollView addSubview:notificationLabel];
     
     UISwitch *notificationSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-    notificationSwitch.center = CGPointMake(CGRectGetMidX(self.view.frame), CGRectGetMaxY(notificationLabel.frame) + CGRectGetHeight(notificationSwitch.frame)*0.5 + 15);
+    notificationSwitch.center = CGPointMake(CGRectGetMidX(self.view.frame), CGRectGetMaxY(notificationLabel.frame) + CGRectGetHeight(notificationSwitch.frame)*0.5 + 25);
     notificationSwitch.onTintColor = [UIColor appBlueColor];
     [notificationSwitch addTarget:self action:@selector(wantsLocalNotification:) forControlEvents:UIControlEventValueChanged];
     [scrollView addSubview:notificationSwitch];
@@ -169,13 +177,14 @@ const float heightOffset = 20.0;
     
     
     UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(notificationSwitch.frame) + 25, CGRectGetWidth(self.view.frame), 20)];
-    dateLabel.text = @"Notification time";
+    dateLabel.text = @"Heure des rappels";
     dateLabel.textAlignment = NSTextAlignmentCenter;
+    dateLabel.font = [UIFont helveticaNeueBoldWithSize:16.0f];
     dateLabel.textColor = [UIColor appBlueColor];
     [scrollView addSubview:dateLabel];
     
     
-    TimePicker *timePicker = [[TimePicker alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(dateLabel.frame), CGRectGetWidth(self.view.frame), 80)];
+    timePicker = [[TimePicker alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(dateLabel.frame) + 10, CGRectGetWidth(self.view.frame), 80)];
     [scrollView addSubview:timePicker];
     
     if ([UserDefaults firstLaunchOfApp] != nil) {
@@ -184,15 +193,22 @@ const float heightOffset = 20.0;
         [timePicker setHour:hours andMinute:minutes];
     }
     
-    [scrollView setContentSize:CGSizeMake(CGRectGetWidth(self.view.frame), CGRectGetMaxY(timePicker.frame) + 50)];
+    [scrollView setContentSize:CGSizeMake(CGRectGetWidth(self.view.frame), CGRectGetMaxY(timePicker.frame) + 70)];
     
-    /*
-    UIDatePicker *datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(dateLabel.frame) + 10, CGRectGetWidth(self.view.frame), 200)];
-    datePicker.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"NL"];
-    [datePicker setDatePickerMode:UIDatePickerModeTime];
     
-    [self.view addSubview:datePicker];
-     */
+    // Do any additional setup after loading the view.
+    activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    activityIndicator.frame = CGRectMake(0, 0, 80, 80);
+    //activityIndicator.center = CGPointMake(CGRectGetMidX(self.view.frame), CGRectGetMidY(self.view.frame));
+    [activityIndicator startAnimating];
+    
+    activityIndicatorView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
+    activityIndicatorView.backgroundColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.75];
+    activityIndicatorView.layer.cornerRadius = 6.0f;
+    activityIndicatorView.center = CGPointMake(CGRectGetMidX(self.view.frame), CGRectGetMidY(self.view.frame));
+    [activityIndicatorView addSubview:activityIndicator];
+    activityIndicatorView.hidden = YES;
+    [self.view addSubview:activityIndicatorView];
      
 }
 
@@ -203,6 +219,15 @@ const float heightOffset = 20.0;
 
 -(void)dismiss
 {
+    //activityIndicatorView.hidden = NO;
+    
+    if (timePicker.hasChanged) {
+        NSString *hour = [timePicker currentStringInComponent:0];
+        NSString *minute = [timePicker currentStringInComponent:2];
+        NSString *time = [NSString stringWithFormat:@"%@:%@", hour, minute];
+        [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_LABEL_USER_NOTIFICATION_TIME withLabel:time wtihValue:nil];
+    }
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -212,6 +237,8 @@ const float heightOffset = 20.0;
 -(void)wantsLocalNotification:(UISwitch*)sender {
     
     [UserDefaults setUserWantsNotification:sender.isOn];
+    
+    [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_ACTION_SWITCH_PRESSED withLabel:GA_LABEL_USER_WANTS_NOTIFICATION wtihValue:[NSNumber numberWithBool:sender.isOn]];
     
 }
 
@@ -229,15 +256,24 @@ const float heightOffset = 20.0;
     if (sender == lessThan17Button) {
         [lessThan17Button setSelected:YES];
         [UserDefaults setUserAgeSegment:[NSNumber numberWithInt:kAgeLessThan17]];
+        
+        [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_ACTION_BUTTON_PRESSED withLabel:GA_LABEL_AGE_LESS_18 wtihValue:nil];
+        
     } else if(sender == between18And39Button) {
         [between18And39Button setSelected:YES];
         [UserDefaults setUserAgeSegment:[NSNumber numberWithInt:kAgeBetween18And39]];
+        
+        [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_ACTION_BUTTON_PRESSED withLabel:GA_LABEL_AGE_BETWEEN_18_40 wtihValue:nil];
     } else if(sender == between40And64Button) {
         [between40And64Button setSelected:YES];
         [UserDefaults setUserAgeSegment:[NSNumber numberWithInt:kAgeBetween40And64]];
+        
+        [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_ACTION_BUTTON_PRESSED withLabel:GA_LABEL_AGE_BETWEEN_40_64 wtihValue:nil];
     } else if(sender == over65Button) {
         [over65Button setSelected:YES];
         [UserDefaults setUserAgeSegment:[NSNumber numberWithInt:kAgeOver65]];
+        
+        [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_ACTION_BUTTON_PRESSED withLabel:GA_LABEL_AGE_OVER_65 wtihValue:nil];
     }
     
 }
@@ -251,6 +287,8 @@ const float heightOffset = 20.0;
         [femaleButton setSelected:NO];
         [UserDefaults setUserGender:[NSNumber numberWithInt:kGenderMale]];
         
+        [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_ACTION_BUTTON_PRESSED withLabel:GA_LABEL_GENDER_MALE wtihValue:nil];
+        
     }
 }
 
@@ -259,6 +297,8 @@ const float heightOffset = 20.0;
         [sender setSelected:YES];
         [maleButton setSelected:NO];
         [UserDefaults setUserGender:[NSNumber numberWithInt:kGenderFemale]];
+        
+        [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_ACTION_BUTTON_PRESSED withLabel:GA_LABEL_GENDER_FEMALE wtihValue:nil];
     }
 }
 

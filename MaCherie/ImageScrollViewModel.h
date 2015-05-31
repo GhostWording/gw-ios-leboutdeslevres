@@ -14,7 +14,9 @@
 // takes in an array of Image objects
 -(id)initWithArray:(NSArray*)array;
 
+-(void)updateModelWithArray:(NSArray*)array;
 -(NSInteger)numberOfImages;
 -(UIImage*)imageAtIndex:(NSInteger)index;
+-(NSString*)imageNameAtIndex:(NSInteger)index;
 
 @end

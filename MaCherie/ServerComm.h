@@ -14,8 +14,7 @@
 -(void)downloadTexts;
 -(void)downloadTextsWithCompletion:(void (^)(BOOL finished, NSError *error))block;
 
-// Not implemented yet
--(void)downloadImagesWithCompletion:(void (^)(BOOL finished, NSError *error))block;
+
 -(void)downloadNumImages:(int)numImages withCompletion:(void (^)(BOOL finished, NSError *error))block;
 
 @end

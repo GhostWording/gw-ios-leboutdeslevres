@@ -36,5 +36,6 @@
 +(instancetype)intentionThereIsSomethingMissing;
 +(instancetype)intentionSurpriseMe;
 +(instancetype)intentionIWantYou;
++(instancetype)intentionILikeYou;
 
 @end

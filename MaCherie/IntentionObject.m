@@ -30,7 +30,7 @@
 }
 
 +(instancetype)intentionJoke {
-    return [[[self class] alloc] initWithIntentionSlug:@"jokes" andLabel:@"Joke of the day" andDefaultWeight:0.2f andUserWeight:1];
+    return [[[self class] alloc] initWithIntentionSlug:@"jokes" andLabel:@"Joke of the day" andDefaultWeight:0.4f andUserWeight:1];
 }
 
 +(instancetype)intentionAFewWordsForYou {
@@ -38,11 +38,11 @@
 }
 
 +(instancetype)intentionFacebookStatus {
-    return [[[self class] alloc] initWithIntentionSlug:@"facebook-status" andLabel:@"Thought of the day" andDefaultWeight:0.1f andUserWeight:1];
+    return [[[self class] alloc] initWithIntentionSlug:@"facebook-status" andLabel:@"Thought of the day" andDefaultWeight:0.3f andUserWeight:1];
 }
 
 +(instancetype)intentionPositiveThoughts {
-    return [[[self class] alloc] initWithIntentionSlug:@"positive-thoughts" andLabel:@"Thought of the day" andDefaultWeight:0.3f andUserWeight:1];
+    return [[[self class] alloc] initWithIntentionSlug:@"positive-thoughts" andLabel:@"Thought of the day" andDefaultWeight:0.5f andUserWeight:1];
 }
 
 +(instancetype)intentionIThinkOfYou {
@@ -62,15 +62,19 @@
 }
 
 +(instancetype)intentionThereIsSomethingMissing {
-    return [[[self class] alloc] initWithIntentionSlug:@"there-is-something-missing" andLabel:@"There is something missing" andDefaultWeight:0.2f andUserWeight:1];
+    return [[[self class] alloc] initWithIntentionSlug:@"there-is-something-missing" andLabel:@"There is something missing" andDefaultWeight:0.3f andUserWeight:1];
 }
 
 +(instancetype)intentionSurpriseMe {
-    return [[[self class] alloc] initWithIntentionSlug:@"surprise-me" andLabel:@"Surprise me" andDefaultWeight:0.3f andUserWeight:1];
+    return [[[self class] alloc] initWithIntentionSlug:@"surprise-me" andLabel:@"Surprise me" andDefaultWeight:0.4f andUserWeight:1];
 }
 
 +(instancetype)intentionIWantYou {
-    return [[[self class] alloc] initWithIntentionSlug:@"I-want-you" andLabel:@"I want you" andDefaultWeight:0.8 andUserWeight:1];
+    return [[[self class] alloc] initWithIntentionSlug:@"I-want-you" andLabel:@"I want you" andDefaultWeight:0.5 andUserWeight:1];
+}
+
++(instancetype)intentionILikeYou {
+    return [[[self class] alloc] initWithIntentionSlug:@"I-like-you" andLabel:@"I like you" andDefaultWeight:1.0 andUserWeight:1];
 }
 
 @end

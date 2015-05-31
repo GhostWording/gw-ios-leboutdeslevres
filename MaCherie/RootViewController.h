@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <FBSDKShareKit/FBSDKShareKit.h>
 
 @interface RootViewController : UIViewController 
 

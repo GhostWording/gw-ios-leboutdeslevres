@@ -45,20 +45,53 @@
 #pragma mark - 
 #pragma mark Image Downloading
 
--(void)downloadImagesWithCompletion:(void (^)(BOOL, NSError *))block {
+
+-(void)downloadNumImages:(int)numImages withCompletion:(void (^)(BOOL finished, NSError *))block  {
     [block copy];
     
+    NSURL *url = [NSURL  URLWithString:@"http://gw-static.azurewebsites.net/container/files/cvd/sweetheart?size=small"];
     
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:@"fr-FR" forHTTPHeaderField:@"Accept-Language"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (!error) {
+            
+            __weak __block ServerComm *wekSelf = self;
+            
+            NSMutableArray *imagePaths = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            
+            NSManagedObjectContext *newContext = [[NSManagedObjectContext alloc] init];
+            [newContext setPersistentStoreCoordinator:persistentStore];
+            [newContext setMergePolicy:[[NSMergePolicy alloc] initWithMergeType:NSMergeByPropertyObjectTrumpMergePolicyType]];
+            
+            // fetch the images we stored
+            NSArray *imageArray = [newContext executeFetchRequest:[[NSFetchRequest alloc] initWithEntityName:@"Image"] error:nil];
+            NSLog(@"number of images: %lu", (unsigned long)imageArray.count);
+            
+            [self removeImagesInArray:imagePaths imageArray:imageArray];
+            
+            for (int i = 0; i < numImages; i++) {
+                [wekSelf downloadImagesWithURLArray:imagePaths andManagedContext:newContext];
+            }
+            
+        }
+    }];
     
 }
 
--(void)downloadNumImages:(int)numImages withCompletion:(void (^)(BOOL finished, NSError *))block {
+-(void)downloadNumImagesWithContainters:(int)numImages withCompletion:(void (^)(BOOL finished, NSError *))block {
     [block copy];
     
     NSLog(@"downloading images");
         
     //NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/container/cvd/sweetheart?size=small", IMAGE_PREFIX]];
     NSURL *url = [NSURL URLWithString:@"http://gw-static.azurewebsites.net/container/cvd/sweetheart/istockpairs?size=small"];
+    //NSURL *url = [NSURL  URLWithString:@"http://gw-static.azurewebsites.net/container/files/cvd/sweetheart?size=small"];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     
@@ -108,10 +141,11 @@
             
             NSManagedObjectContext *newContext = [[NSManagedObjectContext alloc] init];
             [newContext setPersistentStoreCoordinator:persistentStore];
+            [newContext setMergePolicy:[[NSMergePolicy alloc] initWithMergeType:NSMergeByPropertyObjectTrumpMergePolicyType]];
             
             // fetch the images we stored
             NSArray *imageArray = [newContext executeFetchRequest:[[NSFetchRequest alloc] initWithEntityName:@"Image"] error:nil];
-            NSLog(@"number of images: %d", imageArray.count);
+            NSLog(@"number of images: %lu", (unsigned long)imageArray.count);
 
             [self removeImagesInArray:imagePaths imageArray:imageArray];
             
@@ -196,6 +230,7 @@
             
             NSManagedObjectContext *newContext = [[NSManagedObjectContext alloc] init];
             [newContext setPersistentStoreCoordinator:persistentStore];
+            [newContext setMergePolicy:[[NSMergePolicy alloc] initWithMergeType:NSMergeByPropertyObjectTrumpMergePolicyType]];
             
             if (!error) {
                 NSMutableArray *jsonDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -214,7 +249,7 @@
                 [xSelf saveContextChanges:newContext];
                 
                 //NSLog(@"first object is: %@", [jsonDict objectAtIndex:0]);
-                NSLog(@"intention is: %@ with number of texts: %d", intentions, jsonDict.count);
+                NSLog(@"intention is: %@ with number of texts: %lu", intentions, (unsigned long)jsonDict.count);
                 
                 
                 [xSelf downloadTextsArray:array atIndex:index + 1];

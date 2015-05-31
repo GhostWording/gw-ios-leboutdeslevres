@@ -11,5 +11,11 @@
 @interface TimePicker : UIPickerView
 
 -(void)setHour:(int)hour andMinute:(int)minute;
+-(NSString*)currentStringInComponent:(NSInteger)component;
+
+// a value to indicate if the value of the picker has been changed
+// during the duration of its lifetime, if it hasn't been interacted
+// with it has not been changed
+-(BOOL)hasChanged;
 
 @end

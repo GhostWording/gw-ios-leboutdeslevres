@@ -14,7 +14,6 @@
 
 @interface RootViewModel () {
     DataManager *dataMan;
-    NSMutableArray *intentions;
 }
 
 @end
@@ -26,24 +25,36 @@
         
         dataMan = [[DataManager alloc] init];
         
-        intentions = [NSMutableArray array];
-        
-        [intentions addObject:[IntentionObject intentionJoke]];
-        [intentions addObject:[IntentionObject intentionAFewWordsForYou]];
-        [intentions addObject:[IntentionObject intentionFacebookStatus]];
-        [intentions addObject:[IntentionObject intentionPositiveThoughts]];
-        [intentions addObject:[IntentionObject intentionIThinkOfYou]];
-        [intentions addObject:[IntentionObject intentionILoveYou]];
-        [intentions addObject:[IntentionObject intentionIMissYou]];
-        [intentions addObject:[IntentionObject intentionThankYou]];
-        [intentions addObject:[IntentionObject intentionThereIsSomethingMissing]];
-        [intentions addObject:[IntentionObject intentionSurpriseMe]];
-        [intentions addObject:[IntentionObject intentionIWantYou]];
-        
     }
     
     return self;
 }
+
+-(NSMutableArray*)theIntentions {
+    NSMutableArray *tmpIntention = [NSMutableArray array];
+    
+    [tmpIntention addObject:[IntentionObject intentionJoke]];
+    [tmpIntention addObject:[IntentionObject intentionAFewWordsForYou]];
+    [tmpIntention addObject:[IntentionObject intentionFacebookStatus]];
+    [tmpIntention addObject:[IntentionObject intentionPositiveThoughts]];
+    [tmpIntention addObject:[IntentionObject intentionIThinkOfYou]];
+    [tmpIntention addObject:[IntentionObject intentionILoveYou]];
+    [tmpIntention addObject:[IntentionObject intentionIMissYou]];
+    [tmpIntention addObject:[IntentionObject intentionThankYou]];
+    [tmpIntention addObject:[IntentionObject intentionThereIsSomethingMissing]];
+    [tmpIntention addObject:[IntentionObject intentionSurpriseMe]];
+    [tmpIntention addObject:[IntentionObject intentionIWantYou]];
+    [tmpIntention addObject:[IntentionObject intentionILikeYou]];
+    return tmpIntention;
+}
+
+#pragma mark - Image Fetching 
+
+-(NSArray*)randomImagesWithNum:(int)numImages {
+    return [dataMan randomImagesForNumberOfImages:numImages];
+}
+
+#pragma mark - Text Filtering and Fetching
 
 -(NSArray*)randomtTextWithNum:(int)numTexts {
     
@@ -51,6 +62,8 @@
     NSArray *texts = [dataMan allTextsFilteredWithUserDefaults];
     
     NSLog(@"Adding texts");
+    
+    NSMutableArray *intentions = [self theIntentions];
     
     [self addTexts:texts toIntention:intentions];
     
@@ -62,19 +75,21 @@
     NSLog(@"computing texts to return");
     
     for (IntentionObject *intentionObj in intentions) {
-        NSLog(@"intention is: %@ with num texts: %d", intentionObj.intentionSlug, intentionObj.textsForIntention.count);
+        NSLog(@"intention is: %@ with num texts: %lu and weight: %f", intentionObj.intentionSlug, (unsigned long)intentionObj.textsForIntention.count, intentionObj.textsForIntention.count * intentionObj.defaultWeight * intentionObj.userWeight);
     }
     
     NSMutableArray *textsToReturn = [NSMutableArray array];
     
-    for (int i = 0; i < numTexts; i++) {
+    for (int i = 0; i < numTexts && texts.count != 0; i++) {
         
         IntentionObject *randomIntention = [self randomIntentionWithIntentions:intentions];
+        //TextObject *theText = [randomIntention.textsForIntention objectAtIndex:0];
+        //NSLog(@"The text is: %@", theText.text.content);
         TextObject *randomObject = [self chooseRandomTextForIntention:randomIntention];
         [textsToReturn addObject:randomObject.text];
         
     }
-    
+        
     return textsToReturn;
 }
 
@@ -133,7 +148,7 @@
     for (int i = 0; i < availableIntentions.count; i++) {
         IntentionObject *currentIntention = [availableIntentions objectAtIndex:i];
         totalWeight += currentIntention.textsForIntention.count * currentIntention.userWeight * currentIntention.defaultWeight;
-        NSLog(@"intention: %@ with weight: %f", currentIntention.intentionSlug, currentIntention.textsForIntention.count * currentIntention.userWeight * currentIntention.defaultWeight);
+        //NSLog(@"intention: %@ with weight: %f", currentIntention.intentionSlug, currentIntention.textsForIntention.count * currentIntention.userWeight * currentIntention.defaultWeight);
     }
     
     float randFloat = [self randomFloatBetween:0.0f and:totalWeight];

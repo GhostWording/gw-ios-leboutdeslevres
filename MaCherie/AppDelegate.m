@@ -10,8 +10,16 @@
 #import "ServerComm.h"
 #import "NotificationManager.h"
 #import "UserDefaults.h"
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
+#import <FacebookSDK/FacebookSDK.h>
+#import "RootViewController.h"
 
-@interface AppDelegate ()
+@interface AppDelegate () {
+    // bool for first time we launch the view
+    BOOL didFinishLaunching;
+    ServerComm *comm;
+}
 
 @end
 
@@ -21,11 +29,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    ServerComm *comm = [[ServerComm alloc] init];
-    [comm downloadTexts];
-    [comm downloadNumImages:10 withCompletion:^(BOOL finished, NSError *error) {
-        
-    }];
+    NSLog(@"did finish launching");
+    comm = [[ServerComm alloc] init];
+    
+    [Fabric with:@[CrashlyticsKit]];
     
     if ([application respondsToSelector:@selector(registerUserNotificationSettings:)])
     {
@@ -35,6 +42,13 @@
     
     // seed the random generator
     srand((unsigned int)time(NULL));
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    RootViewController *rootController = [storyboard instantiateViewControllerWithIdentifier:@"rootViewController"];
+    self.window.rootViewController = rootController;
+    
+    didFinishLaunching = YES;
     
     return YES;
 }
@@ -51,7 +65,7 @@
     NotificationManager *notifMan = [[NotificationManager alloc] init];
     [notifMan scheduleNotification:[UserDefaults notificationHour] andMinute:[UserDefaults notificationMinutes]];
     
-    NSLog(@"scheduled notification: %d", [[UIApplication sharedApplication] scheduledLocalNotifications].count);
+    NSLog(@"scheduled notification: %lu", (unsigned long)[[UIApplication sharedApplication] scheduledLocalNotifications].count);
     
 }
 
@@ -61,10 +75,41 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+
+    [comm downloadTexts];
+    [comm downloadNumImages:20 withCompletion:^(BOOL finished, NSError *error) {
+        if (finished) {
+            __weak typeof (self) wSelf = self;
+            [wSelf performSelector:@selector(downloadAdditionalImages) withObject:nil afterDelay:15.0];
+        }
+    }];
+    
+    // Call the 'activateApp' method to log an app event for use
+    // in analytics and advertising reporting.
+    [FBAppEvents activateApp];
+    
+    if (!didFinishLaunching) {
+        [self.window.rootViewController viewWillAppear:YES];
+    }
+    
+    didFinishLaunching = NO;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+
+#pragma mark - Download control
+
+-(void)downloadAdditionalImages {
+    [comm downloadNumImages:10 withCompletion:^(BOOL finished, NSError *error) {
+        if (finished) {
+            __weak typeof (self) wSelf = self;
+            [wSelf performSelector:@selector(downloadAdditionalImages) withObject:nil afterDelay:15.0];
+        }
+    }];
 }
 
 
@@ -121,18 +166,20 @@
 
 - (NSManagedObjectContext *)managedObjectContext {
    
-        // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.)
-        if (_managedObjectContext != nil) {
-            return _managedObjectContext;
-        }
-        
-        NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-        if (!coordinator) {
-            return nil;
-        }
-        _managedObjectContext = [[NSManagedObjectContext alloc] init];
-        [_managedObjectContext setPersistentStoreCoordinator:coordinator];
+    // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.)
+    if (_managedObjectContext != nil) {
         return _managedObjectContext;
+    }
+    
+    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+    if (!coordinator) {
+        return nil;
+    }
+    _managedObjectContext = [[NSManagedObjectContext alloc] init];
+    [_managedObjectContext setPersistentStoreCoordinator:coordinator];
+    [_managedObjectContext setMergePolicy:[[NSMergePolicy alloc] initWithMergeType:NSMergeByPropertyObjectTrumpMergePolicyType]];
+    
+    return _managedObjectContext;
     
 }
 

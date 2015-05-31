@@ -8,11 +8,25 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol ImageScrollViewDataSource;
+
+
 @interface ImageScrollView : UIControl
+
+@property (nonatomic, weak) id <ImageScrollViewDataSource> imageScrollViewDataSource;
 
 -(id)initWithFrame:(CGRect)frame andImages:(NSArray*)imageArray;
 
 -(UIImage*)selectedImage;
--(void)updateImages:(NSArray*)images;
+-(NSString*)selectedImageId;
+-(void)reloadData;
+-(void)reloadDataAnimated:(BOOL)animated;
+
+@end
+
+
+@protocol ImageScrollViewDataSource <NSObject>
+
+-(NSArray*)updateImageScrollViewImages;
 
 @end

@@ -25,7 +25,12 @@
     return self;
 }
 
+-(void)updateModelWithArray:(NSArray *)array {
+    images = [[NSMutableArray alloc] initWithArray:array];
+}
+
 -(NSInteger)numberOfImages {
+    NSLog(@"image count is: %lu", (unsigned long)images.count);
     return images.count;
 }
 
@@ -37,6 +42,19 @@
     
     Image *img = [images objectAtIndex:index];
     return [UIImage imageWithData:img.imageData];
+}
+
+-(NSString*)imageNameAtIndex:(NSInteger)index {
+    
+    Image *img = [images objectAtIndex:index];
+    
+    NSArray *separatedString = [img.imageId componentsSeparatedByString:@"/"];
+    
+    NSString *imageName = [separatedString objectAtIndex:separatedString.count - 1];
+    NSLog(@"the image name: %@", imageName);
+    
+    return imageName;
+    
 }
 
 @end

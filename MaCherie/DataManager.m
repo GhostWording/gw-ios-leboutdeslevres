@@ -68,7 +68,7 @@
     NSArray *allTexts = [context executeFetchRequest:[[NSFetchRequest alloc] initWithEntityName:@"Text"] error:nil];
     NSMutableArray *mutableTexts = [[NSMutableArray alloc] initWithArray:allTexts];
     
-    NSLog(@"all texts: %d", allTexts.count);
+    NSLog(@"all texts: %lu", (unsigned long)allTexts.count);
     
     if (gender == nil && allTexts != nil && mutableTexts.count != 0) {
         
@@ -95,10 +95,10 @@
     NSMutableArray *tmpRandomImages = [NSMutableArray array];
     
     if (mutableImageArray.count == 0) {
-        return nil;
+        return [NSArray array];
     }
     
-    for (int i = 0; i < numImages; i++) {
+    for (int i = 0; i < numImages && i < mutableImageArray.count; i++) {
         int randomPos = rand() % mutableImageArray.count;
         [tmpRandomImages addObject:[mutableImageArray objectAtIndex:randomPos]];
         [mutableImageArray removeObjectAtIndex:randomPos];

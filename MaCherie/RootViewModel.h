@@ -11,5 +11,6 @@
 @interface RootViewModel : NSObject
 
 -(NSArray*)randomtTextWithNum:(int)numTexts;
+-(NSArray*)randomImagesWithNum:(int)numImages;
 
 @end

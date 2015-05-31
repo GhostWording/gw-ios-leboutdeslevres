@@ -14,6 +14,9 @@
     NSMutableArray *hours;
     NSMutableArray *minutes;
     NSDateFormatter *formatter;
+    
+    int setHour;
+    int setMinute;
 }
 
 @end
@@ -64,8 +67,36 @@
 
 
 -(void)setHour:(int)hour andMinute:(int)minute {
+    setHour = hour; setMinute = minute;
     [self selectRow:hour inComponent:0 animated:YES];
     [self selectRow:minute inComponent:2 animated:YES];
+}
+
+-(NSString*)currentStringInComponent:(NSInteger)component {
+    
+    if (component == 0) {
+        if ([self selectedRowInComponent:0] < hours.count) {
+            return [hours objectAtIndex:[self selectedRowInComponent:0]];
+        }
+    }
+    else if(component == 1) {
+        return @":";
+    }
+    else if(component == 2) {
+        if ([self selectedRowInComponent:2]  < minutes.count) {
+            return [minutes objectAtIndex:[self selectedRowInComponent:2]];
+        }
+    }
+    
+    return @"";
+}
+
+-(BOOL)hasChanged {
+    if (setHour == [self selectedRowInComponent:0] && setMinute == [self selectedRowInComponent:2]) {
+        return NO;
+    }
+    
+    return YES;
 }
 
 #pragma mark - 

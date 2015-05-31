@@ -14,7 +14,11 @@
 // initializer for Text objects in an array
 -(id)initWithTextArray:(NSArray*)theTexts;
 
+-(void)updateTextScrollViewModel:(NSArray*)theTexts;
 -(NSInteger)numberOfTexts;
 -(NSString*)textContentAtIndex:(NSInteger)index;
+-(NSString*)textIdForTextAtIndex:(NSInteger)index;
+-(BOOL)wantsFacebookShareForTextAtIndex:(int)index;
+-(Text*)textObjectAtIndex:(NSInteger)index;
 
 @end
