@@ -14,6 +14,8 @@
 #import <Crashlytics/Crashlytics.h>
 #import <FacebookSDK/FacebookSDK.h>
 #import "RootViewController.h"
+#import "GoogleAnalyticsCommunication.h"
+#import "CustomAnalytics.h"
 
 @interface AppDelegate () {
     // bool for first time we launch the view
@@ -76,6 +78,8 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
+    [[CustomAnalytics sharedInstance] postActionWithType:@"AppFocus" actionLocation:@"AppLaunch" targetType:@"" targetId:@"" targetParameter:@""];
+    [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_APP_EVENT withAction:@"AppLaunch" withLabel:@"AppFocus" wtihValue:nil];
 
     [comm downloadTexts];
     [comm downloadNumImages:20 withCompletion:^(BOOL finished, NSError *error) {
@@ -110,8 +114,10 @@
     [comm downloadNumImages:10 withCompletion:^(BOOL finished, NSError *error) {
         if (finished) {
             NSLog(@"downloading extra images");
-            __weak typeof (self) wSelf = self;
-            [wSelf performSelector:@selector(downloadAdditionalImages) withObject:nil afterDelay:20.0];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                __weak typeof (self) wSelf = self;
+                [wSelf performSelector:@selector(downloadAdditionalImages) withObject:nil afterDelay:20.0];
+            });
         }
     }];
 }

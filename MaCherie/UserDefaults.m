@@ -31,7 +31,9 @@
 
 +(NSString*)userUniqueId {
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"uniqueId"] == nil) {
-        return [NSString generateRandStringWithLength:8];
+        
+        NSLog(@"user unique id");
+        [[NSUserDefaults standardUserDefaults] setValue:[NSString generateRandStringWithLength:8] forKey:@"uniqueId"];
     }
     
     return [[NSUserDefaults standardUserDefaults] valueForKey:@"uniqueId"];

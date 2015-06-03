@@ -321,6 +321,42 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		8852FCC51B1FB564002A6D28 /* iPhone UI */ = {
+			isa = PBXGroup;
+			children = (
+				88A228051AFED35A00223685 /* Controls */,
+				88B9E8C81AFFE2CE00B1213A /* ImageScrollView */,
+				88B9E8CC1AFFE41F00B1213A /* ImageScrollViewModel.h */,
+				88B9E8CD1AFFE41F00B1213A /* ImageScrollViewModel.m */,
+				88B9E8C91AFFE30800B1213A /* ImageScrollView.h */,
+				88B9E8CA1AFFE30800B1213A /* ImageScrollView.m */,
+				88A228091AFED8C800223685 /* Text Scroll View */,
+				88A2280A1AFED8DD00223685 /* TextScrollViewModel.h */,
+				88A2280B1AFED8DD00223685 /* TextScrollViewModel.m */,
+				88A228061AFED66B00223685 /* TextScrollView.h */,
+				88A228071AFED66B00223685 /* TextScrollView.m */,
+				88A768001B09896F00D3B7CE /* TimeOutManager.h */,
+				88A768011B09896F00D3B7CE /* TimeOutManager.m */,
+				888C18891B06C79B00FD8C91 /* View Controller */,
+				888C188A1B06C80800FD8C91 /* RootViewModel.h */,
+				888C188B1B06C80800FD8C91 /* RootViewModel.m */,
+				888EB4C01AF6676300C99587 /* RootViewController.h */,
+				888EB4C11AF6676300C99587 /* RootViewController.m */,
+				888EB4EA1AF674C100C99587 /* SettingsViewController.h */,
+				888EB4EB1AF674C100C99587 /* SettingsViewController.m */,
+				882F5BA01AF9438F00B8A26E /* TimePicker.h */,
+				882F5BA11AF9438F00B8A26E /* TimePicker.m */,
+			);
+			name = "iPhone UI";
+			sourceTree = "<group>";
+		};
+		8852FCC61B1FB56B002A6D28 /* iPad UI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "iPad UI";
+			sourceTree = "<group>";
+		};
 		886B84C71AFA9BAC005152D6 /* Data Management Layer */ = {
 			isa = PBXGroup;
 			children = (
@@ -384,10 +420,6 @@
 		888C18891B06C79B00FD8C91 /* View Controller */ = {
 			isa = PBXGroup;
 			children = (
-				888C188A1B06C80800FD8C91 /* RootViewModel.h */,
-				888C188B1B06C80800FD8C91 /* RootViewModel.m */,
-				888EB4C01AF6676300C99587 /* RootViewController.h */,
-				888EB4C11AF6676300C99587 /* RootViewController.m */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -490,14 +522,8 @@
 		888EB4E91AF6748900C99587 /* View Controller */ = {
 			isa = PBXGroup;
 			children = (
-				88A228051AFED35A00223685 /* Controls */,
-				88A768001B09896F00D3B7CE /* TimeOutManager.h */,
-				88A768011B09896F00D3B7CE /* TimeOutManager.m */,
-				888C18891B06C79B00FD8C91 /* View Controller */,
-				888EB4EA1AF674C100C99587 /* SettingsViewController.h */,
-				888EB4EB1AF674C100C99587 /* SettingsViewController.m */,
-				882F5BA01AF9438F00B8A26E /* TimePicker.h */,
-				882F5BA11AF9438F00B8A26E /* TimePicker.m */,
+				8852FCC61B1FB56B002A6D28 /* iPad UI */,
+				8852FCC51B1FB564002A6D28 /* iPhone UI */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -540,8 +566,6 @@
 		88A228051AFED35A00223685 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
-				88B9E8C81AFFE2CE00B1213A /* ImageScrollView */,
-				88A228091AFED8C800223685 /* Text Scroll View */,
 			);
 			name = Controls;
 			sourceTree = "<group>";
@@ -549,10 +573,6 @@
 		88A228091AFED8C800223685 /* Text Scroll View */ = {
 			isa = PBXGroup;
 			children = (
-				88A2280A1AFED8DD00223685 /* TextScrollViewModel.h */,
-				88A2280B1AFED8DD00223685 /* TextScrollViewModel.m */,
-				88A228061AFED66B00223685 /* TextScrollView.h */,
-				88A228071AFED66B00223685 /* TextScrollView.m */,
 			);
 			name = "Text Scroll View";
 			sourceTree = "<group>";
@@ -574,10 +594,6 @@
 		88B9E8C81AFFE2CE00B1213A /* ImageScrollView */ = {
 			isa = PBXGroup;
 			children = (
-				88B9E8CC1AFFE41F00B1213A /* ImageScrollViewModel.h */,
-				88B9E8CD1AFFE41F00B1213A /* ImageScrollViewModel.m */,
-				88B9E8C91AFFE30800B1213A /* ImageScrollView.h */,
-				88B9E8CA1AFFE30800B1213A /* ImageScrollView.m */,
 			);
 			name = ImageScrollView;
 			sourceTree = "<group>";
@@ -925,6 +941,7 @@
 					"$(PROJECT_DIR)/MaCherie",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -953,6 +970,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "8e4d7fb8-3e28-49a3-9ed3-0b08da99b854";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

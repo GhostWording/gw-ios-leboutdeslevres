@@ -23,12 +23,16 @@
 #define GA_CATEGORY_IMAGE_SENT @"ImageIdSent"
 #define GA_CATEGORY_TEXT_SHARE @"TextIdFacebookShare"
 #define GA_CATEGORY_IMAGE_SHARE @"ImageIdFacebookShare"
+#define GA_CATEGORY_IMAGE_INTERACTION @"ImageInteraction"
+#define GA_CATEGORY_TEXT_INTERACTION @"TextInteraction"
+#define GA_CATEGORY_APP_EVENT @"AppEvent"
 
 // GOOGLE ANALYTCS ACTIONS //
 
 #define GA_ACTION_BUTTON_PRESSED @"ButtonPressed"
 #define GA_ACTiON_PICKER_SELECTION @"PickerSelection"
 #define GA_ACTION_SWITCH_PRESSED @"SwitchPressed"
+#define GA_ACTION_SCROLLING @"ScrollAction"
 
 // GOOGLE ANALYTICS LABELS //
 
@@ -42,5 +46,8 @@
 
 #define GA_LABEL_USER_WANTS_NOTIFICATION @"UserWantsNotification"
 #define GA_LABEL_USER_NOTIFICATION_TIME @"UserNotificationTime"
+
+#define GA_LABEL_IMAGE_SWIPE @"ImageSwipe"
+#define GA_LABEL_TEXT_SWIPE @"TextSwipe"
 
 #endif

@@ -122,6 +122,10 @@ const int numberOfTextsToLoad = 10;
     messengerIcon.frame = CGRectMake(8, 11, 20, 20);
     [normalSendButton addSubview:messengerIcon];
     
+    UIImageView *messengerIcon2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"messengerIconAlpha.png"]];
+    messengerIcon2.frame = CGRectMake(CGRectGetWidth(normalSendButton.frame)  - 28, 11, 20, 20);
+    [normalSendButton addSubview:messengerIcon2];
+    
     photoContent = [[FBSDKSharePhotoContent alloc] init];
 
     if ([theTextPagedView selectedText] != nil && [theImagePagedView selectedImage] != nil) {
@@ -316,6 +320,10 @@ const int numberOfTextsToLoad = 10;
         UIImageView *editMessengerIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"messengerIconAlpha.png"]];
         editMessengerIcon.frame = CGRectMake(8, 11, 20, 20);
         [editedTextSendButton addSubview:editMessengerIcon];
+        
+        UIImageView *editMessengerIcon2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"messengerIconAlpha.png"]];
+        editMessengerIcon2.frame = CGRectMake(CGRectGetWidth(editedTextSendButton.frame)  - 28, 11, 20, 20);
+        [editedTextSendButton addSubview:editMessengerIcon2];
         
         [editTextView addSubview:textView];
         editTextView.alpha = 0.0f;

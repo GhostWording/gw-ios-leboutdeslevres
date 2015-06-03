@@ -157,7 +157,7 @@ const float heightOffset = 20.0;
     }
     
     
-    UILabel *notificationLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(over65Button.frame) + 25, CGRectGetWidth(self.view.frame), 20)];
+    UILabel *notificationLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(over65Button.frame) + 27, CGRectGetWidth(self.view.frame), 20)];
     notificationLabel.text = @"Recevoir les rappels";
     notificationLabel.textAlignment = NSTextAlignmentCenter;
     notificationLabel.font = [UIFont helveticaNeueBoldWithSize:16.0f];
@@ -165,7 +165,7 @@ const float heightOffset = 20.0;
     [scrollView addSubview:notificationLabel];
     
     UISwitch *notificationSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-    notificationSwitch.center = CGPointMake(CGRectGetMidX(self.view.frame), CGRectGetMaxY(notificationLabel.frame) + CGRectGetHeight(notificationSwitch.frame)*0.5 + 25);
+    notificationSwitch.center = CGPointMake(CGRectGetMidX(self.view.frame), CGRectGetMaxY(notificationLabel.frame) + CGRectGetHeight(notificationSwitch.frame)*0.5 + 23);
     notificationSwitch.onTintColor = [UIColor appBlueColor];
     [notificationSwitch addTarget:self action:@selector(wantsLocalNotification:) forControlEvents:UIControlEventValueChanged];
     [scrollView addSubview:notificationSwitch];

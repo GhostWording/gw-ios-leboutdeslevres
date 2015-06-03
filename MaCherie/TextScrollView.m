@@ -13,6 +13,8 @@
 #import "UIColor+Extension.h"
 #import "TimeOutManager.h"
 #import "BoxedActivityIndicatorView.h"
+#import "GoogleAnalyticsCommunication.h"
+#import "CustomAnalytics.h"
 
 @interface TextScrollView () <UIScrollViewDelegate> {
     TextScrollViewModel *model;
@@ -217,6 +219,11 @@
     
     int pos = roundf(position);
     
+    if (pos != pageControl.currentPage) {
+        [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_TEXT_INTERACTION withAction:GA_ACTION_SCROLLING withLabel:GA_LABEL_TEXT_SWIPE wtihValue:nil];
+        [[CustomAnalytics sharedInstance] postActionWithType:@"Swipe" actionLocation:@"TextScrollView" targetType:@"Text" targetId:@"" targetParameter:@""];
+    }
+    
     if (pos != numPages - 1) {
         pageControl.currentPage = pos;
         currentPage = pos;
@@ -230,6 +237,9 @@
 #pragma makr - Text Scroll View Delegate
 
 -(void)refreshButtonPressed {
+    
+    [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_TEXT_INTERACTION withAction:GA_ACTION_BUTTON_PRESSED withLabel:@"RefreshTexts" wtihValue:nil];
+    [[CustomAnalytics sharedInstance] postActionWithType:@"RefreshTexts" actionLocation:@"TextScrollView" targetType:@"Text" targetId:@"" targetParameter:@""];
     
     [self reloadDataAnimated:YES];
     

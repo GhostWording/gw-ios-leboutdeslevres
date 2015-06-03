@@ -13,6 +13,8 @@
 #import "UIFont+ArialAndHelveticaNeue.h"
 #import "TimeOutManager.h"
 #import "BoxedActivityIndicatorView.h"
+#import "GoogleAnalyticsCommunication.h"
+#import "CustomAnalytics.h"
 
 @interface ImageScrollView () <UIScrollViewDelegate> {
     ImageScrollViewModel *model;
@@ -189,15 +191,27 @@
     float position = scrollView.contentOffset.x / CGRectGetWidth(self.frame);
     int pos = roundf(position);
     
+    // to send image scroll events
+    if (pos != pageControl.currentPage) {
+        [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_IMAGE_INTERACTION withAction:GA_ACTION_SCROLLING withLabel:GA_LABEL_IMAGE_SWIPE wtihValue:nil];
+        [[CustomAnalytics sharedInstance] postActionWithType:@"Swipe" actionLocation:@"ImageScrollView" targetType:@"Image" targetId:@"" targetParameter:@""];
+        
+    }
+    
     if (pos != numPages - 1) {
         pageControl.currentPage = pos;
         currentPage = pos;
     }
+    
 }
 
 #pragma mark Image Scroll View Delegate
 
 -(void)refreshButtonPressed {
+    
+    [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_IMAGE_INTERACTION withAction:GA_ACTION_BUTTON_PRESSED withLabel:@"RefreshImages" wtihValue:nil];
+    [[CustomAnalytics sharedInstance] postActionWithType:@"RefreshImages" actionLocation:@"ImageScrollView" targetType:@"Image" targetId:@"" targetParameter:@""];
+    
     
     [self reloadDataAnimated:YES];
     
