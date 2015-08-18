@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol ImageScrollViewDataSource;
+@protocol ImageScrollViewDataSource, ImageScrollViewDelegate;
 
 
 @interface ImageScrollView : UIControl
 
 @property (nonatomic, weak) id <ImageScrollViewDataSource> imageScrollViewDataSource;
+@property (nonatomic, weak) id <ImageScrollViewDelegate> imageScrollViewDelegate;
 
 -(id)initWithFrame:(CGRect)frame andImages:(NSArray*)imageArray;
 
@@ -22,8 +23,15 @@
 -(void)reloadData;
 -(void)reloadDataAnimated:(BOOL)animated;
 
+-(void)shakeAnimateScrollViewAfterTime:(float)theTime;
+
 @end
 
+@protocol ImageScrollViewDelegate <NSObject>
+
+-(void)refreshImagesPressedWithImageScrollView:(ImageScrollView*)theScrollView;
+
+@end
 
 @protocol ImageScrollViewDataSource <NSObject>
 

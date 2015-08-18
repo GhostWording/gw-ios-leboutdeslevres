@@ -23,12 +23,44 @@ typedef enum {
     kGenderMale
 } Gender;
 
+
+static NSString *frenchCultureString = @"fr-FR";
+static NSString *englishCultureString = @"en-EN";
+static NSString *spanishCultureString = @"es-ES";
+
 @interface UserDefaults : NSObject
 
 +(NSString*)userUniqueId;
 
++(NSDate*)dateInstalled;
++(void)setDateInstalled:(NSDate*)installDate;
+
++(NSString*)currentCulture;
++(void)setCulture:(NSString*)newCulture;
+
 +(NSNumber*)firstLaunchOfApp;
 +(void)setFirstLaunchOfApp:(BOOL)firstLaunch;
+
++(NSNumber*)hasRatedApp;
++(void)hasRatedApp:(NSNumber*)hasRated;
+
++(NSNumber*)numberOfMessagesSent;
++(void)incrementNumberOfMessagesSent;
+
++(NSNumber*)numberOfFacebookShares;
++(void)incrementNumberOfFacebookShares;
+
++(NSNumber*)numberOfTextRefreshes;
++(void)increaseNumberOfTextRefreshes;
+
++(NSNumber*)numberOfTextRefreshesByUser;
++(void)increaseNumberOfTextRefreshesByUser;
+
++(NSNumber*)numberOfImageRefreshesByUser;
++(void)increaseNumberOfImageRefreshesByUser;
+
++(NSNumber*)timeSpentInApp;
++(void)increaseTimeBy:(NSNumber*)timeToIncreaseBy;
 
 +(NSNumber*)userAgeSegment;
 +(void)setUserAgeSegment:(NSNumber*)ageSegment;
@@ -38,6 +70,9 @@ typedef enum {
 
 +(NSNumber*)userWantsNotification;
 +(void)setUserWantsNotification:(BOOL)wantsNotification;
+
++(NSNumber*)hasPressedIntentionButton;
++(void)setHasPressedIntentionButton:(BOOL)hasPressedIntention;
 
 // get the hour and minutes separately
 +(int)notificationHour;

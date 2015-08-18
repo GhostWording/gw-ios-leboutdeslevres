@@ -11,6 +11,7 @@
 @interface BoxedActivityIndicatorView : UIView
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, strong) UILabel *activityLabel;
 
 -(void)fadeInWithCompletion:(void (^)(BOOL completed))block;
 -(void)fadeOutWithCompletion:(void (^)(BOOL completed))block;

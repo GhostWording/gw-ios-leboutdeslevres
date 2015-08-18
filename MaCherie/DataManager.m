@@ -40,7 +40,49 @@
     
     NSArray *allTexts = [context executeFetchRequest:[[NSFetchRequest alloc] initWithEntityName:@"Text"] error:nil];
     
-    return allTexts;
+    NSMutableArray *tmpArray = [NSMutableArray array];
+    
+    for (Text *currentText in allTexts) {
+        if ([currentText.culture isEqualToString:[UserDefaults currentCulture]]) {
+            [tmpArray addObject:currentText];
+        }
+    }
+    
+    return tmpArray;
+}
+
+-(BOOL)textsExistForIntention:(NSString *)theIntention {
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Text"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:[NSString  stringWithFormat:@"intentionLabel LIKE[c] '%@'", theIntention]];
+    [fetchRequest setPredicate:predicate];
+    NSArray *textsForIntention = [self textsForIntention:theIntention];
+    
+    if (textsForIntention.count != 0) {
+        return YES;
+    }
+    
+    return NO;
+}
+
+-(NSArray*)textsForIntention:(NSString*)theIntention {
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Text"];
+    NSLog(@"the intention is: %@", theIntention);
+    
+    NSArray *textsForIntention = [context executeFetchRequest:fetchRequest error:nil];
+    NSMutableArray *filteredArr = [NSMutableArray array];
+    
+    for (int i = 0; i < textsForIntention.count; i++) {
+        Text *theText = [textsForIntention objectAtIndex:i];
+        
+        //NSLog(@"text intention labels is: %@", theText.intentionLabel);
+        if ([theText.intentionLabel isEqualToString:theIntention] && [theText.culture isEqualToString:[UserDefaults currentCulture]]) {
+            //NSLog(@"is equal to the intention: %@", theText.intentionLabel);
+            [filteredArr addObject:theText];
+        }
+    }
+    
+    return filteredArr;
 }
 
 -(NSArray*)allTextsFilteredWithUserDefaults {
@@ -61,8 +103,11 @@
     
     for (int i = 0; i < allTexts.count; i++) {
         Text *text = [allTexts objectAtIndex:i];
-        TextObject *textObj = [[TextObject alloc] initWithWeight:1.0 andText:text];
-        [mutatedTexts addObject:textObj];
+        
+        if ([text.culture isEqualToString:[UserDefaults currentCulture]]) {
+            //TextObject *textObj = [[TextObject alloc] initWithWeight:1.0 andText:text];
+            //[mutatedTexts addObject:textObj];
+        }
     }
     
     return mutatedTexts;
@@ -71,9 +116,15 @@
 -(NSArray*)randomTextsForGender:(NSString *)gender numTexts:(NSInteger)numTexts {
     
     NSArray *allTexts = [context executeFetchRequest:[[NSFetchRequest alloc] initWithEntityName:@"Text"] error:nil];
-    NSMutableArray *mutableTexts = [[NSMutableArray alloc] initWithArray:allTexts];
+    NSMutableArray *mutableTexts = [[NSMutableArray alloc] init];
     
-    NSLog(@"all texts: %lu", (unsigned long)allTexts.count);
+    for (Text *text in allTexts) {
+        if ([text.culture isEqualToString:[UserDefaults currentCulture]]) {
+            [mutableTexts addObject:text];
+        }
+    }
+    
+   // NSLog(@"all texts: %lu", (unsigned long)allTexts.count);
     
     if (gender == nil && allTexts != nil && mutableTexts.count != 0) {
         
@@ -94,11 +145,26 @@
 
 -(NSInteger)numTexts {
     NSArray *textsArray = [context executeFetchRequest:[[NSFetchRequest alloc] initWithEntityName:@"Text"] error:nil];
-    return textsArray.count;
+    
+    NSMutableArray *tmpArray = [NSMutableArray array];
+    
+    for (Text *text in textsArray) {
+        if ([text.culture isEqualToString:[UserDefaults currentCulture]]) {
+            [tmpArray addObject:text];
+        }
+    }
+    
+    return tmpArray.count;
 }
 
 
 #pragma mark - Data Manager for Images
+
+-(NSArray*)allImages {
+    NSArray *imageArray = [context executeFetchRequest:[[NSFetchRequest alloc] initWithEntityName:@"Image"] error:nil];
+    return imageArray;
+}
+
 
 -(NSArray*)randomImagesForNumberOfImages:(NSInteger)numImages {
     
@@ -153,7 +219,8 @@
     
     // now we need to check if the random images do have an image associated with a text
     int imagesAssociated = 0;
-    for (NSString *imageId in textUrls) {
+    for (int i = 0; i < textUrls.count; i++) {
+        NSString *imageId = [textUrls objectAtIndex:i];
         for (Image *image in tmpRandomImages) {
             NSString *lastSeparatedComponent = [image.imageId lastSeperatedComponentWithSeparator:@"/"];
             if ([imageId isEqualToString:lastSeparatedComponent]) {
@@ -189,6 +256,10 @@
             }
         }
     }
+    
+    // fix for the same picture appearing twice
+    NSOrderedSet *orderedSet = [[NSOrderedSet alloc] initWithArray:associatedImages];
+    associatedImages = [[NSMutableArray alloc] initWithArray:[orderedSet array]];
     
     // replace the last 0 - 2 images with the new associated images
     // if any were found

@@ -12,5 +12,6 @@
 @interface NotificationManager : NSObject
 
 -(void)scheduleNotification:(int)hour andMinute:(int)minutes;
+-(void)scheduleRandomNotification;
 
 @end

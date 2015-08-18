@@ -8,6 +8,7 @@
 
 #import "ImageScrollViewModel.h"
 #import "Image.h"
+#import "GWImage.h"
 
 @interface ImageScrollViewModel () {
     NSMutableArray *images;
@@ -40,13 +41,13 @@
         return nil;
     }
     
-    Image *img = [images objectAtIndex:index];
+    GWImage *img = [images objectAtIndex:index];
     return [UIImage imageWithData:img.imageData];
 }
 
 -(NSString*)imageNameAtIndex:(NSInteger)index {
     
-    Image *img = [images objectAtIndex:index];
+    GWImage *img = [images objectAtIndex:index];
     
     NSArray *separatedString = [img.imageId componentsSeparatedByString:@"/"];
     

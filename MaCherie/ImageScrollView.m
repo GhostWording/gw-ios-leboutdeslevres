@@ -19,11 +19,13 @@
 @interface ImageScrollView () <UIScrollViewDelegate> {
     ImageScrollViewModel *model;
     BOOL isLoadingData;
+    UIView *swipeViewForScroll;
     NSMutableArray *imageSubviewsArray;
     UIScrollView *imageScrollView;
     UIPageControl *pageControl;
     NSInteger numPages;
     NSInteger currentPage;
+    int shakeRepeatCount;
     BoxedActivityIndicatorView *activityIndicator;
 }
 
@@ -38,6 +40,8 @@
         model = [[ImageScrollViewModel alloc] initWithArray:imageArray];
         NSLog(@"after model");
         
+        swipeViewForScroll = nil;
+        
         imageScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame))];
         imageScrollView.pagingEnabled = YES;
         imageScrollView.showsHorizontalScrollIndicator = NO;
@@ -46,7 +50,7 @@
         [self addSubview:imageScrollView];
         
         pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(frame) - 20, CGRectGetWidth(frame), 20)];
-        pageControl.numberOfPages = imageArray.count;
+        pageControl.numberOfPages = imageArray.count + 1;
         pageControl.pageIndicatorTintColor = [UIColor appLightGrayColor];
         pageControl.currentPageIndicatorTintColor = [UIColor appBlueColor];
         [pageControl addTarget:self action:@selector(pageControlTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -54,6 +58,7 @@
         
         numPages = 0;
         currentPage = 0;
+        shakeRepeatCount = 0;
         isLoadingData = NO;
         
         imageSubviewsArray = [[NSMutableArray alloc] init];
@@ -72,6 +77,73 @@
 
 -(void)pageControlTapped:(UIPageControl*)thePageControl {
     [imageScrollView setContentOffset:CGPointMake(CGRectGetWidth(self.frame) * thePageControl.currentPage, 0) animated:YES];
+}
+
+#pragma mark - Animations
+
+-(void)shakeAnimateScrollViewAfterTime:(float)theTime {
+    [self performSelector:@selector(shakeAnimateScrollView) withObject:nil afterDelay:theTime];
+}
+
+-(void)shakeAnimateScrollView {
+    shakeRepeatCount++;
+    
+    [CATransaction begin];
+    CAKeyframeAnimation *bounceAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position.x"];
+    bounceAnimation.values = @[@0, @-10, @10, @10, @0];
+    bounceAnimation.keyTimes = @[@0, @(1.0 / 6.0), @(3.0 / 6.0), @(5.0 / 6.0), @1];
+    bounceAnimation.duration = 0.4;
+    bounceAnimation.additive = YES;
+    bounceAnimation.repeatCount = 2;
+    [CATransaction setCompletionBlock:^{
+        NSLog(@"completion block");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (shakeRepeatCount < 5) {
+                [self performSelector:@selector(shakeAnimateScrollView) withObject:nil afterDelay:1];
+            }
+            else {
+                NSLog(@"finished shake repeating");
+                [self showScrollMessage];
+            }
+        });
+    }];
+    [imageScrollView.layer addAnimation:bounceAnimation forKey:@"shake"];
+    [CATransaction commit];
+
+    
+}
+
+-(void)showScrollMessage {
+    NSLog(@"showing scrollView");
+    swipeViewForScroll = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame))];
+    swipeViewForScroll.backgroundColor = [UIColor clearColor];
+    swipeViewForScroll.userInteractionEnabled = NO;
+    swipeViewForScroll.alpha = 0.0f;
+    swipeViewForScroll.hidden = NO;
+    [imageScrollView addSubview:swipeViewForScroll];
+    
+    UILabel *swipeLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(swipeViewForScroll.frame) /2.0 - 80, CGRectGetHeight(swipeViewForScroll.frame)/ 2.0 - 20, 210, 50)];
+    swipeLabel.layer.cornerRadius = 15.0;
+    swipeLabel.layer.backgroundColor = [UIColor whiteColor].CGColor;
+    swipeLabel.layer.borderWidth = 2.0;
+    swipeLabel.layer.borderColor = [UIColor appBlueColor].CGColor;
+    swipeLabel.text = @"faites-moi glisser !";
+    swipeLabel.textColor = [UIColor appBlueColor];
+    swipeLabel.textAlignment = NSTextAlignmentCenter;
+    swipeLabel.font = [UIFont noteworthyBoldWithSize:21.0];
+    [swipeViewForScroll addSubview:swipeLabel];
+    
+    UIImageView *leftArrowImage = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) * 0.03, CGRectGetHeight(self.frame) / 2.0 - 24, 60, 60)];
+    leftArrowImage.image = [UIImage imageNamed:@"leftArrow.png"];
+    leftArrowImage.contentMode = UIViewContentModeScaleAspectFit;
+    [swipeViewForScroll addSubview:leftArrowImage];
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        swipeViewForScroll.alpha = 1.0;
+    } completion:^(BOOL finished) {
+        
+    }];
+    
 }
 
 #pragma mark - Loading and Updating View
@@ -153,7 +225,7 @@
     numPages = 0;
     currentPage = 0;
     pageControl.currentPage = 0;
-    pageControl.numberOfPages = model.numberOfImages;
+    pageControl.numberOfPages = model.numberOfImages + 1;
     
     [self populateScrollView:model.numberOfImages];
     
@@ -186,7 +258,20 @@
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(shakeAnimateScrollView) object:nil];
+    
     [[TimeOutManager shareTimeOutManager] restartTime];
+    
+    if (swipeViewForScroll != nil && swipeViewForScroll.alpha == 1.0f) {
+        [UIView animateWithDuration:0.5 animations:^{
+            swipeViewForScroll.alpha = 0.0f;
+        } completion:^(BOOL finished) {
+            if (finished) {
+                [swipeViewForScroll removeFromSuperview];
+                swipeViewForScroll = nil;
+            }
+        }];
+    }
     
     float position = scrollView.contentOffset.x / CGRectGetWidth(self.frame);
     int pos = roundf(position);
@@ -198,10 +283,13 @@
         
     }
     
+    /*
     if (pos != numPages - 1) {
         pageControl.currentPage = pos;
-        currentPage = pos;
-    }
+    }*/
+    
+    pageControl.currentPage = pos;
+    currentPage = pos;
     
 }
 
@@ -213,7 +301,8 @@
     [[CustomAnalytics sharedInstance] postActionWithType:@"RefreshImages" actionLocation:@"ImageScrollView" targetType:@"Image" targetId:@"" targetParameter:@""];
     
     
-    [self reloadDataAnimated:YES];
+    //[self reloadDataAnimated:YES];
+    [_imageScrollViewDelegate refreshImagesPressedWithImageScrollView:self];
     
 }
 

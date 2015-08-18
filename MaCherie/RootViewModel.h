@@ -8,7 +8,34 @@
 
 #import <Foundation/Foundation.h>
 
+@class TextFilter, IntentionObject, RecipientObject;
+
 @interface RootViewModel : NSObject
+
+@property (nonatomic, readwrite) BOOL isSpecialOccasionIntentionChosen;
+@property (nonatomic, readwrite) BOOL isLoadingImages;
+@property (nonatomic, readwrite) BOOL isShowingRatingView;
+
+@property (nonatomic, readwrite) int numSpecialOccasionTexts;
+@property (nonatomic, readwrite) int numSpecialOccasionImages;
+
+-(void)setRandomTextForSpecialOccasionTexts:(NSArray*)theTexts;
+-(void)setRandomTextForIntention:(NSString*)intentionSlug withNum:(int)num;
+-(void)setRandomTextForIntention:(NSString *)intentionSlug andNum:(int)num andFilter:(TextFilter*)theFilter;
+-(void)setRandomImageForCurrentIntention:(NSArray *)imagesForIntention withNum:(int)num;
+
+
+-(void)downloadTextsForArea:(NSString*)theArea withCompletion:(void (^)(NSArray *theTexts, NSError *error))block;
+-(void)downloadImagesForRecipient:(NSString*)theRecipientId withNum:(NSInteger)numImages withCompletion:(void (^)(NSArray *theImageIds, NSError *error))block;
+
+
+-(BOOL)minimumImagesAndTextsToDownloadWithNumTexts:(int)numTexts withNumImages:(int)numImages;
+
+-(BOOL)textsExistForIntention:(NSString*)theIntention;
+-(void)fetchTextsForIntention:(NSString*)theIntention withCompletion:(void (^)(NSArray *theTexts, NSError *error))block;
+-(void)fetchImagesForIntention:(NSString*)theIntention withCompletion:(void (^)(NSArray *theImages, NSError *error))block;
+-(NSArray*)specialOccasionTexts;
+-(NSArray*)specialOccasionImages;
 
 -(NSArray*)randomtTextWithNum:(int)numTexts;
 -(NSArray*)randomImagesWithNum:(int)numImages;

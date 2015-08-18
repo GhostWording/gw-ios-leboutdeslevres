@@ -14,10 +14,11 @@
 #import "TimePicker.h"
 #import "GoogleAnalyticsCommunication.h"
 #import "CustomAnalytics.h"
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 const float heightOffset = 20.0;
 
-@interface SettingsViewController () {
+@interface SettingsViewController () <FBSDKLoginButtonDelegate> {
     
     // gender buttons
     DefaultButton *femaleButton;
@@ -176,7 +177,7 @@ const float heightOffset = 20.0;
         [notificationSwitch setOn:YES animated:YES];
     }
     
-    
+    /*
     UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(notificationSwitch.frame) + 25, CGRectGetWidth(self.view.frame), 20)];
     dateLabel.text = @"Heure des rappels";
     dateLabel.textAlignment = NSTextAlignmentCenter;
@@ -193,8 +194,13 @@ const float heightOffset = 20.0;
         int hours = [UserDefaults notificationHour];
         [timePicker setHour:hours andMinute:minutes];
     }
+    */
     
-    [scrollView setContentSize:CGSizeMake(CGRectGetWidth(self.view.frame), CGRectGetMaxY(timePicker.frame) + 70)];
+    FBSDKLoginButton *facebookLogin = [[FBSDKLoginButton alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame) / 2.0 - 120, CGRectGetMaxY(notificationSwitch.frame) + 40, 240, 50)];
+    facebookLogin.delegate = self;
+    [scrollView addSubview:facebookLogin];
+    
+    [scrollView setContentSize:CGSizeMake(CGRectGetWidth(self.view.frame), CGRectGetMaxY(facebookLogin.frame) + 80)];
     
     
     // Do any additional setup after loading the view.
@@ -315,6 +321,12 @@ const float heightOffset = 20.0;
         [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_ACTION_BUTTON_PRESSED withLabel:GA_LABEL_GENDER_FEMALE wtihValue:nil];
         [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_SETTINGS targetType:@"Command" targetId:@"UserGender" targetParameter:@"F"];
     }
+}
+
+#pragma mark - Facebook logout delegate
+
+-(void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton {
+    [self performSegueWithIdentifier:@"logoutSegue" sender:self];
 }
 
 /*

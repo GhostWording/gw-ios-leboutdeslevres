@@ -15,9 +15,14 @@
     if (self = [super init]) {
         self.layer.backgroundColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.75].CGColor;
         self.layer.cornerRadius = 6.0f;
+        
         _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         [_activityIndicator startAnimating];
+        _activityLabel = [[UILabel alloc] init];
+        
+        [self addSubview:_activityLabel];
         [self addSubview:_activityIndicator];
+        
         self.hidden = YES;
         self.alpha = 0.0f;
     }
@@ -28,6 +33,7 @@
     [super setFrame:frame];
     NSLog(@"setting frame");
     _activityIndicator.frame = CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame));
+    _activityLabel.frame = CGRectMake(CGRectGetWidth(self.frame)*0.05, CGRectGetHeight(self.frame)*0.7, CGRectGetWidth(self.frame)*0.9, CGRectGetHeight(self.frame)*0.3);
 }
 
 -(void)fadeInWithCompletion:(void (^)(BOOL))block {

@@ -18,6 +18,7 @@
 @property (nonatomic, strong) NSMutableArray *textsForIntention;
 @property (nonatomic, readwrite) float defaultWeight;
 @property (nonatomic, readwrite) float userWeight;
+@property (nonatomic, readwrite) BOOL impersonal;
 
 // the slug in the intention object is the same as the intention label in the text object, the naming
 // should be changed for the text object.
@@ -37,5 +38,21 @@
 +(instancetype)intentionSurpriseMe;
 +(instancetype)intentionIWantYou;
 +(instancetype)intentionILikeYou;
+
+// SPECIAL OCCASION INTENTIONS
++(instancetype)intentionHappyBirthday;
++(instancetype)intentionIAmLate;
++(instancetype)intentionStopTheWorld;
++(instancetype)intentionNoThankYou;
++(instancetype)intentionComeBackToMe;
++(instancetype)intentionIAmLeavingYou;
++(instancetype)intentionCondolences;
++(instancetype)intentionIAmSorry;
++(instancetype)intentionIAmHereForYou;
++(instancetype)intentionCelebrateTheOccasion;
++(instancetype)intentionHappyNewYear;
++(instancetype)intentionHumorousInsults;
++(instancetype)intentionGoodMorning;
++(instancetype)intentionGoodNight;
 
 @end

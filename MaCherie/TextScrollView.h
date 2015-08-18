@@ -12,6 +12,10 @@
 @protocol TextScrollViewDelegate <NSObject>
 
 -(void)textFacebookShareCompatible:(BOOL)shareCompatibility;
+-(void)scrolledToIndex:(int)index;
+-(void)sendOnlyImage;
+-(void)writeText;
+-(void)refreshButtonPressed;
 
 @end
 
@@ -29,15 +33,17 @@
 -(id)initWithFrame:(CGRect)frame andTexts:(NSArray*)textArray;
 
 -(void)setFont:(UIFont*)newTextFont;
+-(NSInteger)numberOfPages;
 -(NSString*)selectedText;
 -(NSString*)selectedTextId;
 -(NSArray*)theTexts;
 -(BOOL)wantsFacebookShareForCurrentText;
+-(BOOL)isLastPage;
+-(void)shakeAnimateScrollViewAftertime:(float)theTime;
 -(void)reloadData;
 -(void)reloadDataAnimated:(BOOL)animated;
 
 @end
-
 
 @protocol TextScrollViewDataSource <NSObject>
 

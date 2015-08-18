@@ -16,5 +16,6 @@
 
 +(UIColor*)appBlueColor;
 +(UIColor*)appLightGrayColor;
++(UIColor*)appLightOverlayColor;
 
 @end

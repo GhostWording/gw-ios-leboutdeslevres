@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="PxF-Ax-wPy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="CAt-ch-eJf">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <scenes>
+        <!--Login View Controller-->
+        <scene sceneID="LF8-DD-unf">
+            <objects>
+                <viewController storyboardIdentifier="loginViewController" id="CAt-ch-eJf" customClass="LoginViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="BHi-Ha-RyS"/>
+                        <viewControllerLayoutGuide type="bottom" id="Hf5-uk-c8K"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Zsd-Dw-Wfc">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="PxF-Ax-wPy" kind="presentation" identifier="loginSegue" id="psF-8r-5rD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pYB-3d-eJL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-499" y="476"/>
+        </scene>
         <!--Root View Controller-->
         <scene sceneID="3GU-QQ-JyJ">
             <objects>
@@ -39,6 +60,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <segue destination="CAt-ch-eJf" kind="presentation" identifier="logoutSegue" id="z41-k9-Scf"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bnt-1k-heh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

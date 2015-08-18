@@ -13,14 +13,24 @@
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 #import <FacebookSDK/FacebookSDK.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import "RootViewController.h"
+#import "LoginViewController.h"
+#import "iPadRootViewController.h"
 #import "GoogleAnalyticsCommunication.h"
 #import "CustomAnalytics.h"
+#import "RootViewModel.h"
+#import "ConstantsManager.h"
+#import "GWDataManager.h"
+#import "GWCoreDataManager.h"
 
 @interface AppDelegate () {
     // bool for first time we launch the view
     BOOL didFinishLaunching;
     ServerComm *comm;
+    RootViewModel *viewModel;
+    
 }
 
 @end
@@ -33,8 +43,12 @@
     
     NSLog(@"did finish launching");
     comm = [[ServerComm alloc] init];
+    viewModel = [[RootViewModel alloc] init];
+    
+    [UserDefaults setCulture:frenchCultureString];
     
     [Fabric with:@[CrashlyticsKit]];
+    
     
     if ([application respondsToSelector:@selector(registerUserNotificationSettings:)])
     {
@@ -45,12 +59,48 @@
     // seed the random generator
     srand((unsigned int)time(NULL));
     
+    [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
+    
+    [FBSDKLoginButton class];
+    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     
     RootViewController *rootController = [storyboard instantiateViewControllerWithIdentifier:@"rootViewController"];
-    self.window.rootViewController = rootController;
+    LoginViewController *loginController = [storyboard instantiateViewControllerWithIdentifier:@"loginViewController"];
+    
+    if ([FBSDKAccessToken currentAccessToken]) {
+        NSLog(@"is there an existing access token");
+        self.window.rootViewController = rootController;
+    }
+    else {
+        NSLog(@"does not have existing token");
+        self.window.rootViewController = loginController;
+    }
+    
+    //self.window.rootViewController = rootController;
+    
+    /*
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+        
+        RootViewController *rootController = [storyboard instantiateViewControllerWithIdentifier:@"rootViewController"];
+        self.window.rootViewController = rootController;
+        
+    } else if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        
+        iPadRootViewController *rootController = [[iPadRootViewController alloc] initWithNibName:nil bundle:nil];
+        self.window.rootViewController = rootController;
+        
+    }*/
     
     didFinishLaunching = YES;
+    
+    
+    return YES;
+}
+
+-(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    
+    [[FBSDKApplicationDelegate sharedInstance] application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
     
     return YES;
 }
@@ -64,8 +114,20 @@
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
+    [[GWCoreDataManager sharedInstance] saveContext];
+    
+    if ([[UserDefaults userWantsNotification] boolValue] == YES) {
+        NotificationManager *notifMan = [[NotificationManager alloc] init];
+        [notifMan scheduleRandomNotification];
+    }
+    else {
+        [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    }
+    
+    /*
     NotificationManager *notifMan = [[NotificationManager alloc] init];
     [notifMan scheduleNotification:[UserDefaults notificationHour] andMinute:[UserDefaults notificationMinutes]];
+    */
     
     NSLog(@"scheduled notification: %lu", (unsigned long)[[UIApplication sharedApplication] scheduledLocalNotifications].count);
     
@@ -81,26 +143,44 @@
     [[CustomAnalytics sharedInstance] postActionWithType:@"AppFocus" actionLocation:@"AppLaunch" targetType:@"" targetId:@"" targetParameter:@""];
     [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_APP_EVENT withAction:@"AppLaunch" withLabel:@"AppFocus" wtihValue:nil];
 
-    [comm downloadTexts];
-    [comm downloadNumImages:20 withCompletion:^(BOOL finished, NSError *error) {
-        if (finished) {
-            NSLog(@"finished downloading images");
-            __weak typeof (self) wSelf = self;
-            dispatch_async(dispatch_get_main_queue(), ^{
-               [wSelf performSelector:@selector(downloadAdditionalImages) withObject:nil afterDelay:20.0];
-            });
-        }
+    NSLog(@"did become active");
+    
+    
+    GWDataManager *downloadIntentions = [[GWDataManager alloc] init];
+    [downloadIntentions downloadIntentionsWithArea:[ConstantsManager sharedInstance].specialOccasionArea withCulture:[UserDefaults currentCulture] withCompletion:^(NSArray *intentionIds, NSError *error) {
+        
+    }];
+    
+    [viewModel downloadImagesForRecipient:@"9E2D23" withNum:20 withCompletion:^(NSArray *theImageIds, NSError *error) {
+        
+        __weak typeof (self) wSelf = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [wSelf performSelector:@selector(downloadAdditionalImages) withObject:nil afterDelay:20.0];
+        });
+        
+    }];
+    
+    [viewModel downloadTextsForArea:[ConstantsManager sharedInstance].area withCompletion:^(NSArray *allTexts, NSError *error) {
+        
+        NSLog(@"all texts downloaded");
+        
     }];
     
     // Call the 'activateApp' method to log an app event for use
     // in analytics and advertising reporting.
     [FBAppEvents activateApp];
     
+    // bool variable to make sure the view will appear method won't be called when we launch the app
+    // but we need it when it becomes active
+    NSLog(@"did become active");
     if (!didFinishLaunching) {
+        NSLog(@"did finish launching");
         [self.window.rootViewController viewWillAppear:YES];
     }
     
     didFinishLaunching = NO;
+    
+    [self performSelector:@selector(increaseTimeSpentInApp) withObject:nil afterDelay:1.0];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -108,18 +188,27 @@
 }
 
 
-#pragma mark - Download control
+#pragma mark - Download control And continous app calls
+
+-(void)increaseTimeSpentInApp {
+    
+    [UserDefaults increaseTimeBy:[NSNumber numberWithFloat:1.0f]];
+    [self performSelector:@selector(increaseTimeSpentInApp) withObject:nil afterDelay:1.0];
+    
+}
 
 -(void)downloadAdditionalImages {
-    [comm downloadNumImages:10 withCompletion:^(BOOL finished, NSError *error) {
-        if (finished) {
-            NSLog(@"downloading extra images");
-            dispatch_async(dispatch_get_main_queue(), ^{
-                __weak typeof (self) wSelf = self;
-                [wSelf performSelector:@selector(downloadAdditionalImages) withObject:nil afterDelay:20.0];
-            });
-        }
+    
+    [viewModel downloadImagesForRecipient:@"9E2D23" withNum:20 withCompletion:^(NSArray *theImageIds, NSError *error) {
+        
+        __weak typeof (self) wSelf = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [wSelf performSelector:@selector(downloadAdditionalImages) withObject:nil afterDelay:20.0];
+        });
+        
+        
     }];
+    
 }
 
 

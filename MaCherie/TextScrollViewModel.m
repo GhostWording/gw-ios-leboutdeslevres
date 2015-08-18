@@ -7,6 +7,7 @@
 //
 
 #import "TextScrollViewModel.h"
+#import "GWText.h"
 
 @interface TextScrollViewModel () {
     NSMutableArray *texts;
@@ -35,9 +36,9 @@
     
     if (index < texts.count) {
         
-        Text *text = [texts objectAtIndex:index];
+        GWText *text = [texts objectAtIndex:index];
         
-        NSLog(@"text intention label is: %@", text.intentionLabel);
+        //NSLog(@"text intention label is: %@", text.intentionLabel);
         
         return text.content;
     }
@@ -52,7 +53,7 @@
 
 -(NSString*)textIdForTextAtIndex:(NSInteger)index {
     if (index < texts.count) {
-        Text *text = [texts objectAtIndex:index];
+        GWText *text = [texts objectAtIndex:index];
         NSLog(@"the text id: %@", text.textId);
         return text.textId;
     }
@@ -63,9 +64,9 @@
     }
 }
 
--(Text*)textObjectAtIndex:(NSInteger)index {
+-(GWText*)textObjectAtIndex:(NSInteger)index {
     if (index < texts.count) {
-        Text *text = [texts objectAtIndex:index];
+        GWText *text = [texts objectAtIndex:index];
         return text;
     }
     

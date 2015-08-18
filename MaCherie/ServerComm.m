@@ -7,6 +7,7 @@
 //
 
 #import "ServerComm.h"
+#import "UserDefaults.h"
 #import "AppDelegate.h"
 #import "Text.h"
 #import "TagId.h"
@@ -25,6 +26,8 @@
     NSDateFormatter *dateFormatter;
 }
 
+@property (nonatomic, strong) ErrorCompletionBlock completionBlock;
+
 @end
 
 @implementation ServerComm
@@ -36,6 +39,7 @@
         persistentStore = delegate.persistentStoreCoordinator;
         dateFormatter = [[NSDateFormatter alloc] init];
         intentionNames = @[@"I-want-you", @"there-is-something-missing", @"thank-you", @"I-miss-you", @"I-love-you", @"I-think-of-you", @"positive-thoughts", @"a-few-words-for-you", @"facebook-status", @"jokes", @"surprise-me"];
+        _completionBlock = nil;
     }
     
     return self;
@@ -45,6 +49,22 @@
 #pragma mark - 
 #pragma mark Image Downloading
 
+-(void)downloadImageIdsForIntention:(NSString *)theIntention withComplection:(void (^)(BOOL, NSArray *, NSError *))block {
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://gw-static.azurewebsites.net/container/files/specialoccasions/%@/default/small", theIntention]];
+    NSLog(@"the url: %@", url);
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:@"fr-FR" forHTTPHeaderField:@"Accept-Language"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        NSMutableArray *imagePaths = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        block(YES, imagePaths, error);
+    }];
+}
 
 -(void)downloadNumImages:(int)numImages withCompletion:(void (^)(BOOL finished, NSError *))block  {
     [block copy];
@@ -65,19 +85,7 @@
             
             NSMutableArray *imagePaths = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
             
-            NSManagedObjectContext *newContext = [[NSManagedObjectContext alloc] init];
-            [newContext setPersistentStoreCoordinator:persistentStore];
-            [newContext setMergePolicy:[[NSMergePolicy alloc] initWithMergeType:NSMergeByPropertyObjectTrumpMergePolicyType]];
-            
-            // fetch the images we stored
-            NSArray *imageArray = [newContext executeFetchRequest:[[NSFetchRequest alloc] initWithEntityName:@"Image"] error:nil];
-            NSLog(@"number of images: %lu", (unsigned long)imageArray.count);
-            
-            [self removeImagesInArray:imagePaths imageArray:imageArray];
-            
-            for (int i = 0; i < numImages; i++) {
-                [wekSelf downloadImagesWithURLArray:imagePaths andManagedContext:newContext];
-            }
+            [wekSelf downloadImagesNotAvailableWithPaths:imagePaths withNumImages:numImages withCompletion:nil];
             
             block(YES, nil);
             
@@ -86,74 +94,44 @@
     
 }
 
--(void)downloadNumImagesWithContainters:(int)numImages withCompletion:(void (^)(BOOL finished, NSError *))block {
+-(void)downloadImagesNotAvailableWithPaths:(NSMutableArray*)imagePaths withNumImages:(int)numImages withCompletion:(void (^)(BOOL finished, NSError *error))block {
     [block copy];
     
-    NSLog(@"downloading images");
-        
-    //NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/container/cvd/sweetheart?size=small", IMAGE_PREFIX]];
-    NSURL *url = [NSURL URLWithString:@"http://gw-static.azurewebsites.net/container/cvd/sweetheart/istockpairs?size=small"];
-    //NSURL *url = [NSURL  URLWithString:@"http://gw-static.azurewebsites.net/container/files/cvd/sweetheart?size=small"];
+    __weak __block ServerComm *wekSelf = self;
     
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    NSDate *downloadTime = [NSDate date];
     
-    [request setHTTPMethod:@"GET"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:@"fr-FR" forHTTPHeaderField:@"Accept-Language"];
+    NSManagedObjectContext *newContext = [[NSManagedObjectContext alloc] init];
+    [newContext setPersistentStoreCoordinator:persistentStore];
+    [newContext setMergePolicy:[[NSMergePolicy alloc] initWithMergeType:NSMergeByPropertyObjectTrumpMergePolicyType]];
     
-    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        if (!error) {
-            
-            __weak __block ServerComm *weakSelf = self;
-            
-            NSMutableArray *containerArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            
-            [weakSelf downloadImagesForContainers:containerArray withCompletion:^(NSMutableArray *imagePathsToDownload, NSManagedObjectContext *managedContext, NSError *error) {
-                
-                for (int i = 0; i < numImages; i++) {
-                    [weakSelf downloadImagesWithURLArray:imagePathsToDownload andManagedContext:managedContext];
-                }
-                
-            }];
-        }
-    }];
+    // fetch the images we stored
+    NSArray *imageArray = [newContext executeFetchRequest:[[NSFetchRequest alloc] initWithEntityName:@"Image"] error:nil];
+    NSLog(@"number of images not available with paths: %lu at time: %f", (unsigned long)imageArray.count, [downloadTime timeIntervalSinceNow] * (-1));
     
-}
-
--(void)downloadImagesForContainers:(NSArray*)containers withCompletion:(void (^)(NSMutableArray *imagePathsToDownload, NSManagedObjectContext *managedContext, NSError *error))block {
+    [self removeImagesInArray:imagePaths imageArray:imageArray];
     
-    [block copy];
+    NSLog(@"number of images left before download: %lu at time: %f", (unsigned long)imageArray.count, [downloadTime timeIntervalSinceNow] * (-1));
     
-    NSDictionary *dict = [containers objectAtIndex:0];
+    int minImages = numImages;
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/container/files%@", IMAGE_PREFIX, dict[@"id"]]];
-    NSLog(@"url is: %@", [NSString stringWithFormat:@"%@%@", IMAGE_PREFIX, dict[@"id"]]);
+    if (imagePaths.count < numImages) {
+        minImages = (int)imagePaths.count;
+    }
     
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    NSLog(@"num images: %d", numImages);
+    NSLog(@"minimum images: %d", minImages);
     
-    [request setHTTPMethod:@"GET"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:@"fr-FR" forHTTPHeaderField:@"Accept-Language"];
+    for (int i = 0; i < minImages; i++) {
+        [wekSelf downloadImagesWithURLArray:imagePaths andManagedContext:newContext];
+    }
     
-    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        if (!error) {
-            NSMutableArray *imagePaths = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            
-            NSManagedObjectContext *newContext = [[NSManagedObjectContext alloc] init];
-            [newContext setPersistentStoreCoordinator:persistentStore];
-            [newContext setMergePolicy:[[NSMergePolicy alloc] initWithMergeType:NSMergeByPropertyObjectTrumpMergePolicyType]];
-            
-            // fetch the images we stored
-            NSArray *imageArray = [newContext executeFetchRequest:[[NSFetchRequest alloc] initWithEntityName:@"Image"] error:nil];
-            NSLog(@"number of images: %lu", (unsigned long)imageArray.count);
-
-            [self removeImagesInArray:imagePaths imageArray:imageArray];
-            
-            block(imagePaths, newContext, nil);
-        }
-    }];
+    NSLog(@"number of images left after download: %f", [downloadTime timeIntervalSinceNow] * (-1));
+    
+    if (block) {
+        block(YES, nil);
+    }
+    
 }
 
 // remove all the images that we already have
@@ -170,7 +148,7 @@
     for (int i = 0; i < theArray.count; i++) {
         NSString *string = [theArray objectAtIndex:i];
         
-        if ([string isEqual:[NSNull null]]) {
+        if ([string isEqual:[NSNull null]] || [string isKindOfClass:[NSNull class]]) {
             
             [theArray removeObjectAtIndex:i];
         } else {
@@ -182,7 +160,7 @@
 }
 
 
--(void)downloadImagesWithURLArray:(NSMutableArray*)array andManagedContext:(NSManagedObjectContext*)managedContext {
+-(Image*)downloadImagesWithURLArray:(NSMutableArray*)array andManagedContext:(NSManagedObjectContext*)managedContext {
     
     
     if (array && array.count != 0) {
@@ -190,31 +168,52 @@
         NSString *imagePostfix = [array objectAtIndex:randomPos];
         
         
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", IMAGE_PREFIX, imagePostfix]];
-        NSData *imageData = [NSData dataWithContentsOfURL:url];
-        
-        
-        Image *imageObject = [NSEntityDescription insertNewObjectForEntityForName:@"Image" inManagedObjectContext:managedContext];
-        imageObject.imageData = imageData;
-        imageObject.imageId = imagePostfix;
-        
-        [self saveContextChanges:managedContext];
-        
-        // use a block to send the data back if the save succeeded and the image has been loaded
-        [array removeObjectAtIndex:randomPos];
+        if (![imagePostfix isKindOfClass:[NSNull class]] || imagePostfix != nil || ![imagePostfix isEqual:[NSNull null]]) {
+            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", @"http://az767698.vo.msecnd.net/", imagePostfix]];
+            NSData *imageData = [NSData dataWithContentsOfURL:url];
+            
+            
+            Image *imageObject = [NSEntityDescription insertNewObjectForEntityForName:@"Image" inManagedObjectContext:managedContext];
+            imageObject.imageData = imageData;
+            imageObject.imageId = imagePostfix;
+            
+            [self saveContextChanges:managedContext];
+            
+            // use a block to send the data back if the save succeeded and the image has been loaded
+            [array removeObjectAtIndex:randomPos];
+            
+            return imageObject;
+        }
+        else {
+            [array removeObjectAtIndex:randomPos];
+            return [self downloadImagesWithURLArray:array andManagedContext:managedContext];
+        }
     }
     
+    return nil;
 }
 
 #pragma mark - 
 #pragma mark Text downloading
 
 -(void)downloadTexts {
-    [self downloadTextsArray:intentionNames atIndex:0];
+    [self downloadTextsArray:intentionNames atIndex:0 withCompletion:nil];
 }
 
--(void)downloadTextsArray:(NSArray*)array atIndex:(int)index
-{
+-(void)downloadTextsWithCompletion:(void (^)(BOOL, NSError *))block {
+    [block copy];
+    
+    [self downloadTextsArray:intentionNames atIndex:0 withCompletion:block];
+}
+
+-(void)downloadTextsForIntention:(NSString *)intentionSlug withCompletion:(ErrorCompletionBlock)block {
+    _completionBlock = [block copy];
+    [self downloadTextsArray:@[intentionSlug] atIndex:0 withCompletion:block];
+    
+}
+
+-(void)downloadTextsArray:(NSArray*)array atIndex:(int)index withCompletion:(void (^)(BOOL finished, NSError *error))block {
+    
     if (index < array.count) {
         NSString *intentions = [array objectAtIndex:index];
         
@@ -226,9 +225,10 @@
         [request setHTTPMethod:@"GET"];
         [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
         [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        [request setValue:@"fr-FR" forHTTPHeaderField:@"Accept-Language"];
+        [request setValue:[UserDefaults currentCulture] forHTTPHeaderField:@"Accept-Language"];
         
         [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *request, NSData *data, NSError *error){
+            [block copy];
             
             NSManagedObjectContext *newContext = [[NSManagedObjectContext alloc] init];
             [newContext setPersistentStoreCoordinator:persistentStore];
@@ -237,6 +237,8 @@
             if (!error) {
                 NSMutableArray *jsonDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                 //NSLog(@"the dictionary: %@", jsonDict);
+                
+                NSLog(@"new json text: %@", jsonDict);
                 
                 NSEntityDescription *textEntity = [NSEntityDescription entityForName:@"Text" inManagedObjectContext:newContext];
                 NSFetchRequest *fetch = [[NSFetchRequest alloc] initWithEntityName:textEntity.name];
@@ -251,18 +253,25 @@
                 [xSelf saveContextChanges:newContext];
                 
                 //NSLog(@"first object is: %@", [jsonDict objectAtIndex:0]);
-                NSLog(@"intention is: %@ with number of texts: %lu", intentions, (unsigned long)jsonDict.count);
+                //NSLog(@"intention is: %@ with number of texts: %lu", intentions, (unsigned long)jsonDict.count);
                 
-                
-                [xSelf downloadTextsArray:array atIndex:index + 1];
+                if (index + 1 < array.count) {
+                    [xSelf downloadTextsArray:array atIndex:index + 1 withCompletion:block];
+                }
+                else {
+                    if (block) {
+                        block(YES, nil);
+                    }
+                }
                 
             }
             else {
                 NSLog(@"error downloading texts: %@", error.userInfo);
+                if (block) {
+                    block(NO, error);
+                }
             }
         }];
-    } else {
-        NSLog(@"succeeded");
     }
 }
 
@@ -371,5 +380,83 @@
         }
     }
 }
+
+
+
+#pragma mark - Old Download Functions
+
+
+/*
+-(void)downloadNumImagesWithContainters:(int)numImages withCompletion:(void (^)(BOOL finished, NSError *))block {
+    [block copy];
+    
+    NSLog(@"downloading images");
+    
+    //NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/container/cvd/sweetheart?size=small", IMAGE_PREFIX]];
+    NSURL *url = [NSURL URLWithString:@"http://gw-static.azurewebsites.net/container/cvd/sweetheart/istockpairs?size=small"];
+    //NSURL *url = [NSURL  URLWithString:@"http://gw-static.azurewebsites.net/container/files/cvd/sweetheart?size=small"];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:@"fr-FR" forHTTPHeaderField:@"Accept-Language"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (!error) {
+            
+            __weak __block ServerComm *weakSelf = self;
+            
+            NSMutableArray *containerArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            
+            [weakSelf downloadImagesForContainers:containerArray withCompletion:^(NSMutableArray *imagePathsToDownload, NSManagedObjectContext *managedContext, NSError *error) {
+                
+                for (int i = 0; i < numImages; i++) {
+                    [weakSelf downloadImagesWithURLArray:imagePathsToDownload andManagedContext:managedContext];
+                }
+                
+            }];
+        }
+    }];
+    
+}
+
+-(void)downloadImagesForContainers:(NSArray*)containers withCompletion:(void (^)(NSMutableArray *imagePathsToDownload, NSManagedObjectContext *managedContext, NSError *error))block {
+    
+    [block copy];
+    
+    NSDictionary *dict = [containers objectAtIndex:0];
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/container/files%@", IMAGE_PREFIX, dict[@"id"]]];
+    NSLog(@"url is: %@", [NSString stringWithFormat:@"%@%@", IMAGE_PREFIX, dict[@"id"]]);
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:@"fr-FR" forHTTPHeaderField:@"Accept-Language"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (!error) {
+            NSMutableArray *imagePaths = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            
+            NSManagedObjectContext *newContext = [[NSManagedObjectContext alloc] init];
+            [newContext setPersistentStoreCoordinator:persistentStore];
+            [newContext setMergePolicy:[[NSMergePolicy alloc] initWithMergeType:NSMergeByPropertyObjectTrumpMergePolicyType]];
+            
+            // fetch the images we stored
+            NSArray *imageArray = [newContext executeFetchRequest:[[NSFetchRequest alloc] initWithEntityName:@"Image"] error:nil];
+            NSLog(@"number of images: %lu", (unsigned long)imageArray.count);
+            
+            [self removeImagesInArray:imagePaths imageArray:imageArray];
+            
+            block(imagePaths, newContext, nil);
+        }
+    }];
+}
+ 
+ */
 
 @end

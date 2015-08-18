@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "Text.h"
 
+@class GWText;
+
 @interface TextScrollViewModel : NSObject
 
 // initializer for Text objects in an array
@@ -19,7 +21,7 @@
 -(NSString*)textContentAtIndex:(NSInteger)index;
 -(NSString*)textIdForTextAtIndex:(NSInteger)index;
 -(BOOL)wantsFacebookShareForTextAtIndex:(int)index;
--(Text*)textObjectAtIndex:(NSInteger)index;
+-(GWText*)textObjectAtIndex:(NSInteger)index;
 -(NSArray*)theTexts;
 
 @end

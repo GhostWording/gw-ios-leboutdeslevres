@@ -7,6 +7,7 @@
 //
 
 #import "TextObject.h"
+#import "GWText.h"
 
 @implementation TextObject
 
@@ -20,7 +21,7 @@
     return self;
 }
 
--(id)initWithWeight:(float)theWeight andText:(Text*)theText {
+-(id)initWithWeight:(float)theWeight andText:(GWText*)theText {
     
     if (self = [super init]) {
         weight = theWeight;

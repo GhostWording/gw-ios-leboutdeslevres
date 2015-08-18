@@ -95,4 +95,8 @@
     return [self colorWithHexString:@"d9d9d9"];
 }
 
++(UIColor*)appLightOverlayColor {
+    return [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.75];
+}
+
 @end

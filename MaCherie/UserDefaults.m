@@ -39,12 +39,140 @@
     return [[NSUserDefaults standardUserDefaults] valueForKey:@"uniqueId"];
 }
 
+
++(NSDate*)dateInstalled {
+    
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"installDate"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setValue:[NSDate date] forKey:@"installDate"];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"installDate"];
+}
+
++(void)setDateInstalled:(NSDate *)installDate {
+    [[NSUserDefaults standardUserDefaults] setValue:installDate forKey:@"installDate"];
+}
+
+
++(NSNumber*)numberOfMessagesSent {
+    
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"numMessagesSent"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:0] forKey:@"numMessagesSent"];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"numMessagesSent"];
+}
+
++(void)incrementNumberOfMessagesSent {
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:[[UserDefaults numberOfMessagesSent] intValue] + 1] forKey:@"numMessagesSent"];
+}
+
+
++(NSNumber*)numberOfFacebookShares {
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"numFacebookShares"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:0] forKey:@"numFacebookShares"];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"numFacebookShares"];
+}
+
++(void)incrementNumberOfFacebookShares {
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:[[UserDefaults numberOfFacebookShares] intValue] + 1] forKey:@"numFacebookShares"];
+}
+
++(NSString*)currentCulture {
+    
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"currentCulture"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setValue:frenchCultureString forKey:@"currentCulture"];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"currentCulture"];
+    
+}
+
++(void)setCulture:(NSString*)newCulture {
+    [[NSUserDefaults standardUserDefaults] setValue:newCulture forKey:@"currentCulture"];
+}
+
+
 +(NSNumber*)firstLaunchOfApp {
     return [[NSUserDefaults standardUserDefaults] valueForKey:@"firstLaunch"];
 }
 
 +(void)setFirstLaunchOfApp:(BOOL)firstLaunch {
     [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:firstLaunch] forKey:@"firstLaunch"];
+}
+
++(NSNumber*)hasRatedApp {
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"hasRatedApp"] == nil) {
+        return [NSNumber numberWithBool:NO];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"hasRatedApp"];
+}
+
++(void)hasRatedApp:(NSNumber*)hasRated {
+    [[NSUserDefaults standardUserDefaults] setValue:hasRated forKey:@"hasRatedApp"];
+}
+
++(NSNumber*)timeSpentInApp {
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"timeSpentInApp"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithFloat:0] forKey:@"timeSpentInApp"];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"timeSpentInApp"];
+}
+
++(void)increaseTimeBy:(NSNumber *)timeToIncreaseBy {
+    NSNumber *number = (NSNumber*)[[NSUserDefaults standardUserDefaults] valueForKey:@"timeSpentInApp"];
+    
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithFloat:[number floatValue] + [timeToIncreaseBy floatValue]] forKey:@"timeSpentInApp"];
+}
+
++(NSNumber*)numberOfTextRefreshes {
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"numTextRefreshes"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:0] forKey:@"numTextRefreshes"];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"numTextRefreshes"];
+}
+
++(void)increaseNumberOfTextRefreshes {
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"numTextRefreshes"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:0] forKey:@"numTextRefreshes"];
+    }
+    
+    NSNumber *number = [[NSUserDefaults standardUserDefaults] valueForKey:@"numTextRefreshes"];
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:([number intValue] + 1)] forKey:@"numTextRefreshes"];
+}
+
++(NSNumber*)numberOfTextRefreshesByUser {
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"numTextRefreshesByUser"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:0] forKey:@"numTextRefreshesByUser"];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"numTextRefreshesByUser"];
+}
+
++(void)increaseNumberOfTextRefreshesByUser {
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"numTextRefreshesByUser"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:0] forKey:@"numTextRefreshesByUser"];
+    }
+    
+    NSNumber *number = [[NSUserDefaults standardUserDefaults] valueForKey:@"numTextRefreshesByUser"];
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:([number intValue] + 1)] forKey:@"numTextRefreshesByUser"];
+}
+
++(NSNumber*)numberOfImageRefreshesByUser {
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"numImageRefreshesByUser"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:0] forKey:@"numImageRefreshesByUser"];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"numImageRefreshesByUser"];
+}
+
++(void)increaseNumberOfImageRefreshesByUser {
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithInt:[[self numberOfImageRefreshesByUser] intValue] + 1] forKey:@"numImageRefreshesByUser"];
 }
 
 +(NSNumber*)userAgeSegment {
@@ -72,6 +200,19 @@
 
 +(void)setUserWantsNotification:(BOOL)wantsNotification {
     return [[NSUserDefaults standardUserDefaults] setBool:wantsNotification forKey:@"wantsNotification"];
+}
+
+
++(NSNumber*)hasPressedIntentionButton {
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"hasPressedIntention"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:@"hasPressedIntention"];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"hasPressedIntention"];
+}
+
++(void)setHasPressedIntentionButton:(BOOL)hasPressedIntention {
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:hasPressedIntention] forKey:@"hasPressedIntention"];
 }
 
 
