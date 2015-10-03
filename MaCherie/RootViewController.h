@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
+#import <MessageUI/MessageUI.h>
 
 @interface RootViewController : UIViewController 
 

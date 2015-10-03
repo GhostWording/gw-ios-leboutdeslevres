@@ -10,4 +10,9 @@
 
 @interface DefaultButton : UIButton
 
+@property (nonatomic, strong) UIColor *buttonSelectedBackgroundColor;
+@property (nonatomic, strong) UIColor *buttonBackgroundColor;
+@property (nonatomic, strong) UIColor *buttonBorderSelectedColor;
+@property (nonatomic, strong) UIColor *buttonBorderColor;
+
 @end

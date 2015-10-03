@@ -12,7 +12,6 @@
 #import "UserDefaults.h"
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
-#import <FacebookSDK/FacebookSDK.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import "RootViewController.h"
@@ -44,16 +43,19 @@
     NSLog(@"did finish launching");
     comm = [[ServerComm alloc] init];
     viewModel = [[RootViewModel alloc] init];
-    
-    [UserDefaults setCulture:frenchCultureString];
-    
+        
     [Fabric with:@[CrashlyticsKit]];
     
-    
-    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)])
-    {
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge|UIUserNotificationTypeAlert|UIUserNotificationTypeSound) categories:nil];
-        [application registerUserNotificationSettings:settings];
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(currentUserNotificationSettings)]) {
+        UIUserNotificationSettings *settings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+        
+        if (settings.types != UIUserNotificationTypeNone) {
+            [UserDefaults setAcceptedSystemNotifications:YES];
+        }
+        else {
+            [UserDefaults setAcceptedSystemNotifications:NO];
+        }
+        
     }
     
     // seed the random generator
@@ -116,7 +118,18 @@
     
     [[GWCoreDataManager sharedInstance] saveContext];
     
-    if ([[UserDefaults userWantsNotification] boolValue] == YES) {
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(currentUserNotificationSettings)]) {
+        UIUserNotificationSettings *notificaitonSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+        
+        if ([[UserDefaults userWantsNotification] boolValue] == YES && notificaitonSettings.types != UIUserNotificationTypeNone) {
+            NotificationManager *notifMan = [[NotificationManager alloc] init];
+            [notifMan scheduleRandomNotification];
+        }
+        else {
+            [[UIApplication sharedApplication] cancelAllLocalNotifications];
+        }
+    }
+    else if ([[UserDefaults userWantsNotification] boolValue] == YES) {
         NotificationManager *notifMan = [[NotificationManager alloc] init];
         [notifMan scheduleRandomNotification];
     }
@@ -140,6 +153,8 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
+    [UserDefaults setTimeSpentInAppLSinceLaunch:0];
+    
     [[CustomAnalytics sharedInstance] postActionWithType:@"AppFocus" actionLocation:@"AppLaunch" targetType:@"" targetId:@"" targetParameter:@""];
     [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_APP_EVENT withAction:@"AppLaunch" withLabel:@"AppFocus" wtihValue:nil];
 
@@ -160,6 +175,8 @@
         
     }];
     
+    NSLog(@"did become active");
+    
     [viewModel downloadTextsForArea:[ConstantsManager sharedInstance].area withCompletion:^(NSArray *allTexts, NSError *error) {
         
         NSLog(@"all texts downloaded");
@@ -168,7 +185,7 @@
     
     // Call the 'activateApp' method to log an app event for use
     // in analytics and advertising reporting.
-    [FBAppEvents activateApp];
+    [FBSDKAppEvents activateApp];
     
     // bool variable to make sure the view will appear method won't be called when we launch the app
     // but we need it when it becomes active
@@ -183,6 +200,31 @@
     [self performSelector:@selector(increaseTimeSpentInApp) withObject:nil afterDelay:1.0];
 }
 
+
+-(void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+    
+    NSLog(@"registering user notifications");
+    
+    if (notificationSettings.types != UIUserNotificationTypeNone) {
+        NSLog(@"wants notifications");
+        
+        [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_APP_EVENT withAction:GA_ACTION_BUTTON_PRESSED withLabel:@"UserWantsNotifications" wtihValue:nil];
+        [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_LOGIN targetType:@"Command" targetId:@"UserWantsNotifications" targetParameter:@""];
+        
+        [UserDefaults setAcceptedSystemNotifications:YES];
+    }
+    else {
+        NSLog(@"does not want notifications");
+        
+        [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_APP_EVENT withAction:GA_ACTION_BUTTON_PRESSED withLabel:@"UserDoesNotWantNotifications" wtihValue:nil];
+        [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_LOGIN targetType:@"Command" targetId:@"UserDoesNotWantNotifications" targetParameter:@""];
+        
+        [UserDefaults setAcceptedSystemNotifications:NO];
+        
+    }
+    
+}
+
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
@@ -192,6 +234,7 @@
 
 -(void)increaseTimeSpentInApp {
     
+    [UserDefaults increaseTimeSpentInAppSinceLaunchBy:[NSNumber numberWithFloat:1.0]];
     [UserDefaults increaseTimeBy:[NSNumber numberWithFloat:1.0f]];
     [self performSelector:@selector(increaseTimeSpentInApp) withObject:nil afterDelay:1.0];
     

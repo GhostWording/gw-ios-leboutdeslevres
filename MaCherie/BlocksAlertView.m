@@ -8,6 +8,46 @@
 
 #import "BlocksAlertView.h"
 
+@interface BlocksAlertView () <UIAlertViewDelegate> {
+    void (^completionBlock)(int buttonIndex, UIAlertView *alert);
+}
+
+@end
+
 @implementation BlocksAlertView
+
+-(id)init {
+    if (self = [super init]) {
+        completionBlock = nil;
+        self.delegate = self;
+    }
+    
+    return self;
+}
+
+-(void)buttonPressedWithCompletion:(void (^)(int buttonIndex, UIAlertView *alert))block {
+    completionBlock = [block copy];
+}
+
+-(void)setDelegate:(id)delegate {
+    
+    if (self.delegate != self) {
+        [super setDelegate:self];
+    }
+    
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (completionBlock != nil) {
+        
+        if (buttonIndex == [alertView cancelButtonIndex]) {
+            completionBlock((int)buttonIndex, self);
+        }
+        else {
+            completionBlock((int)buttonIndex, self);
+        }
+        
+    }
+}
 
 @end

@@ -84,7 +84,7 @@
         return [RecipientObject recipientSweetheartMale];
     }
     
-    return nil;
+    return [RecipientObject recipientSweetheartFemale];
 }
 
 -(void)fetchIntentionsForArea:(NSString *)theArea withCulture:(NSString*)theCulture withCompletion:(void (^)(NSArray *, NSError *))block {

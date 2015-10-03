@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+#define LBDLocalizedString(key, comment) [LBDLocalization LBDLocalizedStringForKey:(key)]
+
 @interface LBDLocalization : NSObject
+
++(NSString*)LBDLocalizedStringForKey:(NSString *)key;
 
 @end

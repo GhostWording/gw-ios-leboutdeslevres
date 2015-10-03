@@ -36,7 +36,7 @@
     
     NSString *uniqueId = [UserDefaults userUniqueId];
     
-    NSURL  *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"http://api.cvd.io/userevent?ActionType=%@&ActionLocation=%@&TargetParameter=%@&TargetType=%@&TargetId=%@&AreaId=%@&DeviceId=%@", actionType, actionLocation, targetParameter, targetType, targetId, AREA, uniqueId]];
+    NSURL  *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"http://gw-usertracking.azurewebsites.net/userevent?ActionType=%@&ActionLocation=%@&TargetParameter=%@&TargetType=%@&TargetId=%@&AreaId=%@&DeviceId=%@", actionType, actionLocation, targetParameter, targetType, targetId, AREA, uniqueId]];
     
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];

@@ -11,10 +11,10 @@
 #import "ImageScrollViewModel.h"
 #import "UIColor+Extension.h"
 #import "UIFont+ArialAndHelveticaNeue.h"
-#import "TimeOutManager.h"
 #import "BoxedActivityIndicatorView.h"
 #import "GoogleAnalyticsCommunication.h"
 #import "CustomAnalytics.h"
+#import "LBDLocalization.h"
 
 @interface ImageScrollView () <UIScrollViewDelegate> {
     ImageScrollViewModel *model;
@@ -127,7 +127,7 @@
     swipeLabel.layer.backgroundColor = [UIColor whiteColor].CGColor;
     swipeLabel.layer.borderWidth = 2.0;
     swipeLabel.layer.borderColor = [UIColor appBlueColor].CGColor;
-    swipeLabel.text = @"faites-moi glisser !";
+    swipeLabel.text = LBDLocalizedString(@"<LBDLMakeMeSlide>", nil);
     swipeLabel.textColor = [UIColor appBlueColor];
     swipeLabel.textAlignment = NSTextAlignmentCenter;
     swipeLabel.font = [UIFont noteworthyBoldWithSize:21.0];
@@ -149,6 +149,11 @@
 #pragma mark - Loading and Updating View
 
 -(void)populateScrollView:(NSInteger)numberOfImages {
+    
+    for (UIView *view in imageScrollView.subviews) {
+        [view removeFromSuperview];
+    }
+    
     for (int i = 0; i < numberOfImages; i++) {
         [self addImageAtIndex:i];
     }
@@ -185,7 +190,7 @@
     refreshLabel.textColor = [UIColor appBlueColor];
     refreshLabel.textAlignment = NSTextAlignmentCenter;
     refreshLabel.font = [UIFont helveticaNeueBoldWithSize:17.0];
-    refreshLabel.text = @"Nouvelles images";
+    refreshLabel.text = LBDLocalizedString(@"<LBDLNewImages>", nil);
     [imageScrollView addSubview:refreshLabel];
     
     numPages++;
@@ -204,6 +209,14 @@
 -(NSString*)selectedImageId {
     if (currentPage < model.numberOfImages) {
         return [model imageNameAtIndex:currentPage];
+    }
+    
+    return nil;
+}
+
+-(NSString*)selectedImagePath {
+    if (currentPage < model.numberOfImages) {
+        return [model imagePathAtIndex:currentPage];
     }
     
     return nil;
@@ -259,8 +272,6 @@
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(shakeAnimateScrollView) object:nil];
-    
-    [[TimeOutManager shareTimeOutManager] restartTime];
     
     if (swipeViewForScroll != nil && swipeViewForScroll.alpha == 1.0f) {
         [UIView animateWithDuration:0.5 animations:^{

@@ -7,15 +7,27 @@
 //
 
 #import "LoginViewController.h"
+#import "DefaultButton.h"
 #import "UIColor+Extension.h"
 #import "UIFont+ArialAndHelveticaNeue.h"
-#import <FacebookSDK/FacebookSDK.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import "GoogleAnalyticsCommunication.h"
 #import "CustomAnalytics.h"
+#import "LBDLocalization.h"
+#import "RootViewModel.h"
+#import "UserDefaults.h"
+#import "GWLocalizedBundle.h"
+#import "ConstantsManager.h"
 
-@interface LoginViewController () <FBSDKLoginButtonDelegate>
+@interface LoginViewController () <FBSDKLoginButtonDelegate> {
+    DefaultButton *frenchButton;
+    DefaultButton *englishButton;
+    DefaultButton *spanishButton;
+    UIButton *noFacebookLoginButton;
+    RootViewModel *_viewModel;
+    
+}
 
 @end
 
@@ -24,6 +36,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    _viewModel = [[RootViewModel alloc] init];
     
     UIImageView *appLogo = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame) * 0.28, CGRectGetHeight(self.view.frame) * 0.1, CGRectGetWidth(self.view.frame) * 0.44, CGRectGetWidth(self.view.frame) * 0.44)];
     [appLogo setImage:[UIImage imageNamed:@"appDisplayIcon.png"]];
@@ -35,14 +48,61 @@
     loginButton.delegate = self;
     [self.view addSubview:loginButton];
     
-    UIButton *noFacebookLoginButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    noFacebookLoginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [noFacebookLoginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [noFacebookLoginButton setTitleColor:[UIColor clearColor] forState:UIControlStateHighlighted];
-    [noFacebookLoginButton setTitle:@"Utiliser sans connexion Facebook" forState:UIControlStateNormal];
+    [noFacebookLoginButton setTitle:LBDLocalizedString(@"<LBDLuseWithoutFacebookConnection>", nil) forState:UIControlStateNormal];
     [noFacebookLoginButton addTarget:self action:@selector(loginWithoutFacebook) forControlEvents:UIControlEventTouchUpInside];
     noFacebookLoginButton.titleLabel.font = [UIFont helveticaNeueBoldWithSize:13.0];
     noFacebookLoginButton.frame = CGRectMake(CGRectGetMinX(loginButton.frame), CGRectGetMaxY(loginButton.frame), CGRectGetWidth(loginButton.frame), 40);
     [self.view addSubview:noFacebookLoginButton];
+    
+    frenchButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame)*0.35 - 45, CGRectGetMidY(self.view.frame)  + 40, 90, 36)];
+    frenchButton.buttonBackgroundColor = [UIColor whiteColor];
+    frenchButton.buttonSelectedBackgroundColor = [UIColor appBlueColor];
+    frenchButton.buttonBorderSelectedColor = [UIColor whiteColor];
+    frenchButton.layer.borderWidth = 1.0;
+    [frenchButton setTitle:@"Francais" forState:UIControlStateNormal];
+    [frenchButton setTitleColor:[UIColor appBlueColor] forState:UIControlStateNormal];
+    [frenchButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+    [frenchButton addTarget:self action:@selector(languageButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:frenchButton];
+    
+    englishButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) - 45, CGRectGetMinY(frenchButton.frame), 90, 36)];
+    englishButton.buttonBackgroundColor = [UIColor whiteColor];
+    englishButton.buttonSelectedBackgroundColor = [UIColor appBlueColor];
+    englishButton.buttonBorderSelectedColor = [UIColor whiteColor];
+    englishButton.layer.borderWidth = 1.0;
+    [englishButton setTitle:@"English" forState:UIControlStateNormal];
+    [englishButton setTitleColor:[UIColor appBlueColor] forState:UIControlStateNormal];
+    [englishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+    [englishButton addTarget:self action:@selector(languageButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:englishButton];
+    
+    spanishButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) * 1.65 - 45, CGRectGetMinY(englishButton.frame), 90, 36)];
+    spanishButton.buttonBackgroundColor = [UIColor whiteColor];
+    spanishButton.buttonSelectedBackgroundColor = [UIColor appBlueColor];
+    spanishButton.buttonBorderSelectedColor = [UIColor whiteColor];
+    spanishButton.layer.borderWidth = 1.0;
+    [spanishButton setTitle:@"Español" forState:UIControlStateNormal];
+    [spanishButton setTitleColor:[UIColor appBlueColor] forState:UIControlStateNormal];
+    [spanishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+    [spanishButton addTarget:self action:@selector(languageButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:spanishButton];
+    
+    
+    if ([[UserDefaults currentCulture] isEqualToString: frenchCultureString]) {
+        [frenchButton setSelected:YES];
+        [GWLocalizedBundle setLanguage:frenchCultureString];
+    }
+    else if([[UserDefaults currentCulture] isEqualToString: spanishCultureString]) {
+        [spanishButton setSelected:YES];
+        [GWLocalizedBundle setLanguage:englishCultureString];
+    }
+    else if([[UserDefaults currentCulture] isEqualToString: englishCultureString]) {
+        [englishButton setSelected:YES];
+        [GWLocalizedBundle setLanguage:englishCultureString];
+    }
     
     
     self.view.backgroundColor = [UIColor appBlueColor];
@@ -66,6 +126,54 @@
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+}
+
+-(void)updateViewData {
+    [noFacebookLoginButton setTitle:LBDLocalizedString(@"<LBDLuseWithoutFacebookConnection>", nil) forState:UIControlStateNormal];
+}
+
+-(void)languageButtonPressed:(DefaultButton*)button {
+    
+    [frenchButton setSelected:NO];
+    [englishButton setSelected:NO];
+    [spanishButton setSelected:NO];
+    
+    [button setSelected:YES];
+    
+    RootViewModel *viewModel = [[RootViewModel alloc] init];
+    
+    if (button == englishButton) {
+        [UserDefaults setCulture:englishCultureString];
+        [GWLocalizedBundle setLanguage:englishCultureString];
+        
+        [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_LANGUAGE withAction:GA_ACTION_BUTTON_PRESSED withLabel:englishCultureString wtihValue:nil];
+        [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_SETTINGS targetType:@"Command" targetId:GA_CATEGORY_LANGUAGE targetParameter:englishCultureString];
+        
+        
+    }
+    else if(button == frenchButton) {
+        [UserDefaults setCulture:frenchCultureString];
+        [GWLocalizedBundle setLanguage:frenchCultureString];
+        
+        [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_LANGUAGE withAction:GA_ACTION_BUTTON_PRESSED withLabel:frenchCultureString wtihValue:nil];
+        [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_SETTINGS targetType:@"Command" targetId:GA_CATEGORY_LANGUAGE targetParameter:frenchCultureString];
+        
+    }
+    else if(button == spanishButton) {
+        [UserDefaults setCulture:spanishCultureString];
+        [GWLocalizedBundle setLanguage:englishCultureString];
+        
+        [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_LANGUAGE withAction:GA_ACTION_BUTTON_PRESSED withLabel:spanishCultureString wtihValue:nil];
+        [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_SETTINGS targetType:@"Command" targetId:GA_CATEGORY_LANGUAGE targetParameter:spanishCultureString];
+        
+    }
+    
+    [self updateViewData];
+    
+    [viewModel downloadTextsForArea:[ConstantsManager sharedInstance].area withCompletion:^(NSArray *theTexts, NSError *error) {
+        
+    }];
     
 }
 

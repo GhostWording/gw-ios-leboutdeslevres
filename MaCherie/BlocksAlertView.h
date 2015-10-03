@@ -10,4 +10,6 @@
 
 @interface BlocksAlertView : UIAlertView
 
+-(void)buttonPressedWithCompletion:(void (^)(int buttonIndex, UIAlertView *alert))block;
+
 @end

@@ -18,7 +18,6 @@
 #import "UserDefaults.h"
 #import "DefaultButton.h"
 #import <FBSDKMessengerShareKit/FBSDKMessengerShareKit.h>
-#import <FacebookSDK/FacebookSDK.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
 #import "BoxedActivityIndicatorView.h"
 
@@ -200,6 +199,7 @@ const int numImagesToLoad = 20;
     DataManager *dataMan = [[DataManager alloc] init];
     
     if ([dataMan numTexts] >= numTextsToLoad && [dataMan numImages] >= numImagesToLoad) {
+        
         [UIView animateWithDuration:0.3 animations:^{
             loadDataView.alpha = 0.0f;
         }completion:^(BOOL completion) {
@@ -332,20 +332,14 @@ const int numImagesToLoad = 20;
 
 -(void)sendImage {
     if ([collectionView selectedImage] != nil && [collectionView selectedText] != nil) {
-        if ([FBSDKMessengerSharer messengerPlatformCapabilities] & FBSDKMessengerPlatformCapabilityImage) {
-            
-            Text *theText = [collectionView selectedText];
-            Image *theImage = [collectionView selectedImage];
-            
-            UIImage *imageToSend = [self createImageToSendWithImage:[UIImage imageWithData:theImage.imageData] andText:theText.content];
-            
-            [FBSDKMessengerSharer shareImage:imageToSend withOptions:nil];
-            
-        }
-        else {
-            NSString *appStoreLink = @"https://itunes.apple.com/us/app/facebook-messenger/id454638411?mt=8";
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:appStoreLink]];
-        }
+        
+        Text *theText = [collectionView selectedText];
+        Image *theImage = [collectionView selectedImage];
+        
+        UIImage *imageToSend = [self createImageToSendWithImage:[UIImage imageWithData:theImage.imageData] andText:theText.content];
+        
+        [FBSDKMessengerSharer shareImage:imageToSend withOptions:nil];
+        
     }
 }
 

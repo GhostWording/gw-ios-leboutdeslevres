@@ -18,5 +18,6 @@
 -(NSInteger)numberOfImages;
 -(UIImage*)imageAtIndex:(NSInteger)index;
 -(NSString*)imageNameAtIndex:(NSInteger)index;
+-(NSString*)imagePathAtIndex:(NSInteger)index;
 
 @end

@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "E53BFA205D0BFF33C52D732F027126E8EA1690C5",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "D802F1AED03BC8216266C2E5EAC61C9F435A62D3" : 0,
+    "E53BFA205D0BFF33C52D732F027126E8EA1690C5" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "D87551EA-BF87-4C00-AF7F-3C5B85CF3171",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "D802F1AED03BC8216266C2E5EAC61C9F435A62D3" : "..\/..\/..\/..\/..\/..\/Documents\/GWFramework",
+    "E53BFA205D0BFF33C52D732F027126E8EA1690C5" : "MaCherie\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "MaCherie",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "MaCherie.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/GhostWording\/gw-ios-common.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "D802F1AED03BC8216266C2E5EAC61C9F435A62D3"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/GhostWording\/gw-ios-leboutdeslevres.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E53BFA205D0BFF33C52D732F027126E8EA1690C5"
+    }
+  ]
+}

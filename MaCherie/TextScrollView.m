@@ -11,10 +11,10 @@
 #import "UIFont+ArialAndHelveticaNeue.h"
 #import "NSString+TextHeight.h"
 #import "UIColor+Extension.h"
-#import "TimeOutManager.h"
 #import "BoxedActivityIndicatorView.h"
 #import "GoogleAnalyticsCommunication.h"
 #import "CustomAnalytics.h"
+#import "LBDLocalization.h"
 
 @interface TextScrollView () <UIScrollViewDelegate> {
     TextScrollViewModel *model;
@@ -90,6 +90,10 @@
 
 -(void)populateScrollView:(NSInteger)numTexts {
     
+    for (UIView *view in textScrollView.subviews) {
+        [view removeFromSuperview];
+    }
+    
     for (int i = 0; i < numTexts; i++) {
         [self addTextAtIndex:i];
     }
@@ -143,7 +147,7 @@
     refreshLabel.textColor = [UIColor appBlueColor];
     refreshLabel.textAlignment = NSTextAlignmentCenter;
     refreshLabel.font = [UIFont helveticaNeueBoldWithSize:16];
-    refreshLabel.text = @"Nouveaux textes";
+    refreshLabel.text = LBDLocalizedString(@"<LBDLNewTexts>", nil);
     [scrollViewContents addObject:refreshLabel];
     [textScrollView addSubview:refreshLabel];
     
@@ -162,7 +166,7 @@
     [cameraViewButton addSubview:cameraImageView];
     
     UILabel *onlyImageLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(cameraImageView.frame) + 5, 0, CGRectGetWidth(cameraViewButton.frame) - CGRectGetMaxX(cameraImageView.frame) - 5 - 5, CGRectGetHeight(cameraViewButton.frame))];
-    onlyImageLabel.text = @"Envoyer la photo seule";
+    onlyImageLabel.text = LBDLocalizedString(@"<LBDLSendPhoto>", nil);
     onlyImageLabel.textColor = [UIColor appBlueColor];
     onlyImageLabel.textAlignment = NSTextAlignmentLeft;
     onlyImageLabel.numberOfLines = 0;
@@ -183,7 +187,7 @@
     [composeTextView addSubview:composeTextIcon];
     
     UILabel *editTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, CGRectGetMinX(composeTextIcon.frame) - 10, CGRectGetHeight(composeTextView.frame))];
-    editTextLabel.text = @"Ecrire mon propre texte";
+    editTextLabel.text = LBDLocalizedString(@"<LBDLWriteNewText>", nil);
     editTextLabel.textColor = [UIColor appBlueColor];
     editTextLabel.textAlignment = NSTextAlignmentRight;
     editTextLabel.numberOfLines = 0;
@@ -262,7 +266,7 @@
     swipeLabel.layer.backgroundColor = [UIColor whiteColor].CGColor;
     swipeLabel.layer.borderWidth = 2.0;
     swipeLabel.layer.borderColor = [UIColor appBlueColor].CGColor;
-    swipeLabel.text = @"faites-moi glisser !";
+    swipeLabel.text = LBDLocalizedString(@"<LBDLMakeMeSlide>", nil);
     swipeLabel.textColor = [UIColor appBlueColor];
     swipeLabel.textAlignment = NSTextAlignmentCenter;
     swipeLabel.font = [UIFont noteworthyBoldWithSize:21.0];
@@ -372,9 +376,7 @@
 #pragma mark Scroll View Delegate
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    
-    [[TimeOutManager shareTimeOutManager] restartTime];
-    
+        
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(animateNextPage) object:nil];
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(shakeAnimateScrollView) object:nil];
     scrollViewHasBeenInteractedWith = YES;

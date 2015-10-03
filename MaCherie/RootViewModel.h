@@ -19,9 +19,8 @@
 @property (nonatomic, readwrite) int numSpecialOccasionTexts;
 @property (nonatomic, readwrite) int numSpecialOccasionImages;
 
--(void)setRandomTextForSpecialOccasionTexts:(NSArray*)theTexts;
+-(void)setRandomTextForSpecialOccasionTexts:(NSArray*)theTexts withFilter:(TextFilter*)theFilter;
 -(void)setRandomTextForIntention:(NSString*)intentionSlug withNum:(int)num;
--(void)setRandomTextForIntention:(NSString *)intentionSlug andNum:(int)num andFilter:(TextFilter*)theFilter;
 -(void)setRandomImageForCurrentIntention:(NSArray *)imagesForIntention withNum:(int)num;
 
 
@@ -40,5 +39,7 @@
 -(NSArray*)randomtTextWithNum:(int)numTexts;
 -(NSArray*)randomImagesWithNum:(int)numImages;
 -(NSArray*)randomImagesWithImagesBasedOnTexts:(NSArray*)theTexts WithNum:(int)numImages;
+
+-(NSString*)addImagePathToSMS:(NSString*)theImage relativePath:(NSString*)theRelativePath;
 
 @end

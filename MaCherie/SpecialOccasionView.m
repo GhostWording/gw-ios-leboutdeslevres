@@ -17,6 +17,7 @@
 #import "GWIntention.h"
 #import "UserDefaults.h"
 #import "ConstantsManager.h"
+#import "LBDLocalization.h"
 
 @interface SpecialOccasionView () <UITableViewDataSource, UITableViewDelegate> {
     UIView *headerBorder;
@@ -63,7 +64,7 @@
         headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) * 0.1, 5, CGRectGetWidth(self.frame)*0.8, 50)];
         headerLabel.numberOfLines = 0;
         headerLabel.font = [UIFont helveticaNeueWithSize:16.0];
-        headerLabel.text = @"Occasions spéciales";
+        headerLabel.text = LBDLocalizedString(@"<LBDLSpecialOccasionsTitle>", nil);
         headerLabel.textColor = [UIColor appBlueColor];
         headerLabel.textAlignment = NSTextAlignmentCenter;
         [header addSubview:headerLabel];

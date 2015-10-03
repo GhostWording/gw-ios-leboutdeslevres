@@ -5,3 +5,43 @@
   Created by Mathieu Skulason on 15/09/15.
   Copyright (c) 2015 Mathieu Skulason. All rights reserved.
 */
+"<LBDLMyProfile>" = "My profile";
+"<LBDLIAmGender>" = "I am a";
+"<LBDLMale>" = "male";
+"<LBDLFemale>" = "female";
+"<LBDLMyAge>" = "My age";
+"<LBDLChooseALanguage>" = "Choose a language";
+"<LBDLReceiveNotifications>" = "Receive notifications";
+"<LBDLuseWithoutFacebookConnection>" = "Use without Facebook connection";
+"<LBDLFacebookShare>" = "Share";
+"<LBDLSendMessage>" = "Send";
+"<LBDLAlertThankYouTitle>" = "Thank you ?";
+"<LBDLRatingMessage>" = "Would you please like to rate our app?";
+"<LBDLNo>" = "No";
+"<LBDLYes>" = "Yes";
+"<LBDLOops>" = "Oops!";
+"<LBDLOk>" = "Ok";
+"<LBDLError>" = "Error";
+"<LBDLNoTextsForSpecialIntention>" = "Zero texts available for the given intention.";
+"<LBDLNoTextsAvailableForGivenLanguage>" = "No texts found for the selected language, would you like to download them now?";
+"<LBDLIgnore>" = "Skip";
+"<LBDLAccept>" = "Accept";
+"<LBDLCancel>" = "Cancel";
+"<LBDLCurrentlyDownloading>" = "Downloading data...";
+"<LBDLMakeMeSlide>" = "Make me slide !";
+"<LBDLNewImages>" = "New images";
+"<LBDLNewTexts>" = "New texts";
+"<LBDLSendPhoto>" = "Send photo alone";
+"<LBDLWriteNewText>" = "Write my own text";
+"<LBDLMessenger>" = "Messenger";
+"<LBDLSms>" = "Sms";
+"<LBDLEmail>" = "Email";
+"<LBDLMessageSendingNotPossible>" = "This device does not support sending sms messages.";
+"<LBDLMailSendingNotPossible>" = "This device does not support sending email messages.";
+"<LBDLSpecialOccasionsTitle>" = "Special messages";
+"<LBDLNewText>" = "New text";
+"<LBDLEditText>" = "Edit text";
+"<LBDLAccessNotificationsTitle>" = "We would like to send you messages suggestions";
+"<LBDLAccessNotificationsMessage>" = "We need to enable notifications so that new message ideas can help you get started!";
+"<LBDLAccessNotificationsCancel>" = "Next year";
+"<LBDLAccessNotificationsAccept>" = "Grant access now";

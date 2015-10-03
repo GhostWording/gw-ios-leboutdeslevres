@@ -103,6 +103,45 @@
     [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:firstLaunch] forKey:@"firstLaunch"];
 }
 
+
+// Number of times the user has denied the notifications
++(NSDate*)lastTimeAskedForNotificationPermission {
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"lastTimeAskedForNotificaitonPermission"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setValue:[NSDate dateWithTimeIntervalSinceNow: - 48 * 60 * 60 - 10] forKey:@"lastTimeAskedForNotificaitonPermission"];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"lastTimeAskedForNotificaitonPermission"];
+}
+
++(void)setLastTimeAskedForNotificationPermission:(NSDate *)lastTimeDate {
+    [[NSUserDefaults standardUserDefaults] setValue:lastTimeDate forKey:@"lastTimeAskedForNotificaitonPermission"];
+}
+
++(NSNumber*)acceptedNotifications {
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"acceptedNotifications"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:@"acceptedNotifications"];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"acceptedNotifications"];
+}
+
++(void)setAcceptedNotifications:(BOOL)acceptedNotification {
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:acceptedNotification] forKey:@"acceptedNotifications"];
+}
+
++(NSNumber*)accpetedSystemNotifications {
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"acceptedSystemNotifications"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:@"acceptedSystemNotifications"];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"acceptedSystemNotifications"];
+}
+
++(void)setAcceptedSystemNotifications:(BOOL)acceptedNotification {
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:acceptedNotification] forKey:@"acceptedSystemNotifications"];
+}
+
+
 +(NSNumber*)hasRatedApp {
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"hasRatedApp"] == nil) {
         return [NSNumber numberWithBool:NO];
@@ -114,6 +153,35 @@
 +(void)hasRatedApp:(NSNumber*)hasRated {
     [[NSUserDefaults standardUserDefaults] setValue:hasRated forKey:@"hasRatedApp"];
 }
+
++(NSNumber*)hasViewedSettings {
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"hasViewedSettings"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:@"hasViewedSettings"];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"hasViewedSettings"];
+}
+
++(void)setHasViewedSettings:(NSNumber *)hasViewed {
+    [[NSUserDefaults standardUserDefaults] setValue:hasViewed forKey:@"hasViewedSettings"];
+}
+
++(NSNumber*)timeSpentInAppSinceLaunch {
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"timeSpentInAppSinceLaunch"] == nil) {
+        [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithFloat:0] forKey:@"timeSpentInAppSinceLaunch"];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"timeSpentInAppSinceLaunch"];
+}
+
++(void)setTimeSpentInAppLSinceLaunch:(float)timeSpentInApp {
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithFloat:timeSpentInApp] forKey:@"timeSpentInAppSinceLaunch"];
+}
+
++(void)increaseTimeSpentInAppSinceLaunchBy:(NSNumber *)timeToIncreaseBy {
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithFloat:[[UserDefaults timeSpentInAppSinceLaunch] floatValue] + [timeToIncreaseBy floatValue]] forKey:@"timeSpentInAppSinceLaunch"];
+}
+
 
 +(NSNumber*)timeSpentInApp {
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"timeSpentInApp"] == nil) {

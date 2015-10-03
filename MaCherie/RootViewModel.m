@@ -105,14 +105,15 @@
         NSArray *allIntentions = [newDataMan fetchIntentionsOnBackgroundThread];
         //NSLog(@"all intentions: %@", allIntentions);
         NSArray *slugsFromArray = [allIntentions valueForKey:@"slugPrototypeLink"];
-        
+        NSMutableSet *set = [[NSMutableSet alloc] initWithArray:slugsFromArray];
+        NSLog(@"unique intentions: %@", set);
         if (error) {
             block(nil, error);
             return ;
         }
         
         GWDataManager *anotherDataMan = [[GWDataManager alloc] init];
-        [anotherDataMan downloadTextsWithArea:theArea withIntentionSlugs:slugsFromArray withCulture:[UserDefaults currentCulture] withCompletion:^(NSArray *textIds, NSError *error) {
+        [anotherDataMan downloadTextsWithArea:theArea withIntentionSlugs:[set allObjects] withCulture:[UserDefaults currentCulture] withCompletion:^(NSArray *textIds, NSError *error) {
             NSLog(@"downloading texts on main thread in text ids: %@", textIds);
             block(textIds, error);
         }];
@@ -146,26 +147,14 @@
     
 }
 
--(void)setRandomTextForSpecialOccasionTexts:(NSArray*)theTexts {
-    specialOccasionTextArray = theTexts;
-}
-
--(void)setRandomTextForIntention:(NSString *)intentionSlug andNum:(int)num andFilter:(TextFilter*)theFilter {
+-(void)setRandomTextForSpecialOccasionTexts:(NSArray*)theTexts withFilter:(TextFilter *)theFilter{
     
-    NSLog(@"intention slug is: %@", intentionSlug);
-    
-    GWDataManager *theDataManger = [[GWDataManager alloc] init];
-    
-    specialOccasionTextArray = [theDataManger fetchTextsForIntentionSlug:intentionSlug withCulture:[UserDefaults currentCulture]];
-    selectedIntentionSlug = intentionSlug;
-    
-    NSLog(@"count before filter: %d", (int)specialOccasionTextArray.count);
-    
-    if (theFilter) {
-        specialOccasionTextArray = [theFilter filterTextsFromArray:specialOccasionTextArray];
-        NSLog(@"count after filter: %d", (int)specialOccasionTextArray.count);
+    if (theFilter != nil) {
+        specialOccasionTextArray = [theFilter filterTextsFromArray:theTexts];
     }
-    
+    else {
+        specialOccasionTextArray = theTexts;
+    }
 }
 
 
@@ -342,6 +331,13 @@
     NSLog(@"special random iamges with count: %d", (int)allRandomImages.count);
     return allRandomImages;
     //return [dataMan randomImagesWithSpecialImagesForTexts:theTexts withNumImages:numImages];
+}
+
+-(NSString*)addImagePathToSMS:(NSString *)theImage relativePath:(NSString *)theRelativePath {
+    
+    NSString *newString = [NSString stringWithFormat:@"%@ \n\nhttp://gw-static.azurewebsites.net%@", theImage, theRelativePath];
+    
+    return newString;
 }
 
 #pragma mark - Text Filtering and Fetching

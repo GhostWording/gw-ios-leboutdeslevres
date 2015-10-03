@@ -58,4 +58,11 @@
     
 }
 
+-(NSString*)imagePathAtIndex:(NSInteger)index {
+    GWImage *img = [images objectAtIndex:index];
+    
+    return img.imageId;
+    
+}
+
 @end

@@ -20,6 +20,7 @@
 
 -(UIImage*)selectedImage;
 -(NSString*)selectedImageId;
+-(NSString*)selectedImagePath;
 -(void)reloadData;
 -(void)reloadDataAnimated:(BOOL)animated;
 

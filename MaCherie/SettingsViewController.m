@@ -14,7 +14,12 @@
 #import "TimePicker.h"
 #import "GoogleAnalyticsCommunication.h"
 #import "CustomAnalytics.h"
+#import "RootViewModel.h"
+#import "ConstantsManager.h"
+#import "GWLocalizedBundle.h"
+#import "LBDLocalization.h"
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import "BlocksAlertView.h"
 
 const float heightOffset = 20.0;
 
@@ -30,12 +35,19 @@ const float heightOffset = 20.0;
     DefaultButton *between40And64Button;
     DefaultButton *over65Button;
     
+    // language buttons
+    DefaultButton *englishButton;
+    DefaultButton *frenchButton;
+    DefaultButton *spanishButton;
+    
     // Add UIScrollView for iPhone 4 devices
     UIScrollView *scrollView;
     
     UIActivityIndicatorView *activityIndicator;
     UIView *activityIndicatorView;
     TimePicker *timePicker;
+    
+    UILabel *maleLabel, *femaleLabel, *genderLabel, *ageLabel, *title, *languageLabel, *notificationLabel;
 }
 
 @end
@@ -45,6 +57,7 @@ const float heightOffset = 20.0;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    NSLog(@"view did load");
     
     UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     closeButton.frame = CGRectMake(CGRectGetWidth(self.view.frame) - 32, heightOffset + 12, 18, 18);
@@ -61,8 +74,8 @@ const float heightOffset = 20.0;
     [self.view addSubview:overlayCancelTouchView];
     
     
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame) - CGRectGetMinX(closeButton.frame), heightOffset + 10, CGRectGetWidth(self.view.frame) - 2*(CGRectGetWidth(self.view.frame) - CGRectGetMinX(closeButton.frame)), 22)];
-    title.text = @"Mon profil";
+    title = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame) - CGRectGetMinX(closeButton.frame), heightOffset + 10, CGRectGetWidth(self.view.frame) - 2*(CGRectGetWidth(self.view.frame) - CGRectGetMinX(closeButton.frame)), 22)];
+    title.text = LBDLocalizedString(@"<LBDLMyProfile>", nil);
     title.textAlignment = NSTextAlignmentCenter;
     title.font = [UIFont helveticaNeueBoldWithSize:17.0f];
     title.textColor = [UIColor appBlueColor];
@@ -77,8 +90,8 @@ const float heightOffset = 20.0;
     [self.view addSubview:scrollView];
     
     
-    UILabel *genderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 + 15, CGRectGetWidth(self.view.frame), 20)];
-    genderLabel.text = @"Je suis";
+    genderLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0 + 15, CGRectGetWidth(self.view.frame), 20)];
+    genderLabel.text = LBDLocalizedString(@"<LBDLIAmGender>", nil);
     genderLabel.textAlignment = NSTextAlignmentCenter;
     genderLabel.font = [UIFont helveticaNeueBoldWithSize:16.0f];
     genderLabel.textColor = [UIColor appBlueColor];
@@ -98,14 +111,14 @@ const float heightOffset = 20.0;
     [femaleButton addTarget:self action:@selector(femaleButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [scrollView addSubview:femaleButton];
     
-    UILabel *maleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) - 114, CGRectGetMaxY(maleButton.frame) + 7, 100, 20)];
-    maleLabel.text = @"un homme";
+    maleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) - 114, CGRectGetMaxY(maleButton.frame) + 7, 100, 20)];
+    maleLabel.text = LBDLocalizedString(@"<LBDLMale>", nil);
     maleLabel.textAlignment = NSTextAlignmentCenter;
     maleLabel.textColor = [UIColor appBlueColor];
     [scrollView addSubview:maleLabel];
     
-    UILabel *femaleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) + 22, CGRectGetMaxY(femaleButton.frame) + 7, 100, 20)];
-    femaleLabel.text = @"une femme";
+    femaleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) + 22, CGRectGetMaxY(femaleButton.frame) + 7, 100, 20)];
+    femaleLabel.text = LBDLocalizedString(@"<LBDLFemale>", nil);
     femaleLabel.textAlignment = NSTextAlignmentCenter;
     femaleLabel.textColor = [UIColor appBlueColor];
     [scrollView addSubview:femaleLabel];
@@ -118,8 +131,8 @@ const float heightOffset = 20.0;
     }
     
     
-    UILabel *ageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(femaleLabel.frame) + 25, CGRectGetWidth(self.view.frame), 20)];
-    ageLabel.text = @"Mon âge";
+    ageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(femaleLabel.frame) + 25, CGRectGetWidth(self.view.frame), 20)];
+    ageLabel.text = LBDLocalizedString(@"<LBDLMyAge>", nil);
     ageLabel.textAlignment = NSTextAlignmentCenter;
     ageLabel.font = [UIFont helveticaNeueBoldWithSize:16.0f];
     ageLabel.textColor = [UIColor appBlueColor];
@@ -157,9 +170,46 @@ const float heightOffset = 20.0;
         [over65Button setSelected:YES];
     }
     
+    languageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(over65Button.frame) + 27, CGRectGetWidth(self.view.frame), 20)];
+    languageLabel.text = LBDLocalizedString(@"<LBDLChooseALanguage>", nil);
+    languageLabel.textAlignment = NSTextAlignmentCenter;
+    languageLabel.font = [UIFont helveticaNeueBoldWithSize:16.0];
+    languageLabel.textColor = [UIColor appBlueColor];
+    [scrollView addSubview:languageLabel];
     
-    UILabel *notificationLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(over65Button.frame) + 27, CGRectGetWidth(self.view.frame), 20)];
-    notificationLabel.text = @"Recevoir les rappels";
+    englishButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame)*0.35 - 45, CGRectGetMaxY(languageLabel.frame) + 15, 90, 36)];
+    englishButton.buttonBorderColor = [UIColor appBlueColor];
+    [englishButton setTitle:@"English" forState:UIControlStateNormal];
+    [englishButton addTarget:self action:@selector(languageButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [scrollView addSubview:englishButton];
+    
+    frenchButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) - 45, CGRectGetMinY(englishButton.frame), 90, 36)];
+    frenchButton.buttonBorderColor = [UIColor appBlueColor];
+    [frenchButton setTitle:@"Francais" forState:UIControlStateNormal];
+    [frenchButton addTarget:self action:@selector(languageButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [scrollView addSubview:frenchButton];
+    
+    spanishButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) * 1.65 - 45, CGRectGetMinY(englishButton.frame), 90, 36)];
+    spanishButton.buttonBorderColor = [UIColor appBlueColor];
+    [spanishButton setTitle:@"Español" forState:UIControlStateNormal];
+    [spanishButton addTarget:self action:@selector(languageButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [scrollView addSubview:spanishButton];
+    
+    if ([[UserDefaults currentCulture] isEqualToString: frenchCultureString]) {
+        [frenchButton setSelected:YES];
+        [GWLocalizedBundle setLanguage:frenchCultureString];
+    }
+    else if([[UserDefaults currentCulture] isEqualToString: spanishCultureString]) {
+        [spanishButton setSelected:YES];
+        [GWLocalizedBundle setLanguage:englishCultureString];
+    }
+    else if([[UserDefaults currentCulture] isEqualToString: englishCultureString]) {
+        [englishButton setSelected:YES];
+        [GWLocalizedBundle setLanguage:englishCultureString];
+    }
+    
+    notificationLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(englishButton.frame) + 27, CGRectGetWidth(self.view.frame), 20)];
+    notificationLabel.text = LBDLocalizedString(@"<LBDLReceiveNotifications>", nil);
     notificationLabel.textAlignment = NSTextAlignmentCenter;
     notificationLabel.font = [UIFont helveticaNeueBoldWithSize:16.0f];
     notificationLabel.textColor = [UIColor appBlueColor];
@@ -173,28 +223,24 @@ const float heightOffset = 20.0;
     
     
     // set the initial state of the notifications
-    if ([[UserDefaults userWantsNotification] boolValue] == YES) {
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(currentUserNotificationSettings)]) {
+        UIUserNotificationSettings *notificaitonSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+        
+        if ([[UserDefaults userWantsNotification] boolValue] == YES && notificaitonSettings.types != UIUserNotificationTypeNone) {
+            [notificationSwitch setOn:YES animated:YES];
+        }
+        else {
+            [notificationSwitch setOn:NO animated:YES];
+        }
+        
+    }
+    else if ([[UserDefaults userWantsNotification] boolValue] == YES) {
         [notificationSwitch setOn:YES animated:YES];
     }
-    
-    /*
-    UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(notificationSwitch.frame) + 25, CGRectGetWidth(self.view.frame), 20)];
-    dateLabel.text = @"Heure des rappels";
-    dateLabel.textAlignment = NSTextAlignmentCenter;
-    dateLabel.font = [UIFont helveticaNeueBoldWithSize:16.0f];
-    dateLabel.textColor = [UIColor appBlueColor];
-    [scrollView addSubview:dateLabel];
-    
-    
-    timePicker = [[TimePicker alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(dateLabel.frame) + 10, CGRectGetWidth(self.view.frame), 80)];
-    [scrollView addSubview:timePicker];
-    
-    if ([UserDefaults firstLaunchOfApp] != nil) {
-        int minutes = [UserDefaults notificationMinutes];
-        int hours = [UserDefaults notificationHour];
-        [timePicker setHour:hours andMinute:minutes];
+    else {
+        [notificationSwitch setOn:NO animated:YES];
     }
-    */
+    
     
     FBSDKLoginButton *facebookLogin = [[FBSDKLoginButton alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame) / 2.0 - 120, CGRectGetMaxY(notificationSwitch.frame) + 40, 240, 50)];
     facebookLogin.delegate = self;
@@ -217,6 +263,16 @@ const float heightOffset = 20.0;
     activityIndicatorView.hidden = YES;
     [self.view addSubview:activityIndicatorView];
      
+}
+
+-(void)updateView {
+    title.text = LBDLocalizedString(@"<LBDLMyProfile>", nil);
+    genderLabel.text = LBDLocalizedString(@"<LBDLIAmGender>", nil);
+    maleLabel.text = LBDLocalizedString(@"<LBDLMale>", nil);
+    femaleLabel.text = LBDLocalizedString(@"<LBDLFemale>", nil);
+    ageLabel.text = LBDLocalizedString(@"<LBDLMyAge>", nil);
+    languageLabel.text = LBDLocalizedString(@"<LBDLChooseALanguage>", nil);
+    notificationLabel.text = LBDLocalizedString(@"<LBDLReceiveNotifications>", nil);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -252,6 +308,35 @@ const float heightOffset = 20.0;
 -(void)wantsLocalNotification:(UISwitch*)sender {
     
     [UserDefaults setUserWantsNotification:sender.isOn];
+    
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(currentUserNotificationSettings)]) {
+        UIUserNotificationSettings *notificaitonSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+        
+        if (notificaitonSettings.types == UIUserNotificationTypeNone && sender.isOn == YES) {
+            
+            if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)])
+            {
+                UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge|UIUserNotificationTypeAlert|UIUserNotificationTypeSound) categories:nil];
+                [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+            }
+            
+            /*
+             BlocksAlertView *alertView = [[BlocksAlertView alloc] initWithTitle:LBDLocalizedString(@"<LBDLAccessNotificationsTitle>", nil) message:LBDLocalizedString(@"<LBDLAccessNotificationsMessage>", nil) delegate:nil cancelButtonTitle:LBDLocalizedString(@"<LBDLAccessNotificationsCancel>", nil) otherButtonTitles:LBDLocalizedString(@"<LBDLAccessNotificationsAccept>", nil), nil];
+             
+             [alertView buttonPressedWithCompletion:^(BOOL isCancelButton) {
+             
+             if (isCancelButton) {
+             
+             }
+             else {
+             
+             }
+             
+             }];
+             */
+        }
+    }
+    
     
     [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_ACTION_SWITCH_PRESSED withLabel:GA_LABEL_USER_WANTS_NOTIFICATION wtihValue:[NSNumber numberWithBool:sender.isOn]];
     [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_SETTINGS targetType:@"Command" targetId:@"UserWantsNotification" targetParameter:[NSString stringWithFormat:@"%d", sender.isOn]];
@@ -323,10 +408,58 @@ const float heightOffset = 20.0;
     }
 }
 
+#pragma mark - Language button Pressed
+
+-(void)languageButtonPressed:(DefaultButton*)sender {
+    
+    [englishButton setSelected:NO];
+    [frenchButton setSelected:NO];
+    [spanishButton setSelected:NO];
+    
+    [sender setSelected:YES];
+    
+    RootViewModel *viewModel = [[RootViewModel alloc] init];
+    
+    if (sender == englishButton) {
+        [UserDefaults setCulture:englishCultureString];
+        [GWLocalizedBundle setLanguage:englishCultureString];
+        
+        [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_LANGUAGE withAction:GA_ACTION_BUTTON_PRESSED withLabel:englishCultureString wtihValue:nil];
+        [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_SETTINGS targetType:@"Command" targetId:GA_CATEGORY_LANGUAGE targetParameter:englishCultureString];
+        
+    }
+    else if(sender == frenchButton) {
+        [UserDefaults setCulture:frenchCultureString];
+        [GWLocalizedBundle setLanguage:frenchCultureString];
+        
+        [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_LANGUAGE withAction:GA_ACTION_BUTTON_PRESSED withLabel:frenchCultureString wtihValue:nil];
+        [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_SETTINGS targetType:@"Command" targetId:GA_CATEGORY_LANGUAGE targetParameter:frenchCultureString];
+        
+    }
+    else if(sender == spanishButton) {
+        [UserDefaults setCulture:spanishCultureString];
+        [GWLocalizedBundle setLanguage:englishCultureString];
+        
+        [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_LANGUAGE withAction:GA_ACTION_BUTTON_PRESSED withLabel:spanishCultureString wtihValue:nil];
+        [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_SETTINGS targetType:@"Command" targetId:GA_CATEGORY_LANGUAGE targetParameter:spanishCultureString];
+    }
+    
+    [self updateView];
+    
+    [viewModel downloadTextsForArea:[ConstantsManager sharedInstance].area withCompletion:^(NSArray *theTexts, NSError *error) {
+        
+    }];
+    
+}
+
 #pragma mark - Facebook logout delegate
 
 -(void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton {
     [self performSegueWithIdentifier:@"logoutSegue" sender:self];
+}
+
+-(void)loginButton:(FBSDKLoginButton *)loginButton didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result error:(NSError *)error {
+    
 }
 
 /*

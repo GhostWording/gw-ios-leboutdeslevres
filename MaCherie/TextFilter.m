@@ -8,8 +8,10 @@
 
 #import "TextFilter.h"
 #import "Text.h"
+#import "GWText.h"
 #import "UserDefaults.h"
 #import "TagId.h"
+#import "GWTag.h"
 
 @implementation TextFilter
 
@@ -95,7 +97,7 @@
     NSMutableArray *filteredTextArray = [NSMutableArray array];
     
     for (int i = 0; i < theTexts.count; i++) {
-        Text *theText = [theTexts objectAtIndex:i];
+        GWText *theText = [theTexts objectAtIndex:i];
         
         if ([[UserDefaults userGender] intValue] == kGenderMale) {
             if ([self tuOuVousCompatible:theText.politeForm] && [self genderCompatible:theText.target andFilter:@"F"] && [self senderCompatible:theText.sender andFilter:@"H"] && [self matchesRecipientTypeTag:[theText.tagIds array] andFilter:@"9E2D23"] && [theText.culture isEqualToString:[UserDefaults currentCulture]]) {
@@ -175,7 +177,7 @@
 
 -(BOOL)matchesRecipientTypeTag:(NSArray *)tagIds andFilter:(NSString *)filterValue {
     
-    for (TagId *tag in tagIds) {
+    for (GWTag *tag in tagIds) {
         if ([tag.tagId isEqualToString:filterValue]) {
             return YES;
         }

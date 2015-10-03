@@ -5,3 +5,43 @@
   Created by Mathieu Skulason on 15/09/15.
   Copyright (c) 2015 Mathieu Skulason. All rights reserved.
 */
+"<LBDLMyProfile>" = "Mon profil";
+"<LBDLIAmGender>" = "Je suis";
+"<LBDLMale>" = "un homme";
+"<LBDLFemale>" = "une femme";
+"<LBDLMyAge>" = "Mon âge";
+"<LBDLChooseALanguage>" = "Langue des textes";
+"<LBDLReceiveNotifications>" = "Recevoir les rappels";
+"<LBDLuseWithoutFacebookConnection>" = "Utiliser sans connexion Facebook";
+"<LBDLFacebookShare>" = "Partage";
+"<LBDLSendMessage>" = "Envoi";
+"<LBDLAlertThankYouTitle>" = "Merci ?";
+"<LBDLRatingMessage>" = "Pourriez-vous svp trouver quelques instants pour noter l'application ?";
+"<LBDLNo>" = "Non";
+"<LBDLYes>" = "Oui";
+"<LBDLOops>" = "Oups!";
+"<LBDLOk>" = "Ok";
+"<LBDLError>" = "Erreur";
+"<LBDLNoTextsForSpecialIntention>" = "Zéro texte disponible pour ce destinataire et cette intention";
+"<LBDLNoTextsAvailableForGivenLanguage>" = "On a pas trouver de texte pour la langue choisi, voulez vous les télécharger maintenant?";
+"<LBDLIgnore>" = "Ignorer";
+"<LBDLAccept>" = "Accepter";
+"<LBDLCancel>" = "Annuler";
+"<LBDLCurrentlyDownloading>" = "Télechargement en cours...";
+"<LBDLMakeMeSlide>" = "faites-moi glisser !";
+"<LBDLNewImages>" = "Nouvelles images";
+"<LBDLNewTexts>" = "Nouveaux textes";
+"<LBDLSendPhoto>" = "Envoyer la photo seule";
+"<LBDLWriteNewText>" = "Ecrire mon propre texte";
+"<LBDLMessenger>" = "Messenger";
+"<LBDLSms>" = "Sms";
+"<LBDLEmail>" = "Email";
+"<LBDLMessageSendingNotPossible>" = "Cet appareil ne permet pas l'envoi de sms.";
+"<LBDLMailSendingNotPossible>" = "This device does not support sending email messages.";
+"<LBDLSpecialOccasionsTitle>" = "Occasions spéciales";
+"<LBDLNewText>" = "Nouveau texte";
+"<LBDLEditText>" = "Modifier le texte";
+"<LBDLAccessNotificationsTitle>" = "Nous souhaitons vous faire des propositions de messages";
+"<LBDLAccessNotificationsMessage>" = "Nous devons activer les notifications pour vous communiquer de nouvelles idées de messages";
+"<LBDLAccessNotificationsCancel>" = "L'année prochaine";
+"<LBDLAccessNotificationsAccept>" = "Maintenant";

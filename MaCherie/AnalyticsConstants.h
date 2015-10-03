@@ -20,10 +20,18 @@
 
 #define GA_CATEGORY_USER_INFORMATION @"UserInformation"
 #define GA_CATEGORY_TEXT_EDIT @"EditedTextIdSent"
+#define GA_CATEGORY_TEXT_EDIT_MAIL @"EditedTextIdSentMail"
+#define GA_CATEGORY_TEXT_EDIT_SMS @"EditedTextIdSentSMS"
 #define GA_CATEGORY_TEXT_CREATED @"CreatedText"
 #define GA_CATEGORY_IMAGE_EDIT @"EditedImageIdSent"
+#define GA_CATEGORY_IMAGE_EDIT_MAIL @"EditedImageIdSentMail"
+#define GA_CATEGORY_IMAGE_EDIT_SMS @"EditedImageIdSentSMS"
 #define GA_CATEGORY_TEXT_SENT @"TextIdSent"
+#define GA_CATEGORY_TEXT_SENT_MAIL @"TextIdSentMail"
+#define GA_CATEGORY_TEXT_SENT_SMS @"TextIdSentSMS"
 #define GA_CATEGORY_IMAGE_SENT @"ImageIdSent"
+#define GA_CATEGORY_IMAGE_SENT_MAIL @"ImageIdSentMail"
+#define GA_CATEGORY_IMAGE_SENT_SMS @"ImageIdSentSMS"
 #define GA_CATEGORY_IMAGE_ONLY_SENT @"ImageOnlyIdSent"
 #define GA_CATEGORY_TEXT_SHARE @"TextIdFacebookShare"
 #define GA_CATEGORY_IMAGE_SHARE @"ImageIdFacebookShare"
@@ -32,6 +40,8 @@
 #define GA_CATEGORY_APP_EVENT @"AppEvent"
 #define GA_CATEGORY_SPECIAL_INTENTION @"SpecialIntention"
 #define GA_CATEGORY_LOGIN @"Login"
+#define GA_CATEGORY_NOTIFICATION_SETTINGS @"WantsLocalNotifications"
+#define GA_CATEGORY_LANGUAGE @"LanguageChanged"
 
 // GOOGLE ANALYTCS ACTIONS //
 

@@ -17,13 +17,20 @@
 {
     if (self = [super initWithFrame:frame]) {
         self.layer.backgroundColor = [UIColor whiteColor].CGColor;
-        self.layer.cornerRadius = 6.0f;
+        self.layer.cornerRadius = 16.0f;
         self.layer.borderColor = [UIColor appBlueColor].CGColor;
         self.layer.borderWidth = 1.0f;
         
         [self setTitleColor:[UIColor appBlueColor] forState:UIControlStateNormal];
         [self setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
-        [self setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+        [self setTitleColor:[UIColor clearColor] forState:UIControlStateHighlighted];
+        
+        
+        _buttonSelectedBackgroundColor = [UIColor appBlueColor];
+        _buttonBackgroundColor = [UIColor whiteColor];
+        
+        _buttonBorderColor = [UIColor clearColor];
+        _buttonBorderSelectedColor = [UIColor clearColor];
         
     }
     
@@ -35,9 +42,28 @@
     [super setSelected:selected];
     
     if (self.isSelected) {
-        self.layer.backgroundColor = [UIColor appBlueColor].CGColor;
+        self.layer.backgroundColor = _buttonSelectedBackgroundColor.CGColor;
+        self.layer.borderColor = _buttonBorderSelectedColor.CGColor;
     } else {
-        self.layer.backgroundColor = [UIColor whiteColor].CGColor;
+        self.layer.backgroundColor = _buttonBackgroundColor.CGColor;
+        self.layer.borderColor = _buttonBorderColor.CGColor;
+    }
+    
+}
+
+-(void)setButtonBackgroundColor:(UIColor *)buttonBackgroundColor {
+    _buttonBackgroundColor = buttonBackgroundColor;
+    
+    if (self.selected == NO) {
+        self.layer.backgroundColor = _buttonBackgroundColor.CGColor;
+    }
+}
+
+-(void)setButtonSelectedBackgroundColor:(UIColor *)buttonSelectedBackgroundColor {
+    _buttonSelectedBackgroundColor = buttonSelectedBackgroundColor;
+    
+    if (self.selected == YES) {
+        self.layer.backgroundColor = _buttonSelectedBackgroundColor.CGColor;
     }
     
 }

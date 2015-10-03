@@ -41,8 +41,20 @@ static NSString *spanishCultureString = @"es-ES";
 +(NSNumber*)firstLaunchOfApp;
 +(void)setFirstLaunchOfApp:(BOOL)firstLaunch;
 
++(NSDate*)lastTimeAskedForNotificationPermission;
++(void)setLastTimeAskedForNotificationPermission:(NSDate*)lastTimeDate;
+
++(NSNumber*)acceptedNotifications;
++(void)setAcceptedNotifications:(BOOL)acceptedNotification;
+
++(NSNumber*)accpetedSystemNotifications;
++(void)setAcceptedSystemNotifications:(BOOL)acceptedNotification;
+
 +(NSNumber*)hasRatedApp;
 +(void)hasRatedApp:(NSNumber*)hasRated;
+
++(NSNumber*)hasViewedSettings;
++(void)setHasViewedSettings:(NSNumber*)hasViewed;
 
 +(NSNumber*)numberOfMessagesSent;
 +(void)incrementNumberOfMessagesSent;
@@ -58,6 +70,10 @@ static NSString *spanishCultureString = @"es-ES";
 
 +(NSNumber*)numberOfImageRefreshesByUser;
 +(void)increaseNumberOfImageRefreshesByUser;
+
++(NSNumber*)timeSpentInAppSinceLaunch;
++(void)setTimeSpentInAppLSinceLaunch:(float)timeSpentInApp;
++(void)increaseTimeSpentInAppSinceLaunchBy:(NSNumber*)timeToIncreaseBy;
 
 +(NSNumber*)timeSpentInApp;
 +(void)increaseTimeBy:(NSNumber*)timeToIncreaseBy;
