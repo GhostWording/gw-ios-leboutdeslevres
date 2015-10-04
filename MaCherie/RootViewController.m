@@ -846,13 +846,15 @@ const int numberOfTextsToLoad = 10;
                 NSLog(@"fetchedImages");
                 [model fetchImagesForIntention:intentionObject.imagePath withCompletion:^(NSArray *theImages, NSError *error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        NSLog(@"the images for the special intentions are: %d", (int)theImages.count);
-                        [model setRandomImageForCurrentIntention:theImages withNum:(int)theImages.count];
-                        [theImagePagedView reloadDataAnimated:YES];
-                        
-                        [loadingIndicatorView fadeOutWithCompletion:^(BOOL completed) {
+                        if (theImages != nil) {
+                            NSLog(@"the images for the special intentions are: %d", (int)theImages.count);
+                            [model setRandomImageForCurrentIntention:theImages withNum:(int)theImages.count];
+                            [theImagePagedView reloadDataAnimated:YES];
                             
-                        }];
+                            [loadingIndicatorView fadeOutWithCompletion:^(BOOL completed) {
+                                
+                            }];
+                        }
                         
                     });
                 }];
@@ -1637,13 +1639,15 @@ const int numberOfTextsToLoad = 10;
             NSLog(@"selected intention path: %@", selectedOCcasionIntention.imagePath);
             [model fetchImagesForIntention:selectedOCcasionIntention.imagePath withCompletion:^(NSArray *theImages, NSError *error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    model.isLoadingImages = NO;
-                    NSLog(@"the number of images are: %d", (int)theImages.count);
-                    [model setRandomImageForCurrentIntention:theImages withNum:(int)theImages.count];
-                    [theScrollView reloadDataAnimated:YES];
-                    [loadingIndicatorView fadeOutWithCompletion:^(BOOL completed) {
-                        
-                    }];
+                    if (theImages != nil) {
+                        model.isLoadingImages = NO;
+                        NSLog(@"the number of images are: %d", (int)theImages.count);
+                        [model setRandomImageForCurrentIntention:theImages withNum:(int)theImages.count];
+                        [theScrollView reloadDataAnimated:YES];
+                        [loadingIndicatorView fadeOutWithCompletion:^(BOOL completed) {
+                            
+                        }];
+                    }
                 });
             }];
         }
