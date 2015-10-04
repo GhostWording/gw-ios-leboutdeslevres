@@ -32,6 +32,9 @@ static NSString *spanishCultureString = @"es-ES";
 
 +(NSString*)userUniqueId;
 
++(NSString*)facebookUserId;
++(void)setFacebookUserId:(NSString*)theFacebookId;
+
 +(NSDate*)dateInstalled;
 +(void)setDateInstalled:(NSDate*)installDate;
 

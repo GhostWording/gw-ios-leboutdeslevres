@@ -40,6 +40,23 @@
 }
 
 
++(NSString*)facebookUserId {
+    
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"facebookId"] == nil) {
+        
+        [UserDefaults setFacebookUserId:@""];
+        
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"facebookId"];
+}
+
+
++(void)setFacebookUserId:(NSString *)theFacebookId {
+    [[NSUserDefaults standardUserDefaults] setValue:theFacebookId forKey:@"facebookId"];
+}
+
+
 +(NSDate*)dateInstalled {
     
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"installDate"] == nil) {

@@ -73,6 +73,7 @@
     if ([FBSDKAccessToken currentAccessToken]) {
         NSLog(@"is there an existing access token");
         self.window.rootViewController = rootController;
+        [UserDefaults setFacebookUserId:[FBSDKAccessToken currentAccessToken].userID];
     }
     else {
         NSLog(@"does not have existing token");

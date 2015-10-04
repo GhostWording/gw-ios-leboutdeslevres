@@ -114,9 +114,6 @@
     appTitle.font = [UIFont noteworthyBoldWithSize:27];
     [self.view addSubview:appTitle];
     
-    if ([FBSDKAccessToken currentAccessToken]) {
-        [self performSegueWithIdentifier:@"loginSegue" sender:self];
-    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -126,6 +123,11 @@
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    if ([FBSDKAccessToken currentAccessToken]) {
+        [self performSegueWithIdentifier:@"loginSegue" sender:self];
+        [UserDefaults setFacebookUserId:[FBSDKAccessToken currentAccessToken].userID];
+    }
     
 }
 
@@ -191,6 +193,11 @@
 
 -(void)loginButton:(FBSDKLoginButton *)loginButton didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result error:(NSError *)error {
     if (!result.isCancelled && !error) {
+        
+        if ([FBSDKAccessToken currentAccessToken]) {
+            [UserDefaults setFacebookUserId:[FBSDKAccessToken currentAccessToken].userID];
+            NSLog(@"facebook user id is: %@", [UserDefaults facebookUserId]);
+        }
         
         [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_LOGIN withAction:GA_ACTION_BUTTON_PRESSED withLabel:@"LoginWithFacebook" wtihValue:nil];
         [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_LOGIN targetType:@"Command" targetId:@"Login" targetParameter:@"LoginWithFacebook"];
