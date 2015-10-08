@@ -43,8 +43,10 @@ const float bottomHeight = 60.0f;
 const int numberOfImagesToLoad = 10;
 const int numberOfTextsToLoad = 10;
 
-@interface RootViewController () <UIAlertViewDelegate, TextScrollViewDelegate, TextScrollViewDataSource, ImageScrollViewDataSource, ImageScrollViewDelegate, UIViewControllerTransitioningDelegate, MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate>
+@interface RootViewController () <UIAlertViewDelegate, TextScrollViewDelegate, TextScrollViewDataSource, ImageScrollViewDataSource, ImageScrollViewDelegate, UIViewControllerTransitioningDelegate, MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, FBSDKSharingDelegate>
 {
+    UIImagePickerController *imagePicker;
+    
     TextScrollView *theTextPagedView;
     ImageScrollView *theImagePagedView;
     SpecialOccasionView *theSpecialOccasionView;
@@ -71,6 +73,7 @@ const int numberOfTextsToLoad = 10;
     UIButton *shareButton;
     UIButton *specialOccasionButton;
     UIButton *buttonUsedToSend;
+    UIButton *addPhotoCameraButton, *addPhotoRollButton;
     FBSDKSharePhotoContent *photoContent;
     
     UIAlertView *alert;
@@ -95,9 +98,12 @@ const int numberOfTextsToLoad = 10;
     editTextView = nil;
     theSpecialOccasionView = nil;
     
+    imagePicker = [[UIImagePickerController alloc] init];
     DataManager *dataMan = [[DataManager alloc] init];
     serverComm = [[ServerComm alloc] init];
     model = [[RootViewModel alloc] init];
+    
+    imagePicker.delegate = self;
     
     NSArray *randomText = [model randomtTextWithNum:numberOfTextsToLoad];
     
@@ -123,6 +129,27 @@ const int numberOfTextsToLoad = 10;
     theTextPagedView.shareDelegate = self;
     theTextPagedView.textScrollViewDataSource = self;
     [self.view addSubview:theTextPagedView];
+    
+    
+    addPhotoCameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    addPhotoCameraButton.frame = CGRectMake(CGRectGetWidth(theImagePagedView.frame) - 70, 20, 50, 50);
+    addPhotoCameraButton.layer.backgroundColor = [UIColor lightGrayColor].CGColor;
+    addPhotoCameraButton.layer.cornerRadius = 4.0;
+    addPhotoCameraButton.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
+    [addPhotoCameraButton setImage:[UIImage imageNamed:@"cameraIcon.png"] forState:UIControlStateNormal];
+    [addPhotoCameraButton addTarget:self action:@selector(cameraButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    //[addPhotoRollButton addTarget:self action:@sele forControlEvents:<#(UIControlEvents)#>]
+    [theImagePagedView addSubview:addPhotoCameraButton];
+    
+    addPhotoRollButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    addPhotoRollButton.frame = CGRectMake(CGRectGetWidth(theImagePagedView.frame) - 70, CGRectGetMaxY(addPhotoCameraButton.frame) + 10, 50, 50);
+    addPhotoRollButton.layer.backgroundColor = [UIColor lightGrayColor].CGColor;
+    addPhotoRollButton.layer.cornerRadius = 4.0;
+    addPhotoRollButton.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
+    [addPhotoRollButton setImage:[UIImage imageNamed:@"photoIcon.png"] forState:UIControlStateNormal];
+    [addPhotoRollButton addTarget:self action:@selector(cameraRollButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [theImagePagedView addSubview:addPhotoRollButton];
+    
     
     NSLog(@"after scroll view");
     
@@ -165,7 +192,7 @@ const int numberOfTextsToLoad = 10;
     }
     
     shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    shareButton.layer.backgroundColor = [UIColor appBlueColor].CGColor;
+    shareButton.layer.backgroundColor = [UIColor c_appFacebookBlueColor].CGColor;
     shareButton.layer.cornerRadius = 4.0;
     shareButton.frame = CGRectMake(CGRectGetWidth(self.view.frame) - 80 - 10, CGRectGetMinY(normalSendButton.frame), 80, 40);
     
@@ -222,6 +249,9 @@ const int numberOfTextsToLoad = 10;
             [self dismissFirstLaunchView];
         }
     }
+    else {
+        [self setGenderBasedOnFacebookData];
+    }
     
     if (![[UserDefaults hasPressedIntentionButton] boolValue] && ([[UserDefaults numberOfTextRefreshesByUser] intValue] < 1 && [[UserDefaults numberOfImageRefreshesByUser] intValue] < 1 && [[UserDefaults timeSpentInApp] intValue] < 90)) {
         
@@ -264,9 +294,18 @@ const int numberOfTextsToLoad = 10;
             
             
             if (buttonIndex == 0) {
-                NSLog(@"acepted notifications");
+                
+                [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_APP_EVENT withAction:GA_ACTION_BUTTON_PRESSED withLabel:@"UserNotificationDialogYes" wtihValue:nil];
+                [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_MAIN targetType:@"Command" targetId:@"UserNotificationDialogYes" targetParameter:@""];
+                
                 [UserDefaults setAcceptedNotifications:YES];
                 [self notificationSystemPermission];
+            }
+            else {
+                
+                [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_APP_EVENT withAction:GA_ACTION_BUTTON_PRESSED withLabel:@"UserNotificationDialogNo" wtihValue:nil];
+                [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_MAIN targetType:@"Command" targetId:@"UserNotificationDialogNo" targetParameter:@""];
+                
             }
             
             
@@ -337,7 +376,7 @@ const int numberOfTextsToLoad = 10;
     // to be re-filtered
     
     [self showViewDataWhenAppBecomesActive];
-    [self showRatingViewIfAppropriate];    
+    
 }
 
 -(void)showViewDataWhenAppBecomesActive {
@@ -397,7 +436,7 @@ const int numberOfTextsToLoad = 10;
     
     NSLog(@"calling show pulse if appropriate");
     
-    if (![[UserDefaults hasPressedIntentionButton] boolValue] && !([[UserDefaults numberOfTextRefreshesByUser] intValue] < 1 && [[UserDefaults numberOfImageRefreshesByUser] intValue] < 1 && [[UserDefaults timeSpentInApp] intValue] < 90)) {
+    if (![[UserDefaults hasPressedIntentionButton] boolValue] && !([[UserDefaults numberOfTextRefreshesByUser] intValue] < 1 && [[UserDefaults numberOfImageRefreshesByUser] intValue] < 1 && [[UserDefaults timeSpentInApp] intValue] < 90) && specialOccasionButton.hidden == NO) {
         
         NSLog(@"show pulse if appropriate running");
         
@@ -443,7 +482,7 @@ const int numberOfTextsToLoad = 10;
     NSLog(@"number sent messages and share: %d", [[UserDefaults numberOfFacebookShares] intValue] + [[UserDefaults numberOfMessagesSent] intValue] );
     NSLog(@"time interval: %f", [[UserDefaults dateInstalled] timeIntervalSinceNow]);
     NSLog(@"date installed: %@", [UserDefaults dateInstalled]);
-    if (model.isShowingRatingView == NO && ([[UserDefaults numberOfFacebookShares] intValue] + [[UserDefaults numberOfMessagesSent] intValue]) >= 2 && [[UserDefaults hasRatedApp] boolValue] == NO && [[UserDefaults dateInstalled] timeIntervalSinceNow] *(-1) >= 72 * 60 * 60 ) {
+    if (model.isShowingRatingView == NO && ([[UserDefaults numberOfFacebookShares] intValue] + [[UserDefaults numberOfMessagesSent] intValue]) >= 2 && [[UserDefaults hasRatedApp] boolValue] == NO ) {
         
         NSLog(@"performing selector to show rating window");
         [self performSelector:@selector(showRatingWindowAfterDelay) withObject:nil afterDelay:1.5];
@@ -464,14 +503,19 @@ const int numberOfTextsToLoad = 10;
 -(BOOL)setGenderBasedOnFacebookData {
     if ([FBSDKAccessToken currentAccessToken]) {
         
-        [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:nil]
+        [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:@{@"fields" : @"id, name, gender, age_range"}]
          startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
              if (!error) {
                  NSLog(@"fetched user:%@", result);
+                 
                  if ([result valueForKey:@"gender"] != nil) {
+                     
                      NSString *theGender = (NSString*)[result valueForKey:@"gender"];
+                     
                      if ([theGender isEqualToString:@"male"]) {
+                         
                          NSLog(@"gender is male");
+                         
                          [UserDefaults setUserGender:[NSNumber numberWithInt:kGenderMale]];
                          
                          [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_ACTION_BUTTON_PRESSED withLabel:GA_LABEL_GENDER_MALE wtihValue:nil];
@@ -485,21 +529,6 @@ const int numberOfTextsToLoad = 10;
                          [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_ACTION_BUTTON_PRESSED withLabel:GA_LABEL_GENDER_FEMALE wtihValue:nil];
                          [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_SETTINGS targetType:@"Command" targetId:@"UserGender" targetParameter:@"F"];
                          
-                     }
-                     else {
-                         dispatch_async(dispatch_get_main_queue(), ^{
-                             [self createFirstLaunView];
-                             firstLaunView.alpha = 0.0f;
-                             
-                             [UIView animateWithDuration:0.3 animations:^{
-                                 firstLaunView.alpha = 1.0f;
-                             } completion:^(BOOL finished) {
-                                 if (finished) {
-                                     firstLaunView = nil;
-                                 }
-                             }];
-                             
-                         });
                      }
                  }
              }
@@ -567,7 +596,6 @@ const int numberOfTextsToLoad = 10;
     [UserDefaults setHasViewedSettings:[NSNumber numberWithBool:YES]];
     [settingsPulse removeFromSuperview];
     [self performSegueWithIdentifier:@"loginSegue" sender:self];
-    NSLog(@"login segue");
 }
 
 #pragma mark - Edit Text View
@@ -673,7 +701,6 @@ const int numberOfTextsToLoad = 10;
 }
 
 -(void)createEditTextView:(NSString*)editText {
-    NSLog(@"created edit text view");
     
     if (!editTextView && [theImagePagedView selectedImage] != nil) {
         editTextView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame))];
@@ -750,7 +777,6 @@ const int numberOfTextsToLoad = 10;
 }
 
 -(void)dismissEditTextView {
-    NSLog(@"dismiss text");
     
     if (editTextView) {
         [UIView animateWithDuration:0.3 animations:^{
@@ -803,6 +829,8 @@ const int numberOfTextsToLoad = 10;
     
     if (!specialOccasionButton.isSelected) {
         
+        model.isUserPhotosSelected = NO;
+        model.userSelectedImages = nil;
         
         [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_SPECIAL_INTENTION withAction:GA_ACTION_BUTTON_PRESSED withLabel:@"ShowSpecialIntention" wtihValue:nil];
         [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_MAIN targetType:@"Command" targetId:@"showSpecialIntention" targetParameter:@""];
@@ -1169,9 +1197,48 @@ const int numberOfTextsToLoad = 10;
     
 }
 
+#pragma mark - Image Picker Methods
+
+-(void)cameraButtonPressed {
+    imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    [self presentViewController:imagePicker animated:YES completion:nil];
+}
+
+-(void)cameraRollButtonPressed {
+    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    [self presentViewController:imagePicker animated:YES completion:nil];
+}
+
+#pragma mark - Image Picker Delegate
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+    
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    
+    if (image) {
+        
+        CGFloat widthRatio = image.size.width / 800.0f;
+        image = [image c_resizeImageWithSize:CGSizeMake(image.size.width / widthRatio, image.size.height / widthRatio)];
+        
+        model.isUserPhotosSelected = YES;
+        model.userSelectedImages = @[image];
+        
+        [theImagePagedView reloadDataAnimated:YES];
+    }
+    
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - Messenger, SMS and Mail Sending
 
 -(void)messengerButtonPressed:(UIButton *)sender {
+    
+    model.isUserPhotosSelected = NO;
+    model.userSelectedImages = nil;
     
     [UIView animateWithDuration:0.1 animations:^{
         if (editTextView != nil) {
@@ -1244,6 +1311,9 @@ const int numberOfTextsToLoad = 10;
 
 -(void)smsButtonPressed:(UIButton *)theButton {
     
+    model.isUserPhotosSelected = NO;
+    model.userSelectedImages = nil;
+    
     [UIView animateWithDuration:0.1 animations:^{
         theButton.alpha = 1.0;
         if (editTextView != nil) {
@@ -1282,7 +1352,8 @@ const int numberOfTextsToLoad = 10;
         
         
         [self presentViewController:messageVC animated:YES completion:^{
-            
+            model.isUserPhotosSelected = NO;
+            model.userSelectedImages = nil;
         }];
         
         [self chooseSendMethodBackgroundPressed:nil];
@@ -1300,7 +1371,11 @@ const int numberOfTextsToLoad = 10;
         
     }];
     
+    model.isUserPhotosSelected = NO;
+    model.userSelectedImages = nil;
+    
     switch (result) {
+            
         case MessageComposeResultSent:
             
             break;
@@ -1378,7 +1453,11 @@ const int numberOfTextsToLoad = 10;
         
     }];
     
+    model.isUserPhotosSelected = NO;
+    model.userSelectedImages = nil;
+    
     switch (result) {
+            
         case MFMailComposeResultSent:
             
             break;
@@ -1429,7 +1508,7 @@ const int numberOfTextsToLoad = 10;
     [[CustomAnalytics sharedInstance] postActionWithType:@"FacebookShare" actionLocation:GA_SCREEN_MAIN targetType:@"Text" targetId:selectedTextId targetParameter:@""];
     [[CustomAnalytics sharedInstance] postActionWithType:@"FacebookShare" actionLocation:GA_SCREEN_MAIN targetType:@"Image" targetId:selectedImageId targetParameter:@""];
     
-    [FBSDKShareDialog showFromViewController:self withContent:photoContent delegate:nil];
+    [FBSDKShareDialog showFromViewController:self withContent:photoContent delegate:self];
     
 }
 
@@ -1515,6 +1594,7 @@ const int numberOfTextsToLoad = 10;
 
 -(void)refreshButtonPressed {
     [self showNotificationAlert];
+    [self showRatingViewIfAppropriate];
     [UserDefaults increaseNumberOfTextRefreshes];
 }
 
@@ -1523,15 +1603,6 @@ const int numberOfTextsToLoad = 10;
 -(UIImage*)createImageWithText:(NSString*)theText {
     
     UIImage *selectedImage = [theImagePagedView selectedImage];
-    
-    
-    //
-    NSString *selectedTextId = [theTextPagedView selectedTextId];
-    NSString *selectedImageId = [theImagePagedView selectedImageId];
-    
-    [FBSDKAppEvents logEvent:selectedTextId];
-    //[FBAppEvents logEvent:selectedImageId];
-    
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, selectedImage.size.width, selectedImage.size.height)];
     [imageView setImage:selectedImage];
@@ -1605,11 +1676,17 @@ const int numberOfTextsToLoad = 10;
 #pragma mark - Image Paged View Data Source
 
 -(NSArray*)updateImageScrollViewImages {
-    //return [model randomImagesWithNum:numberOfImagesToLoad];
+    
+    if (model.isUserPhotosSelected && model.userSelectedImages != nil) {
+        return [model userSelectedImages];
+    }
+    else if(model.userSelectedImages == nil) {
+        model.isUserPhotosSelected = NO;
+    }
+    
     if (model.isSpecialOccasionIntentionChosen) {
         return [model specialOccasionImages];
     }
-    
     
     return [model randomImagesWithImagesBasedOnTexts:[theTextPagedView theTexts] WithNum:numberOfImagesToLoad];
 }
@@ -1619,7 +1696,14 @@ const int numberOfTextsToLoad = 10;
 -(void)refreshImagesPressedWithImageScrollView:(ImageScrollView *)theScrollView {
     
     [self showNotificationAlert];
+    [self showRatingViewIfAppropriate];
+    
     [UserDefaults increaseNumberOfImageRefreshesByUser];
+    
+    if (model.isUserPhotosSelected) {
+        model.userSelectedImages = nil;
+        model.isUserPhotosSelected = NO;
+    }
     
     if (![[UserDefaults hasPressedIntentionButton] boolValue] && ([[UserDefaults numberOfImageRefreshesByUser] intValue] < 1 && [[UserDefaults numberOfTextRefreshesByUser] intValue] < 1 && [[UserDefaults timeSpentInApp] intValue] < 90)) {
         [specialOccasionButton setHidden:YES];
@@ -1656,6 +1740,21 @@ const int numberOfTextsToLoad = 10;
     else {
         [theScrollView reloadDataAnimated:YES];
     }
+}
+
+#pragma mark - Facebook Sharing Delegate
+
+-(void)sharer:(id<FBSDKSharing>)sharer didCompleteWithResults:(NSDictionary *)results {
+    model.isUserPhotosSelected = NO;
+    model.userSelectedImages = nil;
+}
+
+-(void)sharer:(id<FBSDKSharing>)sharer didFailWithError:(NSError *)error {
+    
+}
+
+-(void)sharerDidCancel:(id<FBSDKSharing>)sharer {
+    
 }
 
 #pragma mark Prepare for Segue and Controller Animations

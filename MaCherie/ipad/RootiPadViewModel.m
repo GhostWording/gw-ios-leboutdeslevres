@@ -185,7 +185,7 @@
 -(void)addTexts:(NSArray*)theTexts toIntention:(NSMutableArray*)availableIntentions {
     for (int i = 0; i < theTexts.count; i++) {
         
-        Text *currentText = [theTexts objectAtIndex:i];
+        GWText *currentText = [theTexts objectAtIndex:i];
         
         for (int k = 0; k < availableIntentions.count; k++) {
             

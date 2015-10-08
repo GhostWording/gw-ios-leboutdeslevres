@@ -11,5 +11,6 @@
 @interface UIImage (RenderViewToImage)
 
 +(UIImage*)imageByRenderingView:(UIView*)view;
+-(UIImage*)c_resizeImageWithSize:(CGSize)theNewSize;
 
 @end

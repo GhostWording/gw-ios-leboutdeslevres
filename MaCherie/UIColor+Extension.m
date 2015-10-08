@@ -99,4 +99,8 @@
     return [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.75];
 }
 
++(UIColor*)c_appFacebookBlueColor {
+    return [self colorWithHexString:@"0284fe"];
+}
+
 @end

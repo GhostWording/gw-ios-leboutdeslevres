@@ -19,4 +19,12 @@
     return snapshotImage;
 }
 
+-(UIImage*)c_resizeImageWithSize:(CGSize)theNewSize {
+    UIGraphicsBeginImageContext(theNewSize);
+    [self drawInRect:CGRectMake(0, 0, theNewSize.width, theNewSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
 @end

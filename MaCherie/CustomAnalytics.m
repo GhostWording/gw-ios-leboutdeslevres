@@ -44,8 +44,6 @@
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     
     [request setHTTPMethod:@"GET"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"accept"];
-    [request setValue:@"text/plain" forHTTPHeaderField:@"accept"];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
      {
@@ -55,7 +53,7 @@
          }
          else
          {
-             //NSLog(@"posted action with response: %@", response);
+             NSLog(@"posted action with response: %@", response);
          }
      }];
 }

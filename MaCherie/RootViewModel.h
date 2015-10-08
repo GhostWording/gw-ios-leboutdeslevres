@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @class TextFilter, IntentionObject, RecipientObject;
 
@@ -15,9 +16,12 @@
 @property (nonatomic, readwrite) BOOL isSpecialOccasionIntentionChosen;
 @property (nonatomic, readwrite) BOOL isLoadingImages;
 @property (nonatomic, readwrite) BOOL isShowingRatingView;
+@property (nonatomic, readwrite) BOOL isUserPhotosSelected;
 
 @property (nonatomic, readwrite) int numSpecialOccasionTexts;
 @property (nonatomic, readwrite) int numSpecialOccasionImages;
+
+@property (nonatomic, strong) NSArray *userSelectedImages;
 
 -(void)setRandomTextForSpecialOccasionTexts:(NSArray*)theTexts withFilter:(TextFilter*)theFilter;
 -(void)setRandomTextForIntention:(NSString*)intentionSlug withNum:(int)num;

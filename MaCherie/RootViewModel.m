@@ -41,8 +41,10 @@
         dataMan = [[DataManager alloc] init];
         specialOccasionTextArray = nil;
         specialOccasionImageArray = nil;
+        _userSelectedImages = nil;
         isSpecialOccasionIntentionChosen = NO;
         isLoadingImages = NO;
+        _isUserPhotosSelected = NO;
         _numSpecialOccasionImages = 10;
         _numSpecialOccasionTexts = 10;
         _isShowingRatingView = NO;

@@ -59,7 +59,7 @@
         localNotif.timeZone = [NSTimeZone systemTimeZone];
         localNotif.alertBody = [self randomAlertBody];
         localNotif.fireDate = [self getFireDate:i andHour:[self randomHour] andMinutes:[self randomMinute] withCalendar:calendar];
-        localNotif.repeatInterval = NSCalendarUnitMonth;
+        localNotif.repeatInterval = NSCalendarUnitWeekday;
         
         [[UIApplication sharedApplication] scheduleLocalNotification:localNotif];
     }

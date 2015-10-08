@@ -17,5 +17,6 @@
 +(UIColor*)appBlueColor;
 +(UIColor*)appLightGrayColor;
 +(UIColor*)appLightOverlayColor;
++(UIColor *)c_appFacebookBlueColor;
 
 @end

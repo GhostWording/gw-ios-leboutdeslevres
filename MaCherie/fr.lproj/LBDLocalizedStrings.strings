@@ -42,6 +42,6 @@
 "<LBDLNewText>" = "Nouveau texte";
 "<LBDLEditText>" = "Modifier le texte";
 "<LBDLAccessNotificationsTitle>" = "Nous souhaitons vous faire des propositions de messages";
-"<LBDLAccessNotificationsMessage>" = "Nous devons activer les notifications pour vous communiquer de nouvelles idées de messages";
+"<LBDLAccessNotificationsMessage>" = "Pour recevoir vos idées de messages, merci d'activer les notifications";
 "<LBDLAccessNotificationsCancel>" = "L'année prochaine";
 "<LBDLAccessNotificationsAccept>" = "Maintenant";

@@ -210,7 +210,7 @@
         NSLog(@"wants notifications");
         
         [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_APP_EVENT withAction:GA_ACTION_BUTTON_PRESSED withLabel:@"UserWantsNotifications" wtihValue:nil];
-        [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_LOGIN targetType:@"Command" targetId:@"UserWantsNotifications" targetParameter:@""];
+        [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_MAIN targetType:@"Command" targetId:@"UserWantsNotifications" targetParameter:@""];
         
         [UserDefaults setAcceptedSystemNotifications:YES];
     }
@@ -218,7 +218,7 @@
         NSLog(@"does not want notifications");
         
         [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_APP_EVENT withAction:GA_ACTION_BUTTON_PRESSED withLabel:@"UserDoesNotWantNotifications" wtihValue:nil];
-        [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_LOGIN targetType:@"Command" targetId:@"UserDoesNotWantNotifications" targetParameter:@""];
+        [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_MAIN targetType:@"Command" targetId:@"UserDoesNotWantNotifications" targetParameter:@""];
         
         [UserDefaults setAcceptedSystemNotifications:NO];
         

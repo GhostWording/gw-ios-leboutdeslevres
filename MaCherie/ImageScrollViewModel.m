@@ -41,11 +41,23 @@
         return nil;
     }
     
+    id imageObj = [images objectAtIndex:index];
+    
+    if ([imageObj isKindOfClass:[UIImage class]]) {
+        return imageObj;
+    }
+    
     GWImage *img = [images objectAtIndex:index];
     return [UIImage imageWithData:img.imageData];
 }
 
 -(NSString*)imageNameAtIndex:(NSInteger)index {
+    
+    id imageObj = [images objectAtIndex:index];
+    
+    if ([imageObj isKindOfClass:[UIImage class]]) {
+        return @"";
+    }
     
     GWImage *img = [images objectAtIndex:index];
     
@@ -59,6 +71,13 @@
 }
 
 -(NSString*)imagePathAtIndex:(NSInteger)index {
+    
+    id imageObj = [images objectAtIndex:index];
+    
+    if ([imageObj isKindOfClass:[UIImage class]]) {
+        return @"";
+    }
+    
     GWImage *img = [images objectAtIndex:index];
     
     return img.imageId;

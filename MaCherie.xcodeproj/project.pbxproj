@@ -18,6 +18,7 @@
 		880686D11B2505D10062D183 /* leftArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 880686CF1B2505D10062D183 /* leftArrow@2x.png */; };
 		880686D21B2505D10062D183 /* leftArrow@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 880686D01B2505D10062D183 /* leftArrow@3x.png */; };
 		8810D9F81B017C5F00095E27 /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8810D9F71B017C5F00095E27 /* NotificationManager.m */; };
+		8814A3651BC0C949008B14B9 /* MaCherie.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 8814A3641BC0C949008B14B9 /* MaCherie.entitlements */; settings = {ASSET_TAGS = (); }; };
 		881ECEBE1B1A9F8200DACAEF /* NSString+RandomString.m in Sources */ = {isa = PBXBuildFile; fileRef = 881ECEBD1B1A9F8200DACAEF /* NSString+RandomString.m */; };
 		8822FA0E1B7A9E75007D0140 /* IntentionLocalizedStrings.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8822F9E61B7A9E75007D0140 /* IntentionLocalizedStrings.strings */; };
 		8822FA0F1B7A9E75007D0140 /* GWIntentionPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8822F9E91B7A9E75007D0140 /* GWIntentionPresenter.m */; };
@@ -208,6 +209,7 @@
 		880686D01B2505D10062D183 /* leftArrow@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "leftArrow@3x.png"; sourceTree = "<group>"; };
 		8810D9F61B017C5F00095E27 /* NotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationManager.h; sourceTree = "<group>"; };
 		8810D9F71B017C5F00095E27 /* NotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationManager.m; sourceTree = "<group>"; };
+		8814A3641BC0C949008B14B9 /* MaCherie.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = MaCherie.entitlements; sourceTree = "<group>"; };
 		881ECEBC1B1A9F8200DACAEF /* NSString+RandomString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+RandomString.h"; sourceTree = "<group>"; };
 		881ECEBD1B1A9F8200DACAEF /* NSString+RandomString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+RandomString.m"; sourceTree = "<group>"; };
 		8822F9DA1B7A8EF1007D0140 /* GWFramework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GWFramework.xcodeproj; path = ../../../../../../../Documents/GWFramework/GWFramework.xcodeproj; sourceTree = "<group>"; };
@@ -376,7 +378,6 @@
 		88CC383A1AF6C52300DCECD8 /* UIFont+ArialAndHelveticaNeue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+ArialAndHelveticaNeue.m"; sourceTree = "<group>"; };
 		88CC383C1AF6DA0400DCECD8 /* UIViewController+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Extension.h"; sourceTree = "<group>"; };
 		88CC383D1AF6DA0400DCECD8 /* UIViewController+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Extension.m"; sourceTree = "<group>"; };
-		88DBF4EC1BBC668800A9343D /* MaCherie.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MaCherie.entitlements; sourceTree = "<group>"; };
 		88E4141F1B16618800487698 /* DataModel 1.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "DataModel 1.1.xcdatamodel"; sourceTree = "<group>"; };
 		88E414281B17B03800487698 /* messengerIconAlpha@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "messengerIconAlpha@2x.png"; sourceTree = "<group>"; };
 		88E414291B17B03800487698 /* messengerIconAlpha@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "messengerIconAlpha@3x.png"; sourceTree = "<group>"; };
@@ -804,7 +805,7 @@
 		888EB4B81AF6676300C99587 /* MaCherie */ = {
 			isa = PBXGroup;
 			children = (
-				88DBF4EC1BBC668800A9343D /* MaCherie.entitlements */,
+				8814A3641BC0C949008B14B9 /* MaCherie.entitlements */,
 				888F82931BA8CA8F00A92E5F /* Localization */,
 				8882C2C31B1A315900B0DA0D /* Analytics */,
 				881ECEBF1B1AA50200DACAEF /* Managers */,
@@ -1068,7 +1069,7 @@
 						DevelopmentTeam = G63YN3982U;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -1147,6 +1148,7 @@
 				880686CD1B24BC4C0062D183 /* photoIcon@2x.png in Resources */,
 				882F5B9A1AF8436000B8A26E /* femaleGenderSelected@2x.png in Resources */,
 				882F5B9C1AF8436000B8A26E /* maleGender@2x.png in Resources */,
+				8814A3651BC0C949008B14B9 /* MaCherie.entitlements in Resources */,
 				88CC38331AF6BAD400DCECD8 /* settings@2x.png in Resources */,
 				880686C21B1FE51F0062D183 /* settingsBlue@3x.png in Resources */,
 				8822FA0E1B7A9E75007D0140 /* IntentionLocalizedStrings.strings in Resources */,
@@ -1523,7 +1525,7 @@
 					"$(PROJECT_DIR)/MaCherie",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "dd6b81be-46b2-4470-9897-59d3b24a2579";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
