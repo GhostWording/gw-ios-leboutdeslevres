@@ -9,7 +9,6 @@
 #import "iPadRootViewController.h"
 #import "ImageCollectionViewCell.h"
 #import "LBDLCollectionView.h"
-#import "DataManager.h"
 #import "RootiPadViewModel.h"
 #import "UIColor+Extension.h"
 #import "UIFont+ArialAndHelveticaNeue.h"
@@ -170,6 +169,7 @@ const int numImagesToLoad = 20;
 }
 
 -(void)dismissFirstLaunView {
+    /*
     DataManager *dataMAn = [[DataManager alloc] init];
     
     [UserDefaults setFirstLaunchOfApp:NO];
@@ -192,10 +192,12 @@ const int numImagesToLoad = 20;
         } completion:^(BOOL finished) {
             [self performSelector:@selector(isSufficientResourcesDownloaded) withObject:nil afterDelay:0.5];
         }];
-    }
+    }*/
 }
 
 -(void)isSufficientResourcesDownloaded {
+    
+    /*
     DataManager *dataMan = [[DataManager alloc] init];
     
     if ([dataMan numTexts] >= numTextsToLoad && [dataMan numImages] >= numImagesToLoad) {
@@ -210,6 +212,7 @@ const int numImagesToLoad = 20;
     else {
         [self performSelector:@selector(isSufficientResourcesDownloaded) withObject:nil afterDelay:0.5];
     }
+     */
 }
 
 -(void)createLoadingDataView {

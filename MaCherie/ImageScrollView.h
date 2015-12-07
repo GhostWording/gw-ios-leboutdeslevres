@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ImageScrollViewModel.h"
 
 @protocol ImageScrollViewDataSource, ImageScrollViewDelegate;
 
 
 @interface ImageScrollView : UIControl
+
+@property (nonatomic, strong) ImageScrollViewModel *viewModel;
 
 @property (nonatomic, weak) id <ImageScrollViewDataSource> imageScrollViewDataSource;
 @property (nonatomic, weak) id <ImageScrollViewDelegate> imageScrollViewDelegate;
@@ -24,6 +27,9 @@
 -(void)reloadData;
 -(void)reloadDataAnimated:(BOOL)animated;
 
+-(void)fadeInLoaderWithCompletion:(void (^)(BOOL finished))block;
+-(void)fadeOutLoaderWithCompletion:(void (^)(BOOL finished))block;
+
 -(void)shakeAnimateScrollViewAfterTime:(float)theTime;
 
 @end
@@ -31,6 +37,8 @@
 @protocol ImageScrollViewDelegate <NSObject>
 
 -(void)refreshImagesPressedWithImageScrollView:(ImageScrollView*)theScrollView;
+
+-(void)refreshImageWithImageScrollView:(ImageScrollView*)theImageScrollView withThemePath:(NSString*)theThemePath;
 
 @end
 

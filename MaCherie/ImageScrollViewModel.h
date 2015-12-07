@@ -20,4 +20,7 @@
 -(NSString*)imageNameAtIndex:(NSInteger)index;
 -(NSString*)imagePathAtIndex:(NSInteger)index;
 
+-(NSArray *)theImages;
+-(NSArray *)theImageIds;
+
 @end

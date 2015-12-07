@@ -38,7 +38,7 @@
     NSString *versionNumber = [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"];
     NSString *facebookId = [UserDefaults facebookUserId];
     
-    NSURL  *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"http://gw-usertracking.azurewebsites.net/userevent?ActionType=%@&ActionLocation=%@&TargetParameter=%@&TargetType=%@&TargetId=%@&AreaId=%@&DeviceId=%@&VersionNumber=%@&FacebookId=%@", actionType, actionLocation, targetParameter, targetType, targetId, AREA, uniqueId, versionNumber, facebookId]];
+    NSURL  *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"http://gw-usertracking.azurewebsites.net/userevent?ActionType=%@&ActionLocation=%@&TargetParameter=%@&TargetType=%@&TargetId=%@&AreaId=%@&DeviceId=%@&VersionNumber=%@&FacebookId=%@&OsVersion=%@", actionType, actionLocation, targetParameter, targetType, targetId, AREA, uniqueId, versionNumber, facebookId, @"iOS"]];
     
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];

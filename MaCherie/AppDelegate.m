@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "ServerComm.h"
 #import "NotificationManager.h"
 #import "UserDefaults.h"
 #import <Fabric/Fabric.h>
@@ -27,7 +26,6 @@
 @interface AppDelegate () {
     // bool for first time we launch the view
     BOOL didFinishLaunching;
-    ServerComm *comm;
     RootViewModel *viewModel;
     
 }
@@ -41,7 +39,6 @@
     // Override point for customization after application launch.
     
     NSLog(@"did finish launching");
-    comm = [[ServerComm alloc] init];
     viewModel = [[RootViewModel alloc] init];
         
     [Fabric with:@[CrashlyticsKit]];
@@ -122,7 +119,7 @@
     if ([[UIApplication sharedApplication] respondsToSelector:@selector(currentUserNotificationSettings)]) {
         UIUserNotificationSettings *notificaitonSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
         
-        if ([[UserDefaults userWantsNotification] boolValue] == YES && notificaitonSettings.types != UIUserNotificationTypeNone) {
+        if ([[UserDefaults acceptedNotifications] boolValue] == YES && notificaitonSettings.types != UIUserNotificationTypeNone) {
             NotificationManager *notifMan = [[NotificationManager alloc] init];
             [notifMan scheduleRandomNotification];
         }
@@ -130,8 +127,9 @@
             [[UIApplication sharedApplication] cancelAllLocalNotifications];
         }
     }
-    else if ([[UserDefaults userWantsNotification] boolValue] == YES) {
+    else if ([[UserDefaults acceptedNotifications] boolValue] == YES) {
         NotificationManager *notifMan = [[NotificationManager alloc] init];
+        [[UIApplication sharedApplication] cancelAllLocalNotifications];
         [notifMan scheduleRandomNotification];
     }
     else {
@@ -149,6 +147,9 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
+    // MARK: here we set the welcome texts to no, if we want to change these conditions we will have to remove this or edit
+    [UserDefaults setWelcomeTextsShow:YES];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -171,7 +172,7 @@
         
         __weak typeof (self) wSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            [wSelf performSelector:@selector(downloadAdditionalImages) withObject:nil afterDelay:20.0];
+            [wSelf performSelector:@selector(downloadAdditionalImages) withObject:nil afterDelay:10];
         });
         
     }];
@@ -191,7 +192,8 @@
     // bool variable to make sure the view will appear method won't be called when we launch the app
     // but we need it when it becomes active
     NSLog(@"did become active");
-    if (!didFinishLaunching) {
+    // only refresh after 5 minutes
+    if (!didFinishLaunching && [[UserDefaults lastActiveDate] timeIntervalSinceNow] == (-1) * (60) * 5) {
         NSLog(@"did finish launching");
         [self.window.rootViewController viewWillAppear:YES];
     }
@@ -254,97 +256,5 @@
     }];
     
 }
-
-
-#pragma mark - Core Data stack
-
-@synthesize managedObjectContext = _managedObjectContext;
-@synthesize managedObjectModel = _managedObjectModel;
-@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
-
-- (NSURL *)applicationDocumentsDirectory {
-    // The directory the application uses to store the Core Data store file. This code uses a directory named "konta.JePenseAToi" in the application's documents directory.
-    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-}
-
-- (NSManagedObjectModel *)managedObjectModel {
-    // The managed object model for the application. It is a fatal error for the application not to be able to find and load its model.
-    if (_managedObjectModel != nil) {
-        return _managedObjectModel;
-    }
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"DataModel" withExtension:@"momd"];
-    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-    
-    return _managedObjectModel;
-}
-
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
-    // The persistent store coordinator for the application. This implementation creates and return a coordinator, having added the store for the application to it.
-    if (_persistentStoreCoordinator != nil) {
-        return _persistentStoreCoordinator;
-    }
-    
-    // Create the coordinator and store
-    
-    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"DataModel.sqlite"];
-    NSError *error = nil;
-    NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES,
-                              NSInferMappingModelAutomaticallyOption: @YES
-                              };
-    NSString *failureReason = @"There was an error creating or loading the application's saved data.";
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
-        // Report any error we got.
-        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-        dict[NSLocalizedDescriptionKey] = @"Failed to initialize the application's saved data";
-        dict[NSLocalizedFailureReasonErrorKey] = failureReason;
-        dict[NSUnderlyingErrorKey] = error;
-        error = [NSError errorWithDomain:@"YOUR_ERROR_DOMAIN" code:9999 userInfo:dict];
-        // Replace this with code to handle the error appropriately.
-        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
-    
-    return _persistentStoreCoordinator;
-}
-
-
-- (NSManagedObjectContext *)managedObjectContext {
-   
-    // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.)
-    if (_managedObjectContext != nil) {
-        return _managedObjectContext;
-    }
-    
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    if (!coordinator) {
-        return nil;
-    }
-    _managedObjectContext = [[NSManagedObjectContext alloc] init];
-    [_managedObjectContext setPersistentStoreCoordinator:coordinator];
-    [_managedObjectContext setMergePolicy:[[NSMergePolicy alloc] initWithMergeType:NSMergeByPropertyObjectTrumpMergePolicyType]];
-    
-    return _managedObjectContext;
-    
-}
-
-#pragma mark - Core Data Saving support
-
-- (void)saveContext {
-    NSLog(@"saving context");
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
-    if (managedObjectContext != nil) {
-        NSError *error = nil;
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-            // Replace this implementation with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        }
-    }
-}
-
-
 
 @end

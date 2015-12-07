@@ -8,8 +8,6 @@
 
 #import "RootViewModel.h"
 #import "IntentionObject.h"
-#import "DataManager.h"
-#import "ServerComm.h"
 #import "Text.h"
 #import "Image.h"
 #import "TextObject.h"
@@ -17,16 +15,18 @@
 #import "UserDefaults.h"
 #import "GWDataManager.h"
 #import "GWText.h"
+#import "GWImage.h"
 #import "ConstantsManager.h"
 #import "NSArray+Extension.h"
 //#import <GWFramework/GWFramework.h>
 
 
 @interface RootViewModel () {
-    DataManager *dataMan;
     NSArray *specialOccasionTextArray;
     NSArray *specialOccasionImageArray;
     NSString *selectedIntentionSlug;
+    NSArray *_themeImages;
+    NSString *_themePath;
 }
 
 @end
@@ -38,9 +38,9 @@
 -(id)init {
     if (self = [super init]) {
         
-        dataMan = [[DataManager alloc] init];
         specialOccasionTextArray = nil;
         specialOccasionImageArray = nil;
+        _themeImages = nil;
         _userSelectedImages = nil;
         isSpecialOccasionIntentionChosen = NO;
         isLoadingImages = NO;
@@ -139,6 +139,162 @@
     
 }
 
+#pragma mark - Weclome images and text download
+
+-(void)downloadWelcomeTextsWithCompletion:(void (^)(NSArray *, NSError *))block {
+    [block copy];
+    
+    NSMutableURLRequest *request  = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://gw-static-apis.azurewebsites.net/data/liptip/welcometexts.json"]];
+    
+    [request setHTTPMethod:@"GET"];
+    [request setValue:[UserDefaults currentCulture] forHTTPHeaderField:@"Accept-Language"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    __weak typeof (self) wSelf = self;
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        
+        if (data != nil) {
+            
+            NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSString *prototypeIds = [jsonDict objectForKey:@"PrototypeIds"];
+            NSLog(@"number of prototype ids: %@", prototypeIds);
+            [wSelf downloadTextsWithPrototypeIds:prototypeIds withCompletion:^(NSArray *theTexts, NSError *theError) {
+                NSLog(@"the welcome texts: %@", theTexts);
+                TextFilter *newFilter = [[TextFilter alloc] init];
+                NSArray *theLaunchTexts = [newFilter filterTextsFromArray:theTexts];
+                self.firstLaunchTexts = theLaunchTexts;
+                self.firstLaunchError = theError;
+                block(theTexts, error);
+            }];
+            
+        }
+        else {
+            self.firstLaunchError = error;
+            block(nil, error);
+        }
+        
+    }];
+    
+}
+
+-(void)downloadWelcomeImagesWithCompletion:(void (^)(NSArray *, NSError *))block {
+    [block copy];
+    
+    NSMutableURLRequest *request  = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://gw-static-apis.azurewebsites.net/data/liptip/welcomeimages.json"]];
+    
+    [request setHTTPMethod:@"GET"];
+    [request setValue:[UserDefaults currentCulture] forHTTPHeaderField:@"Accept-Language"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+       
+        if (data != nil && error == nil) {
+            
+            NSDictionary *theImagePathDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            NSArray *theImagePaths = [theImagePathDict objectForKey:@"ImageUrls"];
+            NSMutableArray *imagePathsToDownload = [NSMutableArray arrayWithArray:theImagePaths];
+            
+            for (int i = 0; i < imagePathsToDownload.count; i++) {
+                NSString *imagePath = [imagePathsToDownload objectAtIndex:i];
+                if ([imagePath hasSuffix:@"/"] == NO) {
+                    imagePath = [NSString stringWithFormat:@"/%@", imagePath];
+                    [imagePathsToDownload replaceObjectAtIndex:i withObject:imagePath];
+                }
+            }
+            
+            GWDataManager *theDataMan = [[GWDataManager alloc] init];
+            NSArray *localImages = [theDataMan fetchImagesOnBackgroundThread];
+            
+            for (GWImage *currentImage in localImages) {
+                for (int i = 0; i < imagePathsToDownload.count; i++) {
+                    NSString *currentImagePath = [imagePathsToDownload objectAtIndex:i];
+                    if ([currentImage.imageId isEqualToString:currentImagePath]) {
+                        [imagePathsToDownload removeObjectAtIndex:i];
+                    }
+                }
+            }
+            
+            [theDataMan downloadImagesWithUrls:imagePathsToDownload withCompletion:^(NSArray *theImagePaths, NSError *theError) {
+               
+                _firstLaunchImageError = theError;
+                
+                if (theImagePaths != nil && theError == nil) {
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        NSArray *theWelcomeImages = [[[GWDataManager alloc] init] fetchImagesWithImagePaths:theImagePaths];
+                        _firstLaunchImages = theWelcomeImages;
+                        block(theWelcomeImages, nil);
+                    });
+                    
+                }
+                else {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        block(nil, theError);
+                    });
+                }
+                
+            }];
+            
+            
+        }
+        else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+               block(nil, error);
+            });
+        }
+    }];
+}
+
+-(void)downloadTextsWithPrototypeIds:(NSString*)thePrototypeIds withCompletion:(void (^)(NSArray *theTexts, NSError *error))block {
+    [block copy];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://api.cvd.io/LipTip/text/prototypes/%@/realizations", thePrototypeIds]]];
+    
+    NSLog(@"prototype ids: %@", thePrototypeIds);
+    
+    [request setHTTPMethod:@"GET"];
+    [request setValue:[UserDefaults currentCulture] forHTTPHeaderField:@"Accept-Language"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        
+        if (data != nil) {
+            
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                NSLog(@"current culture is: %@", [UserDefaults currentCulture]);
+                
+                NSArray *theTexts = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                GWDataManager *theDataMan = [[GWDataManager alloc] init];
+                NSArray *fetchedTexts = [theDataMan fetchTextsForCulture:[UserDefaults currentCulture]];
+                NSMutableArray *textsToReturn = [NSMutableArray array];
+                
+                for (NSDictionary *theDict in theTexts) {
+                    GWText *theText = [theDataMan persistTextOrUpdateWithJson:theDict withArray:fetchedTexts withContext:[[GWCoreDataManager sharedInstance] mainObjectContext]];
+                    [textsToReturn addObject:theText];
+                }
+                
+                 NSLog(@"texts to return are: %@", textsToReturn);
+                
+                block(textsToReturn, nil);
+                
+            });
+            
+            
+        }
+        else {
+            block(nil, error);
+        }
+        
+        
+    }];
+    
+}
 
 -(void)setRandomTextForIntention:(NSString *)intentionSlug withNum:(int)num {
     
@@ -268,9 +424,45 @@
     
 }
 
--(BOOL)textsExistForIntention:(NSString *)theIntention {
+-(void)fetchImagesForCurrentThemePathWithCompletion:(void (^)(NSArray *, NSError *))block {
+    [self fetchImagesForThemePath:_themePath withCompletion:block];
+}
+
+-(void)fetchImagesForThemePath:(NSString *)theThemePath withCompletion:(void (^)(NSArray *, NSError *))block {
+    [block copy];
     
-    return [dataMan textsExistForIntention:theIntention];
+    GWDataManager *dataMan = [[GWDataManager alloc] init];
+    _themePath = theThemePath;
+    
+    if ([theThemePath isEqualToString:@"Random"]) {
+        
+        block(nil, nil);
+        return ;
+    }
+    
+    [dataMan downloadImagesAndPersistWithRelativePath:theThemePath withNumImagesToDownload:10 withCompletion:^(NSArray *theImageIds, NSError *theError) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (theError == nil) {
+                if (theImageIds.count == 0) {                    
+                    NSArray *theImages = [dataMan fetchRandomImagesWithPredicate:[NSPredicate predicateWithFormat:@"imageId LIKE[cd] %@", theThemePath] withNum:10];
+                    _themeImages = theImages;
+                    block(theImages, nil);
+                    
+                }
+                else {
+                    NSArray *theImages = [dataMan fetchImagesWithImagePaths:theImageIds];
+                    _themeImages = theImages;
+                    block(theImages, nil);
+                }
+            }
+            else {
+                block(nil, theError);
+            }
+        });
+        
+    }];
+    
 }
 
 -(NSArray*)specialOccasionTexts {
@@ -302,6 +494,10 @@
     return textsToReturn;
 }
 
+-(NSArray*)themeImages {
+    return _themeImages;
+}
+
 -(NSArray*)specialOccasionImages {
     NSMutableArray *specialOccasionImagesToReturn = [NSMutableArray array];
     NSMutableArray *specialOccasionImages = [[NSMutableArray alloc] initWithArray:specialOccasionImageArray];
@@ -318,8 +514,9 @@
 
 #pragma mark - Image Fetching 
 
--(NSArray*)randomImagesWithNum:(int)numImages {
-    return [dataMan randomImagesForNumberOfImages:numImages];
+-(NSArray*)randomImagesWithNum:(int)numImages ignoringImages:(NSArray *)theImagesToIgnore numberOfImagesInDB:(int)theNumImagesInDB  {
+    GWDataManager *randomImagesDataMan = [[GWDataManager alloc] init];
+    return [randomImagesDataMan fetchRandomImagesWithNum:numImages ignoringImages:theImagesToIgnore numberOfImagesInDatabase:theNumImagesInDB];
 }
 
 // image fetching by adding two images from text image urls
@@ -344,11 +541,15 @@
 
 #pragma mark - Text Filtering and Fetching
 
--(NSArray*)randomtTextWithNum:(int)numTexts {
+-(NSArray*)randomtTextWithNum:(int)numTexts ignoringTexts:(NSArray *)theTextsToIgnore {
     
     //NSArray *texts = [dataMan allTexts];
     GWDataManager *theDataManager = [[GWDataManager alloc] init];
     NSArray *texts = [theDataManager fetchTextsForCulture:[UserDefaults currentCulture]];
+    
+    if (theTextsToIgnore != nil) {
+        texts = [self removeTextsFromArray:texts textsToRemove:theTextsToIgnore];
+    }
     
     TextFilter *theFilter = [[TextFilter alloc] init];
     
@@ -484,6 +685,23 @@
         }
         
     }
+}
+
+-(NSArray *)removeTextsFromArray:(NSArray *)theTexts textsToRemove:(NSArray *)theTextsToRemove {
+    
+    NSMutableArray *newTexts = [NSMutableArray arrayWithArray:theTexts];
+    
+    for (GWText *textToRemove in theTextsToRemove) {
+        
+        for (GWText *currentText in theTexts) {
+            if ([currentText.textId isEqualToString:textToRemove.textId]) {
+                [newTexts removeObject:currentText];
+            }
+        }
+        
+    }
+    
+    return newTexts;
 }
 
 @end

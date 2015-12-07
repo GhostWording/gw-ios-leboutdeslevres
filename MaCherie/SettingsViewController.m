@@ -226,7 +226,7 @@ const float heightOffset = 20.0;
     if ([[UIApplication sharedApplication] respondsToSelector:@selector(currentUserNotificationSettings)]) {
         UIUserNotificationSettings *notificaitonSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
         
-        if ([[UserDefaults userWantsNotification] boolValue] == YES && notificaitonSettings.types != UIUserNotificationTypeNone) {
+        if ([[UserDefaults acceptedNotifications] boolValue] == YES && notificaitonSettings.types != UIUserNotificationTypeNone) {
             [notificationSwitch setOn:YES animated:YES];
         }
         else {
@@ -234,7 +234,7 @@ const float heightOffset = 20.0;
         }
         
     }
-    else if ([[UserDefaults userWantsNotification] boolValue] == YES) {
+    else if ([[UserDefaults acceptedNotifications] boolValue] == YES) {
         [notificationSwitch setOn:YES animated:YES];
     }
     else {
@@ -307,7 +307,7 @@ const float heightOffset = 20.0;
 
 -(void)wantsLocalNotification:(UISwitch*)sender {
     
-    [UserDefaults setUserWantsNotification:sender.isOn];
+    [UserDefaults setAcceptedNotifications:sender.isOn];
     
     if ([[UIApplication sharedApplication] respondsToSelector:@selector(currentUserNotificationSettings)]) {
         UIUserNotificationSettings *notificaitonSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];

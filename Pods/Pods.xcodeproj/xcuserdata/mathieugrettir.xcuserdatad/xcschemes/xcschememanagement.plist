@@ -8,72 +8,61 @@
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>2</integer>
 		</dict>
 		<key>ChameleonFramework.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>3</integer>
 		</dict>
 		<key>FBSDKCoreKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>4</integer>
 		</dict>
 		<key>FBSDKLoginKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>5</integer>
 		</dict>
 		<key>FBSDKMessengerShareKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>6</integer>
 		</dict>
 		<key>FBSDKShareKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>7</integer>
 		</dict>
 		<key>MBProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>8</integer>
 		</dict>
 		<key>Pods-MaCherie.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>9</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>39EDECA038017638669EC477DFD98F6D</key>
+		<key>248505697A0F82088ABC78C8150A495E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>628805D3003889CD48AA135ED0363099</key>
+		<key>4F8D063CE458291113CC773EF865D5D0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>775921E9E79A408E374980CEAA42E3BD</key>
+		<key>5B85EDF26077081DCCDD3063B5312613</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>684E51DC9B823B2AD11CF97FDEF4DD3D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -83,22 +72,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B487C67AE2A1CEC5EB8817D95A92D4F5</key>
+		<key>B639FEF670797DD049907B623BE32F45</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C6AA00AC25AA1BBD6FB2CF99E228C135</key>
+		<key>C6D2A1446FA42D6A2322C13E783997FF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DFB755F662A5758506D11208D051CDE2</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E0FDCF43D7437E2EEE45A70D1F63084A</key>
+		<key>CDBA25C6229ED150C68A8082B73D9C2E</key>
 		<dict>
 			<key>primary</key>
 			<true/>

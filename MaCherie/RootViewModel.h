@@ -17,11 +17,17 @@
 @property (nonatomic, readwrite) BOOL isLoadingImages;
 @property (nonatomic, readwrite) BOOL isShowingRatingView;
 @property (nonatomic, readwrite) BOOL isUserPhotosSelected;
+@property (nonatomic, readwrite) BOOL isViewingTheme;
 
 @property (nonatomic, readwrite) int numSpecialOccasionTexts;
 @property (nonatomic, readwrite) int numSpecialOccasionImages;
 
 @property (nonatomic, strong) NSArray *userSelectedImages;
+
+@property (nonatomic, strong) NSArray *firstLaunchTexts;
+@property (nonatomic, strong) NSArray *firstLaunchImages;
+@property (nonatomic, strong) NSError *firstLaunchError;
+@property (nonatomic, strong) NSError *firstLaunchImageError;
 
 -(void)setRandomTextForSpecialOccasionTexts:(NSArray*)theTexts withFilter:(TextFilter*)theFilter;
 -(void)setRandomTextForIntention:(NSString*)intentionSlug withNum:(int)num;
@@ -31,17 +37,23 @@
 -(void)downloadTextsForArea:(NSString*)theArea withCompletion:(void (^)(NSArray *theTexts, NSError *error))block;
 -(void)downloadImagesForRecipient:(NSString*)theRecipientId withNum:(NSInteger)numImages withCompletion:(void (^)(NSArray *theImageIds, NSError *error))block;
 
+-(void)downloadWelcomeTextsWithCompletion:(void (^)(NSArray *theTexts, NSError *error))block;
+-(void)downloadWelcomeImagesWithCompletion:(void (^)(NSArray *theImages, NSError *error))block;
+
 
 -(BOOL)minimumImagesAndTextsToDownloadWithNumTexts:(int)numTexts withNumImages:(int)numImages;
 
--(BOOL)textsExistForIntention:(NSString*)theIntention;
 -(void)fetchTextsForIntention:(NSString*)theIntention withCompletion:(void (^)(NSArray *theTexts, NSError *error))block;
 -(void)fetchImagesForIntention:(NSString*)theIntention withCompletion:(void (^)(NSArray *theImages, NSError *error))block;
+
+-(void)fetchImagesForThemePath:(NSString*)theThemePath withCompletion:(void (^)(NSArray *theImages, NSError *error))block;
+-(void)fetchImagesForCurrentThemePathWithCompletion:(void (^)(NSArray *theImages, NSError *error))block;
 -(NSArray*)specialOccasionTexts;
 -(NSArray*)specialOccasionImages;
+-(NSArray*)themeImages;
 
--(NSArray*)randomtTextWithNum:(int)numTexts;
--(NSArray*)randomImagesWithNum:(int)numImages;
+-(NSArray*)randomtTextWithNum:(int)numTexts ignoringTexts:(NSArray *)theTextsToIgnore;
+-(NSArray*)randomImagesWithNum:(int)numImages ignoringImages:(NSArray *)theImagesToIgnore numberOfImagesInDB:(int)theNumImagesInDB;
 -(NSArray*)randomImagesWithImagesBasedOnTexts:(NSArray*)theTexts WithNum:(int)numImages;
 
 -(NSString*)addImagePathToSMS:(NSString*)theImage relativePath:(NSString*)theRelativePath;

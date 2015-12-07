@@ -9,8 +9,6 @@
 #import "SpecialOccasionViewModel.h"
 #import "IntentionObject.h"
 #import "RecipientObject.h"
-#import "ServerComm.h"
-#import "DataManager.h"
 #import "UserDefaults.h"
 #import "Image.h"
 #import "GWDataManager.h"
@@ -19,6 +17,7 @@
     NSArray *intentions;
     NSArray *recipients;
     GWDataManager *dataMan;
+    NSURLSessionDataTask *sessionDataTask;
 }
 
 @end
@@ -42,6 +41,7 @@
         intentions = [dataMan fetchIntentionsWithArea:theArea withCulture:theCulture];
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"sortOrderInArea" ascending:YES];
         intentions = [intentions sortedArrayUsingDescriptors:@[sortDescriptor]];
+        sessionDataTask = nil;
     }
     
     return self;
@@ -90,25 +90,26 @@
 -(void)fetchIntentionsForArea:(NSString *)theArea withCulture:(NSString*)theCulture withCompletion:(void (^)(NSArray *, NSError *))block {
     [block copy];
     
-    [dataMan downloadIntentionsWithArea:theArea withCulture:theCulture withCompletion:^(NSArray *intentionIds, NSError *error) {
+    if (sessionDataTask == nil) {
         
-        dispatch_async(dispatch_get_main_queue(), ^{
+        sessionDataTask = [dataMan downloadIntentionsWithArea:theArea withCulture:theCulture withCompletion:^(NSArray *intentionIds, NSError *error) {
             
-            if (error != nil) {
-                intentions = [dataMan fetchIntentionsWithCulture:theCulture];
-            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                sessionDataTask = nil;
+                
+                if (error == nil) {
+                    intentions = [dataMan fetchIntentionsWithArea:theArea withCulture:theCulture];
+                }
+                
+                block(intentionIds, error);
+                
+            });
             
-            block(intentionIds, error);
-            
-        });
+        }];
         
-    }];
+    }
     
-}
-
--(BOOL)textsExistForIntention:(NSString *)theIntention {
-    DataManager *datMan = [[DataManager alloc] init];
-    return [datMan textsExistForIntention:theIntention];
 }
 
 @end

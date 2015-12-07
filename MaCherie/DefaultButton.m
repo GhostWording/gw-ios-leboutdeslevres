@@ -68,5 +68,14 @@
     
 }
 
+-(void)setButtonBorderColor:(UIColor *)buttonBorderColor {
+    _buttonBorderColor = buttonBorderColor;
+    
+    if (self.selected == NO) {
+        self.layer.borderColor = _buttonBorderColor.CGColor;
+    }
+    
+}
+
 
 @end

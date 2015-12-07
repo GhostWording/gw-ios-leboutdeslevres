@@ -84,4 +84,12 @@
     
 }
 
+-(NSArray *)theImages {
+    return images;
+}
+
+-(NSArray *)theImageIds {
+    return [images valueForKey:@"imageId"];
+}
+
 @end

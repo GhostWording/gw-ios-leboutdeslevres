@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "48794FD655890C66E2BBF838"
+               BlueprintIdentifier = "18D1AADBB8BF8622A5332922"
                BuildableName = "libPods-MaCherie.a"
                BlueprintName = "Pods-MaCherie"
                ReferencedContainer = "container:Pods.xcodeproj">

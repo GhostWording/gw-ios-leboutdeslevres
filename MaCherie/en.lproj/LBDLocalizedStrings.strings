@@ -45,3 +45,8 @@
 "<LBDLAccessNotificationsMessage>" = "We need to enable notifications so that new message ideas can help you get started!";
 "<LBDLAccessNotificationsCancel>" = "Next year";
 "<LBDLAccessNotificationsAccept>" = "Grant access now";
+
+"<LBDLTutorialSubtitleOne>" = "Match a message idea with a photo";
+"<LBDLTutorialSubtitleTwo>" = "Send them as a postcard to your love";
+"<LBDLTutorialSubtitleThree>" = "You can choose message topics from the menu";
+"<LBDLTutorialNextScreen>" = "Next";

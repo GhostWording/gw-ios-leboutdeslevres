@@ -15,9 +15,9 @@
 #import "GoogleAnalyticsCommunication.h"
 #import "CustomAnalytics.h"
 #import "LBDLocalization.h"
+#import "MoodModeViewController.h"
 
 @interface ImageScrollView () <UIScrollViewDelegate> {
-    ImageScrollViewModel *model;
     BOOL isLoadingData;
     UIView *swipeViewForScroll;
     NSMutableArray *imageSubviewsArray;
@@ -27,6 +27,7 @@
     NSInteger currentPage;
     int shakeRepeatCount;
     BoxedActivityIndicatorView *activityIndicator;
+    MoodModeViewController *moodModeView;
 }
 
 @end
@@ -37,7 +38,7 @@
     
     if (self = [super initWithFrame:frame]) {
         NSLog(@"before model");
-        model = [[ImageScrollViewModel alloc] initWithArray:imageArray];
+        _viewModel = [[ImageScrollViewModel alloc] initWithArray:imageArray];
         NSLog(@"after model");
         
         swipeViewForScroll = nil;
@@ -63,11 +64,15 @@
         
         imageSubviewsArray = [[NSMutableArray alloc] init];
         
-        [self populateScrollView:model.numberOfImages];
+        [self populateScrollView:_viewModel.numberOfImages];
         
         activityIndicator = [[BoxedActivityIndicatorView alloc] init];
         activityIndicator.frame = CGRectMake(CGRectGetMidX(self.frame) - 40, CGRectGetMidY(self.frame) - 40, 80, 80);
         [self addSubview:activityIndicator];
+        
+        // we should just allocate it once as we do not want the image scroll view to reload the themes on every reload
+        // of the image data
+        moodModeView = [[MoodModeViewController alloc] init];
         
     }
     return self;
@@ -168,7 +173,7 @@
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(index * CGRectGetWidth(self.frame), 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame))];
     imgView.contentMode = UIViewContentModeScaleAspectFill;
     imgView.layer.masksToBounds = YES;
-    imgView.image = [model imageAtIndex:index];
+    imgView.image = [_viewModel imageAtIndex:index];
     [imageScrollView addSubview:imgView];
     [imageSubviewsArray addObject:imgView];
     
@@ -179,14 +184,52 @@
 
 -(void)addLastPageAtIndex:(int)index {
     
+    /*
     UIButton *refresh = [UIButton buttonWithType:UIButtonTypeCustom];
-    refresh.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetWidth(self.frame)*0.2 + CGRectGetWidth(self.frame) * index, CGRectGetHeight(self.frame) * 0.15, CGRectGetWidth(self.frame) * 0.4, CGRectGetWidth(self.frame) * 0.4);
+    //refresh.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetWidth(self.frame)*0.2 + CGRectGetWidth(self.frame) * index, CGRectGetHeight(self.frame) * 0.15, CGRectGetWidth(self.frame) * 0.4, CGRectGetWidth(self.frame) * 0.4);
+    refresh.frame = CGRectMake(CGRectGetWidth(self.frame) * index + CGRectGetMidX(self.frame) - CGRectGetHeight(self.frame) * 0.17, CGRectGetHeight(self.frame)*0.1, CGRectGetHeight(self.frame) * 0.34, CGRectGetHeight(self.frame) * 0.34);
+    [refresh setBackgroundImage:[UIImage imageNamed:@"refreshIcon.png"] forState:UIControlStateNormal];
+    [refresh addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    //[imageScrollView addSubview:refresh];
+    
+    
+    UILabel *refreshLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) * 0.1 + CGRectGetWidth(self.frame)*index, CGRectGetMaxY(refresh.frame), CGRectGetWidth(self.frame) * 0.8, CGRectGetHeight(self.frame) * 0.09)];
+    refreshLabel.textColor = [UIColor appBlueColor];
+    refreshLabel.textAlignment = NSTextAlignmentCenter;
+    refreshLabel.font = [UIFont helveticaNeueBoldWithSize:17.0];
+    refreshLabel.text = LBDLocalizedString(@"<LBDLNewImages>", nil);
+    //[imageScrollView addSubview:refreshLabel];
+    */
+    __weak typeof (self) wSelf = self;
+    
+    moodModeView.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetWidth(self.frame) * 0.26 + CGRectGetWidth(self.frame) * index,  CGRectGetHeight(self.frame) * 0.08, CGRectGetWidth(self.frame) * 0.52, 100);
+    [moodModeView reloadData];
+    [moodModeView themeChosenWithCompletion:^(NSString *themePath) {
+        if ([wSelf.imageScrollViewDelegate respondsToSelector:@selector(refreshImageWithImageScrollView:withThemePath:)]) {
+            [activityIndicator fadeInWithCompletion:^(BOOL completed) {
+                
+            }];
+            [wSelf.imageScrollViewDelegate refreshImageWithImageScrollView:self withThemePath:themePath];
+        }
+    }];
+    [imageScrollView addSubview:moodModeView];
+    
+    UIButton *refresh = [UIButton buttonWithType:UIButtonTypeCustom];
+    //refresh.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetWidth(self.frame)*0.2 + CGRectGetWidth(self.frame) * index, CGRectGetHeight(self.frame) * 0.15, CGRectGetWidth(self.frame) * 0.4, CGRectGetWidth(self.frame) * 0.4);
+    refresh.frame = CGRectMake(CGRectGetWidth(self.frame) * index + CGRectGetMidX(self.frame) - CGRectGetHeight(self.frame) * 0.17, CGRectGetMaxY(moodModeView.frame) + CGRectGetHeight(self.frame) * 0.04, CGRectGetHeight(self.frame) * 0.34, CGRectGetHeight(self.frame) * 0.34);
     [refresh setBackgroundImage:[UIImage imageNamed:@"refreshIcon.png"] forState:UIControlStateNormal];
     [refresh addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [imageScrollView addSubview:refresh];
     
+    if ([UIScreen mainScreen].bounds.size.height == 480.0f) {
+        refresh.frame = CGRectMake(CGRectGetWidth(self.frame) * index + CGRectGetMidX(self.frame) - CGRectGetHeight(self.frame) * 0.17, CGRectGetMaxY(moodModeView.frame), CGRectGetHeight(self.frame) * 0.34, CGRectGetHeight(self.frame) * 0.34);
+    }
+    else {
+        refresh.frame = CGRectMake(CGRectGetWidth(self.frame) * index + CGRectGetMidX(self.frame) - CGRectGetHeight(self.frame) * 0.17, CGRectGetMaxY(moodModeView.frame) + CGRectGetHeight(self.frame) * 0.05, CGRectGetHeight(self.frame) * 0.34, CGRectGetHeight(self.frame) * 0.34);
+    }
     
-    UILabel *refreshLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) * 0.1 + CGRectGetWidth(self.frame)*index, CGRectGetMaxY(refresh.frame) + 40, CGRectGetWidth(self.frame) * 0.8, 50)];
+    
+    UILabel *refreshLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) * 0.1 + CGRectGetWidth(self.frame)*index, CGRectGetMaxY(refresh.frame) + 3, CGRectGetWidth(self.frame) * 0.8, CGRectGetHeight(self.frame) * 0.09)];
     refreshLabel.textColor = [UIColor appBlueColor];
     refreshLabel.textAlignment = NSTextAlignmentCenter;
     refreshLabel.font = [UIFont helveticaNeueBoldWithSize:17.0];
@@ -199,24 +242,24 @@
 }
 
 -(UIImage*)selectedImage {
-    if (currentPage < model.numberOfImages) {
-        return [model imageAtIndex:currentPage];
+    if (currentPage < _viewModel.numberOfImages) {
+        return [_viewModel imageAtIndex:currentPage];
     }
     
     return nil;
 }
 
 -(NSString*)selectedImageId {
-    if (currentPage < model.numberOfImages) {
-        return [model imageNameAtIndex:currentPage];
+    if (currentPage < _viewModel.numberOfImages) {
+        return [_viewModel imageNameAtIndex:currentPage];
     }
     
     return nil;
 }
 
 -(NSString*)selectedImagePath {
-    if (currentPage < model.numberOfImages) {
-        return [model imagePathAtIndex:currentPage];
+    if (currentPage < _viewModel.numberOfImages) {
+        return [_viewModel imagePathAtIndex:currentPage];
     }
     
     return nil;
@@ -227,7 +270,7 @@
 -(void)reloadData {
     
     if (_imageScrollViewDataSource) {
-        [model updateModelWithArray:[_imageScrollViewDataSource updateImageScrollViewImages]];
+        [_viewModel updateModelWithArray:[_imageScrollViewDataSource updateImageScrollViewImages]];
     }
     
     for (UIView *view in imageSubviewsArray) {
@@ -238,9 +281,9 @@
     numPages = 0;
     currentPage = 0;
     pageControl.currentPage = 0;
-    pageControl.numberOfPages = model.numberOfImages + 1;
+    pageControl.numberOfPages = _viewModel.numberOfImages + 1;
     
-    [self populateScrollView:model.numberOfImages];
+    [self populateScrollView:_viewModel.numberOfImages];
     
     [activityIndicator fadeOutWithCompletion:^(BOOL completed) {
         if (completed) {
@@ -264,6 +307,18 @@
         isLoadingData = YES;
         [self reloadData];
     }
+}
+
+-(void)fadeInLoaderWithCompletion:(void (^)(BOOL))block {
+    [block copy];
+    
+    [activityIndicator fadeInWithCompletion:block];
+}
+
+-(void)fadeOutLoaderWithCompletion:(void (^)(BOOL))block {
+    [block copy];
+    
+    [activityIndicator fadeOutWithCompletion:block];
 }
 
 #pragma mark - 

@@ -103,4 +103,12 @@
     return [self colorWithHexString:@"0284fe"];
 }
 
++(UIColor *)c_lightOverlayGrayColor {
+    return [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.7];
+}
+
++(UIColor *)c_darkOverlayColor {
+    return [UIColor colorWithRed:0.05 green:0.05 blue:0.05 alpha:0.9];
+}
+
 @end

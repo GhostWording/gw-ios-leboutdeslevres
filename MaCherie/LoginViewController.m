@@ -53,40 +53,40 @@
     [noFacebookLoginButton setTitleColor:[UIColor clearColor] forState:UIControlStateHighlighted];
     [noFacebookLoginButton setTitle:LBDLocalizedString(@"<LBDLuseWithoutFacebookConnection>", nil) forState:UIControlStateNormal];
     [noFacebookLoginButton addTarget:self action:@selector(loginWithoutFacebook) forControlEvents:UIControlEventTouchUpInside];
-    noFacebookLoginButton.titleLabel.font = [UIFont helveticaNeueBoldWithSize:13.0];
-    noFacebookLoginButton.frame = CGRectMake(CGRectGetMinX(loginButton.frame), CGRectGetMaxY(loginButton.frame), CGRectGetWidth(loginButton.frame), 40);
+    noFacebookLoginButton.titleLabel.font = [UIFont helveticaNeueBoldWithSize:15.0];
+    noFacebookLoginButton.frame = CGRectMake(CGRectGetMinX(loginButton.frame) - 15, CGRectGetMaxY(loginButton.frame), CGRectGetWidth(loginButton.frame) + 30, 40);
     [self.view addSubview:noFacebookLoginButton];
     
     frenchButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame)*0.35 - 45, CGRectGetMidY(self.view.frame)  + 40, 90, 36)];
-    frenchButton.buttonBackgroundColor = [UIColor whiteColor];
-    frenchButton.buttonSelectedBackgroundColor = [UIColor appBlueColor];
-    frenchButton.buttonBorderSelectedColor = [UIColor whiteColor];
+    frenchButton.buttonBackgroundColor = [UIColor appBlueColor];
+    frenchButton.buttonSelectedBackgroundColor = [UIColor whiteColor];
+    frenchButton.buttonBorderColor = [UIColor whiteColor];
     frenchButton.layer.borderWidth = 1.0;
     [frenchButton setTitle:@"Francais" forState:UIControlStateNormal];
-    [frenchButton setTitleColor:[UIColor appBlueColor] forState:UIControlStateNormal];
-    [frenchButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+    [frenchButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [frenchButton setTitleColor:[UIColor appBlueColor] forState:UIControlStateSelected];
     [frenchButton addTarget:self action:@selector(languageButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:frenchButton];
     
     englishButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) - 45, CGRectGetMinY(frenchButton.frame), 90, 36)];
-    englishButton.buttonBackgroundColor = [UIColor whiteColor];
-    englishButton.buttonSelectedBackgroundColor = [UIColor appBlueColor];
-    englishButton.buttonBorderSelectedColor = [UIColor whiteColor];
+    englishButton.buttonBackgroundColor = [UIColor appBlueColor];
+    englishButton.buttonSelectedBackgroundColor = [UIColor whiteColor];
+    englishButton.buttonBorderColor = [UIColor whiteColor];
     englishButton.layer.borderWidth = 1.0;
     [englishButton setTitle:@"English" forState:UIControlStateNormal];
-    [englishButton setTitleColor:[UIColor appBlueColor] forState:UIControlStateNormal];
-    [englishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+    [englishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [englishButton setTitleColor:[UIColor appBlueColor] forState:UIControlStateSelected];
     [englishButton addTarget:self action:@selector(languageButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:englishButton];
     
     spanishButton = [[DefaultButton alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame) * 1.65 - 45, CGRectGetMinY(englishButton.frame), 90, 36)];
-    spanishButton.buttonBackgroundColor = [UIColor whiteColor];
-    spanishButton.buttonSelectedBackgroundColor = [UIColor appBlueColor];
-    spanishButton.buttonBorderSelectedColor = [UIColor whiteColor];
+    spanishButton.buttonBackgroundColor = [UIColor appBlueColor];
+    spanishButton.buttonSelectedBackgroundColor = [UIColor whiteColor];
+    spanishButton.buttonBorderColor = [UIColor whiteColor];
     spanishButton.layer.borderWidth = 1.0;
     [spanishButton setTitle:@"Español" forState:UIControlStateNormal];
-    [spanishButton setTitleColor:[UIColor appBlueColor] forState:UIControlStateNormal];
-    [spanishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+    [spanishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [spanishButton setTitleColor:[UIColor appBlueColor] forState:UIControlStateSelected];
     [spanishButton addTarget:self action:@selector(languageButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:spanishButton];
     

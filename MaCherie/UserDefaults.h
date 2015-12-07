@@ -38,11 +38,23 @@ static NSString *spanishCultureString = @"es-ES";
 +(NSDate*)dateInstalled;
 +(void)setDateInstalled:(NSDate*)installDate;
 
++(NSDate*)lastActiveDate;
++(void)setLastActiveDate:(NSDate*)theLastActivedate;
+
++(BOOL)isRegainingFocus;
++(void)setRegainsFocus:(BOOL)regainsFocus;
+
 +(NSString*)currentCulture;
 +(void)setCulture:(NSString*)newCulture;
 
 +(NSNumber*)firstLaunchOfApp;
 +(void)setFirstLaunchOfApp:(BOOL)firstLaunch;
+
++(NSNumber *)welcomeTextsShown;
++(void)setWelcomeTextsShow:(BOOL)isShown;
+
++(BOOL)welcomeImagesShown;
++(void)setWelcomeImagesShown:(BOOL)isShown;
 
 +(NSDate*)lastTimeAskedForNotificationPermission;
 +(void)setLastTimeAskedForNotificationPermission:(NSDate*)lastTimeDate;
@@ -86,9 +98,6 @@ static NSString *spanishCultureString = @"es-ES";
 
 +(NSNumber*)userGender;
 +(void)setUserGender:(NSNumber*)gender;
-
-+(NSNumber*)userWantsNotification;
-+(void)setUserWantsNotification:(BOOL)wantsNotification;
 
 +(NSNumber*)hasPressedIntentionButton;
 +(void)setHasPressedIntentionButton:(BOOL)hasPressedIntention;

@@ -9,7 +9,6 @@
 #import "RootViewController.h"
 #import "TextScrollView.h"
 #import "ImageScrollView.h"
-#import "DataManager.h"
 #import "RootViewModel.h"
 #import "UserDefaults.h"
 #import "DefaultButton.h"
@@ -26,7 +25,6 @@
 #import "NavigationSlideAnimator.h"
 #import "GoogleAnalyticsCommunication.h"
 #import "CustomAnalytics.h"
-#import "ServerComm.h"
 #import "SpecialOccasionView.h"
 #import "TextFilter.h"
 #import "BoxedActivityIndicatorView.h"
@@ -36,6 +34,9 @@
 #import "Chameleon.h"
 #import "UIFont+ArialAndHelveticaNeue.h"
 #import "BlocksAlertView.h"
+#import "NewFeatureView.h"
+#import "MoodModeViewController.h"
+
 #import <MobileCoreServices/MobileCoreServices.h>
 
 
@@ -80,7 +81,6 @@ const int numberOfTextsToLoad = 10;
     UIAlertView *languageChangeAlert;
     
     RootViewModel *model;
-    ServerComm *serverComm;
     BOOL isShowingRatingView;
     
     float timeSinceLastAlert;
@@ -99,13 +99,11 @@ const int numberOfTextsToLoad = 10;
     theSpecialOccasionView = nil;
     
     imagePicker = [[UIImagePickerController alloc] init];
-    DataManager *dataMan = [[DataManager alloc] init];
-    serverComm = [[ServerComm alloc] init];
     model = [[RootViewModel alloc] init];
     
     imagePicker.delegate = self;
     
-    NSArray *randomText = [model randomtTextWithNum:numberOfTextsToLoad];
+    NSArray *randomText = [model randomtTextWithNum:numberOfTextsToLoad ignoringTexts:nil];
     
     theImagePagedView = [[ImageScrollView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)*0.5 + 20) andImages:nil];
     theImagePagedView.imageScrollViewDataSource = self;
@@ -113,7 +111,7 @@ const int numberOfTextsToLoad = 10;
     [self.view addSubview:theImagePagedView];
     
     settingsView = [[UIView alloc] initWithFrame:CGRectMake(10, 25, CGRectGetWidth(self.view.frame)*0.13, CGRectGetWidth(self.view.frame)*0.13)];
-    settingsView.backgroundColor = [UIColor appLightGrayColor];
+    settingsView.backgroundColor = [UIColor clearColor];
     settingsView.alpha = 0.8;
     settingsView.layer.cornerRadius = 4.0f;
     [self.view addSubview:settingsView];
@@ -133,7 +131,7 @@ const int numberOfTextsToLoad = 10;
     
     addPhotoCameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
     addPhotoCameraButton.frame = CGRectMake(CGRectGetWidth(theImagePagedView.frame) - 70, 20, 50, 50);
-    addPhotoCameraButton.layer.backgroundColor = [UIColor lightGrayColor].CGColor;
+    addPhotoCameraButton.layer.backgroundColor = [UIColor clearColor].CGColor;
     addPhotoCameraButton.layer.cornerRadius = 4.0;
     addPhotoCameraButton.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
     [addPhotoCameraButton setImage:[UIImage imageNamed:@"cameraIcon.png"] forState:UIControlStateNormal];
@@ -143,7 +141,7 @@ const int numberOfTextsToLoad = 10;
     
     addPhotoRollButton = [UIButton buttonWithType:UIButtonTypeCustom];
     addPhotoRollButton.frame = CGRectMake(CGRectGetWidth(theImagePagedView.frame) - 70, CGRectGetMaxY(addPhotoCameraButton.frame) + 10, 50, 50);
-    addPhotoRollButton.layer.backgroundColor = [UIColor lightGrayColor].CGColor;
+    addPhotoRollButton.layer.backgroundColor = [UIColor clearColor].CGColor;
     addPhotoRollButton.layer.cornerRadius = 4.0;
     addPhotoRollButton.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
     [addPhotoRollButton setImage:[UIImage imageNamed:@"photoIcon.png"] forState:UIControlStateNormal];
@@ -155,7 +153,6 @@ const int numberOfTextsToLoad = 10;
     
     editButton = [UIButton buttonWithType:UIButtonTypeCustom];
     editButton.frame = CGRectMake(CGRectGetWidth(self.view.frame) - 55, CGRectGetMaxY(theImagePagedView.frame) - 5, 40, 40);
-    //editButton.frame = CGRectMake(10, CGRectGetMaxY(theTextPagedView.frame) + 4, 38, 38);
     editButton.layer.backgroundColor = [UIColor flatOrangeColor].CGColor;
     editButton.layer.cornerRadius = editButton.frame.size.width / 2.0;
     [editButton setImage:[UIImage imageNamed:@"createNewTextIcon.png"] forState:UIControlStateNormal];
@@ -170,8 +167,6 @@ const int numberOfTextsToLoad = 10;
     
     normalSendButton = [FBSDKMessengerShareButton rectangularButtonWithStyle:FBSDKMessengerShareButtonStyleBlue];
     normalSendButton.frame = CGRectMake(CGRectGetMidX(self.view.frame) - 60, CGRectGetMaxY(theTextPagedView.frame) + 3, 120, 40);
-    //normalSendButton.layer.backgroundColor = [UIColor appBlueColor].CGColor;
-    //normalSendButton.layer.cornerRadius = 4.0;
     normalSendButton.titleLabel.font = [UIFont helveticaNeueWithSize:17];
     [normalSendButton setTitle:LBDLocalizedString(@"<LBDLSendMessage>", nil) forState:UIControlStateNormal];
     [normalSendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -217,8 +212,8 @@ const int numberOfTextsToLoad = 10;
     specialOccasionButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
     [self.view addSubview:specialOccasionButton];
     
-    specialIntentionLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame)*0.1, CGRectGetMaxY(theTextPagedView.pageControl.frame) + CGRectGetMaxY(theImagePagedView.frame), CGRectGetWidth(self.view.frame) * 0.8, 10)];
-    specialIntentionLabel.font = [UIFont helveticaNeueWithSize:12];
+    specialIntentionLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame)*0.1, CGRectGetMaxY(theTextPagedView.pageControl.frame) + CGRectGetMaxY(theImagePagedView.frame) + 2, CGRectGetWidth(self.view.frame) * 0.8, 16)];
+    specialIntentionLabel.font = [UIFont helveticaNeueWithSize:16];
     specialIntentionLabel.textAlignment = NSTextAlignmentCenter;
     specialIntentionLabel.textColor = [UIColor lightGrayColor];
     specialIntentionLabel.alpha = 0.0f;
@@ -236,7 +231,6 @@ const int numberOfTextsToLoad = 10;
     UserDefaults *defaults = [[UserDefaults alloc] init];
     
     NSLog(@"is first launch: %@", [UserDefaults firstLaunchOfApp]);
-    NSLog(@"number of texts are: %ld", (long)[dataMan numTexts]);
     
     if ([[UserDefaults firstLaunchOfApp] boolValue] == YES) {
         
@@ -248,12 +242,40 @@ const int numberOfTextsToLoad = 10;
         else {
             [self dismissFirstLaunchView];
         }
+        
+        __weak typeof (self) wSelf = self;
+        [model downloadWelcomeTextsWithCompletion:^(NSArray *theTexts, NSError *theError) {
+            [wSelf updateViewData];
+        }];
+        
+        [model downloadWelcomeImagesWithCompletion:^(NSArray *theImages, NSError *theError) {
+            [wSelf updateViewData];
+        }];
+        
+        
+        NewFeatureView *featureView = [[NewFeatureView alloc] initWithFrame:self.view.frame withType:kNextButtonType];
+        [featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleOne>", nil) andImage:@"tut3.png"];
+        [featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleTwo>", nil) andImage:@"tut2.png"];
+        [featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleThree>", nil) andImage:@"tut1.png"];
+        
+        [featureView willDismissViewWithCompletion:^{
+            
+            [theTextPagedView shakeAnimateScrollViewAftertime:7.0];
+            [theImagePagedView shakeAnimateScrollViewAfterTime:20.0];
+            
+        }];
+        
+        AppDelegate  *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [[appDelegate window] addSubview:featureView];
+        
+        
     }
     else {
         [self setGenderBasedOnFacebookData];
     }
     
-    if (![[UserDefaults hasPressedIntentionButton] boolValue] && ([[UserDefaults numberOfTextRefreshesByUser] intValue] < 1 && [[UserDefaults numberOfImageRefreshesByUser] intValue] < 1 && [[UserDefaults timeSpentInApp] intValue] < 90)) {
+    
+    if (![[UserDefaults hasPressedIntentionButton] boolValue] == YES && ([[UserDefaults numberOfTextRefreshesByUser] intValue] < 1 && [[UserDefaults numberOfImageRefreshesByUser] intValue] < 1)) {
         
         [specialOccasionButton setHidden:YES];
         
@@ -279,6 +301,13 @@ const int numberOfTextsToLoad = 10;
     else {
         [self performSelector:@selector(showPulseForSettingsIfAppropriate) withObject:nil afterDelay:0.1];
     }
+    
+    MoodModeViewController *moodeModeView = [[MoodModeViewController alloc] initWithFrame:self.view.frame];
+    
+    /*
+    AppDelegate  *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [[appDelegate window] addSubview:moodeModeView];
+     */
 }
 
 -(void)showNotificationAlert {
@@ -353,15 +382,16 @@ const int numberOfTextsToLoad = 10;
     [theTextPagedView reloadDataAnimated:YES];
     [theImagePagedView reloadDataAnimated:YES];
     
+    [self performSelector:@selector(setFirstLaunchParam) withObject:nil afterDelay:0.6];
+}
+
+-(void)setFirstLaunchParam {
     if ([[UserDefaults firstLaunchOfApp] boolValue] == YES) {
-        // make the text scroll view shake after a certain time if the user hasn't interacted with it
-        // handled automatically by the text scroll view
-        [theTextPagedView shakeAnimateScrollViewAftertime:10.0];
-        [theImagePagedView shakeAnimateScrollViewAfterTime:24.0];
+        
         [UserDefaults setDateInstalled:[NSDate date]];
         [UserDefaults setFirstLaunchOfApp:NO];
+        
     }
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -375,19 +405,22 @@ const int numberOfTextsToLoad = 10;
     // update the texts in case we have chosen a different gender and the texts need
     // to be re-filtered
     
+    [UIView animateWithDuration:0.3 animations:^{
+        editButton.alpha = 1.0f;
+    }];
+    
     [self showViewDataWhenAppBecomesActive];
     
 }
 
 -(void)showViewDataWhenAppBecomesActive {
-    [UIView animateWithDuration:0.3 animations:^{
-        editButton.alpha = 1.0f;
-    }];
     
     [[GoogleAnalyticsCommunication sharedInstance] setScreenName:GA_SCREEN_MAIN];
     [[CustomAnalytics sharedInstance] postActionWithType:@"init" actionLocation:GA_SCREEN_MAIN targetType:@"init" targetId:@"init" targetParameter:@""];
-    
-    [self updateViewData];
+    NSLog(@"first launch of app: %@ and are photos selected: %d", [UserDefaults firstLaunchOfApp], model.isUserPhotosSelected);
+    if (model.isUserPhotosSelected == NO && [[UserDefaults firstLaunchOfApp] boolValue] == NO) {
+        [self updateViewData];
+    }
     
     [self showPulseIfAppropriate];
 }
@@ -436,7 +469,7 @@ const int numberOfTextsToLoad = 10;
     
     NSLog(@"calling show pulse if appropriate");
     
-    if (![[UserDefaults hasPressedIntentionButton] boolValue] && !([[UserDefaults numberOfTextRefreshesByUser] intValue] < 1 && [[UserDefaults numberOfImageRefreshesByUser] intValue] < 1 && [[UserDefaults timeSpentInApp] intValue] < 90) && specialOccasionButton.hidden == NO) {
+    if (![[UserDefaults hasPressedIntentionButton] boolValue] && !([[UserDefaults numberOfTextRefreshesByUser] intValue] < 1 && [[UserDefaults numberOfImageRefreshesByUser] intValue] < 1) && specialOccasionButton.hidden == NO) {
         
         NSLog(@"show pulse if appropriate running");
         
@@ -1020,13 +1053,14 @@ const int numberOfTextsToLoad = 10;
 -(void)dismissFirstLaunchView {
     
     
-    if ([model minimumImagesAndTextsToDownloadWithNumTexts:100 withNumImages:5]) {
+    if ([model minimumImagesAndTextsToDownloadWithNumTexts:100 withNumImages:5] && (model.firstLaunchTexts.count != 0 || model.firstLaunchError != nil)) {
         [UIView animateWithDuration:0.3 animations:^{
             firstLaunView.alpha = 0.0f;
             
             [self performSelectorOnMainThread:@selector(updateViewData) withObject:nil waitUntilDone:YES];
         
         } completion:^(BOOL finished) {
+            [firstLaunView removeFromSuperview];
             firstLaunView = nil;
         }];
         
@@ -1062,7 +1096,7 @@ const int numberOfTextsToLoad = 10;
 
 -(void)isSufficientResourcesDownloaded {
 
-    if ([model minimumImagesAndTextsToDownloadWithNumTexts:100 withNumImages:5]) {
+    if ([model minimumImagesAndTextsToDownloadWithNumTexts:100 withNumImages:5] && (model.firstLaunchTexts.count != 0 || model.firstLaunchError == nil)) {
         [self performSelectorOnMainThread:@selector(updateViewData) withObject:nil waitUntilDone:YES];
         
         if (loadingIndicatorView) {
@@ -1211,7 +1245,7 @@ const int numberOfTextsToLoad = 10;
 
 #pragma mark - Image Picker Delegate
 
--(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     
@@ -1235,11 +1269,7 @@ const int numberOfTextsToLoad = 10;
 
 #pragma mark - Messenger, SMS and Mail Sending
 
--(void)messengerButtonPressed:(UIButton *)sender {
-    
-    model.isUserPhotosSelected = NO;
-    model.userSelectedImages = nil;
-    
+-(void)dismissEditedTextView {
     [UIView animateWithDuration:0.1 animations:^{
         if (editTextView != nil) {
             editTextView.alpha = 0.0f;
@@ -1250,6 +1280,14 @@ const int numberOfTextsToLoad = 10;
             editTextView = nil;
         }
     }];
+}
+
+-(void)messengerButtonPressed:(UIButton *)sender {
+    
+    model.isUserPhotosSelected = NO;
+    model.userSelectedImages = nil;
+    
+    [self dismissEditedTextView];
     
     if ([theTextPagedView selectedText] != nil && [theImagePagedView selectedImage] != nil) {
         NSLog(@"is last page: %d", [theTextPagedView isLastPage]);
@@ -1288,7 +1326,7 @@ const int numberOfTextsToLoad = 10;
     }
     else if([theTextPagedView isLastPage]) {
         
-        if ([sender isEqual:editedTextSendButton]) {
+        if ([buttonUsedToSend isEqual:editedTextSendButton]) {
             NSString *selectedText = textView.text;
             
             if (textView != nil) {
@@ -1314,17 +1352,7 @@ const int numberOfTextsToLoad = 10;
     model.isUserPhotosSelected = NO;
     model.userSelectedImages = nil;
     
-    [UIView animateWithDuration:0.1 animations:^{
-        theButton.alpha = 1.0;
-        if (editTextView != nil) {
-            editTextView.alpha = 0.0;
-        }
-    } completion:^(BOOL finished) {
-        if (editTextView != nil) {
-            [editTextView removeFromSuperview];
-            editTextView = nil;
-        }
-    }];
+    [self dismissEditedTextView];
     
     if ([MFMessageComposeViewController canSendText] && [MFMessageComposeViewController canSendAttachments]) {
         MFMessageComposeViewController *messageVC = [[MFMessageComposeViewController alloc] init];
@@ -1341,7 +1369,7 @@ const int numberOfTextsToLoad = 10;
             
         }
         else if([buttonUsedToSend isEqual:editedTextSendButton]) {
-            messageVC.body = [theTextPagedView selectedText];
+            messageVC.body = textView.text;
             
             [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_TEXT_EDIT_SMS withAction:GA_ACTION_BUTTON_PRESSED withLabel:[theTextPagedView selectedTextId] wtihValue:nil];
             [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_IMAGE_SENT_SMS withAction:GA_ACTION_BUTTON_PRESSED withLabel:[theImagePagedView selectedImageId] wtihValue:nil];
@@ -1396,17 +1424,7 @@ const int numberOfTextsToLoad = 10;
 
 -(void)mailButtonPressed:(UIButton *)theButton {
     
-    [UIView animateWithDuration:0.1 animations:^{
-        theButton.alpha = 1.0;
-        if (editTextView == nil) {
-            editTextView.alpha = 0;
-        }
-    } completion:^(BOOL finished) {
-        if (editTextView != nil) {
-            [editTextView removeFromSuperview];
-            editTextView = nil;
-        }
-    }];
+    [self dismissEditedTextView];
     
     if ([MFMailComposeViewController canSendMail]) {
         MFMailComposeViewController *mailVC = [[MFMailComposeViewController alloc] init];
@@ -1595,7 +1613,8 @@ const int numberOfTextsToLoad = 10;
 -(void)refreshButtonPressed {
     [self showNotificationAlert];
     [self showRatingViewIfAppropriate];
-    [UserDefaults increaseNumberOfTextRefreshes];
+    [UserDefaults increaseNumberOfTextRefreshesByUser];
+    [UserDefaults setWelcomeTextsShow:YES];
 }
 
 #pragma mark - Create Image 
@@ -1640,14 +1659,19 @@ const int numberOfTextsToLoad = 10;
         editButton.alpha = 1.0;
     }];
     
-    [UserDefaults increaseNumberOfTextRefreshes];
+    [UserDefaults numberOfTextRefreshes];
     
-    if (![[UserDefaults hasPressedIntentionButton] boolValue] && ([[UserDefaults numberOfImageRefreshesByUser] intValue] < 1 && [[UserDefaults numberOfTextRefreshesByUser] intValue] < 1 && [[UserDefaults timeSpentInApp] intValue] < 90)) {
+    //if (![[UserDefaults hasPressedIntentionButton] boolValue] && ([[UserDefaults numberOfImageRefreshesByUser] intValue] < 1 && [[UserDefaults numberOfTextRefreshesByUser] intValue] < 1 && [[UserDefaults timeSpentInApp] intValue] < 90)) {
+    if ([[UserDefaults hasPressedIntentionButton] boolValue] == NO && ([[UserDefaults numberOfImageRefreshesByUser] intValue] < 1 && [[UserDefaults numberOfTextRefreshesByUser] intValue] < 1)) {
         [specialOccasionButton setHidden:YES];
     }
     else {
         [specialOccasionButton setHidden:NO];
         [self showPulseIfAppropriate];
+    }
+    
+    if ([[UserDefaults welcomeTextsShown] boolValue] == NO && model.firstLaunchError == nil && model.firstLaunchTexts != nil && model.firstLaunchTexts.count != 0) {
+        return model.firstLaunchTexts;
     }
     
     if (model.isSpecialOccasionIntentionChosen) {
@@ -1657,13 +1681,13 @@ const int numberOfTextsToLoad = 10;
             [tmpAlert show];
             
             model.isSpecialOccasionIntentionChosen = NO;
-            return [model randomtTextWithNum:numberOfTextsToLoad];
+            return [model randomtTextWithNum:numberOfTextsToLoad ignoringTexts:nil];
         }
         
         return [model specialOccasionTexts];
     }
     
-    NSArray *randomTexts = [model randomtTextWithNum:numberOfTextsToLoad];
+    NSArray *randomTexts = [model randomtTextWithNum:numberOfTextsToLoad ignoringTexts:theTextPagedView.viewModel.theTexts];
     
     if (randomTexts.count == 0 && firstLaunView == nil && newView == nil) {
         languageChangeAlert = [[UIAlertView alloc] initWithTitle:LBDLocalizedString(@"<LBDLOops>", nil) message:LBDLocalizedString(@"<LBDLNoTextsAvailableForGivenLanguage>", nil) delegate:self cancelButtonTitle:LBDLocalizedString(@"<LBDLNo>", nil) otherButtonTitles:LBDLocalizedString(@"<LBDLYes>", nil), nil];
@@ -1684,11 +1708,20 @@ const int numberOfTextsToLoad = 10;
         model.isUserPhotosSelected = NO;
     }
     
+    if ([UserDefaults welcomeImagesShown] == NO && model.firstLaunchImages != nil && model.firstLaunchImages.count != 0 && model.firstLaunchImageError == nil) {
+        return model.firstLaunchImages;
+    }
+    
+    if (model.isViewingTheme == YES) {
+        return [model themeImages];
+    }
+    
     if (model.isSpecialOccasionIntentionChosen) {
         return [model specialOccasionImages];
     }
     
-    return [model randomImagesWithImagesBasedOnTexts:[theTextPagedView theTexts] WithNum:numberOfImagesToLoad];
+    return [model randomImagesWithNum:numberOfImagesToLoad ignoringImages:theImagePagedView.viewModel.theImages numberOfImagesInDB:30];
+    //return [model randomImagesWithImagesBasedOnTexts:[theTextPagedView theTexts] WithNum:numberOfImagesToLoad];
 }
 
 #pragma mark - Image Paged View Delegate
@@ -1705,12 +1738,25 @@ const int numberOfTextsToLoad = 10;
         model.isUserPhotosSelected = NO;
     }
     
-    if (![[UserDefaults hasPressedIntentionButton] boolValue] && ([[UserDefaults numberOfImageRefreshesByUser] intValue] < 1 && [[UserDefaults numberOfTextRefreshesByUser] intValue] < 1 && [[UserDefaults timeSpentInApp] intValue] < 90)) {
+    [UserDefaults setWelcomeImagesShown:YES];
+    
+    if (![[UserDefaults hasPressedIntentionButton] boolValue] && ([[UserDefaults numberOfImageRefreshesByUser] intValue] < 1 && [[UserDefaults numberOfTextRefreshesByUser] intValue] < 1)) {
         [specialOccasionButton setHidden:YES];
     }
     else {
         [specialOccasionButton setHidden:NO];
         [self showPulseIfAppropriate];
+    }
+    
+    if (model.isViewingTheme == YES) {
+        [theScrollView fadeInLoaderWithCompletion:^(BOOL finished) {
+            
+        }];
+        [model fetchImagesForCurrentThemePathWithCompletion:^(NSArray *theImages, NSError *theError) {
+            [theScrollView reloadDataAnimated:YES];
+        }];
+        
+        return ;
     }
     
     if (model.isSpecialOccasionIntentionChosen) {
@@ -1740,6 +1786,25 @@ const int numberOfTextsToLoad = 10;
     else {
         [theScrollView reloadDataAnimated:YES];
     }
+}
+
+-(void)refreshImageWithImageScrollView:(ImageScrollView *)theImageScrollView withThemePath:(NSString *)theThemePath {
+    model.isUserPhotosSelected = NO;
+    model.isSpecialOccasionIntentionChosen = NO;
+    
+    [UserDefaults setWelcomeImagesShown:YES];
+    
+    [model fetchImagesForThemePath:theThemePath withCompletion:^(NSArray *theImages, NSError *error) {
+        if (theImages != nil) {
+            model.isViewingTheme = YES;
+            [theImageScrollView reloadDataAnimated:YES];
+        }
+        else {
+            model.isViewingTheme = NO;
+            [theImageScrollView reloadDataAnimated:YES];
+        }
+    }];
+    
 }
 
 #pragma mark - Facebook Sharing Delegate

@@ -17,7 +17,6 @@
 #import "LBDLocalization.h"
 
 @interface TextScrollView () <UIScrollViewDelegate> {
-    TextScrollViewModel *model;
     BoxedActivityIndicatorView *activityIndicator;
     UIView *swipeViewForScroll;
     NSMutableArray *scrollViewContents;
@@ -51,7 +50,7 @@
         [self addSubview:textScrollView];
         
         textFont = [UIFont noteworthyBoldWithSize:19.0];
-        model = [[TextScrollViewModel alloc] initWithTextArray:textArray];
+        _viewModel = [[TextScrollViewModel alloc] initWithTextArray:textArray];
         scrollViewContents = [[NSMutableArray alloc] init];
         
         pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(frame), 20)];
@@ -71,7 +70,7 @@
         shakeRepeatCount = 0;
         scrollViewHasBeenInteractedWith = NO;
         
-        [self populateScrollView:model.numberOfTexts];
+        [self populateScrollView:_viewModel.numberOfTexts];
         
         [self performSelector:@selector(animateNextPage) withObject:nil afterDelay:10.0];
     }
@@ -116,7 +115,7 @@
     
     UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(index*CGRectGetWidth(self.frame) + CGRectGetWidth(self.frame)*0.1, 20, CGRectGetWidth(self.frame)*0.8, CGRectGetHeight(self.frame) - 20)];
     textLabel.font = textFont;
-    textLabel.text = [model textContentAtIndex:index];
+    textLabel.text = [_viewModel textContentAtIndex:index];
     textLabel.textAlignment = NSTextAlignmentCenter;
     //NSLog(@"Text is: %@", [model textObjectAtIndex:index]);
     textLabel.textColor = [UIColor blackColor];
@@ -298,7 +297,7 @@
 }
 
 -(BOOL)wantsFacebookShareForCurrentText {
-    return [model wantsFacebookShareForTextAtIndex:(int)currentPage];
+    return [_viewModel wantsFacebookShareForTextAtIndex:(int)currentPage];
 }
 
 -(BOOL)isLastPage {
@@ -315,8 +314,8 @@
 }
 
 -(NSString*)selectedText {
-    if (currentPage < model.numberOfTexts) {
-        return [model textContentAtIndex:currentPage];
+    if (currentPage < _viewModel.numberOfTexts) {
+        return [_viewModel textContentAtIndex:currentPage];
     }
     
     return nil;
@@ -324,8 +323,8 @@
 
 -(NSString*)selectedTextId {
     
-    if (currentPage < model.numberOfTexts) {
-        return [model textIdForTextAtIndex:currentPage];
+    if (currentPage < _viewModel.numberOfTexts) {
+        return [_viewModel textIdForTextAtIndex:currentPage];
     }
     
     return nil;
@@ -333,14 +332,14 @@
 }
 
 -(NSArray*)theTexts {
-    return [model theTexts];
+    return [_viewModel theTexts];
 }
 
 #pragma mark - Reload Data
 
 -(void)reloadData {
     if (_textScrollViewDataSource) {
-        [model updateTextScrollViewModel:[_textScrollViewDataSource updateTextsScrollViewTexts]];
+        [_viewModel updateTextScrollViewModel:[_textScrollViewDataSource updateTextsScrollViewTexts]];
     }
     
     for (UIView *view in scrollViewContents) {
@@ -349,14 +348,14 @@
     
     _numPages = 0;
     currentPage = 0;
-    pageControl.numberOfPages = model.numberOfTexts + 1;
+    pageControl.numberOfPages = _viewModel.numberOfTexts + 1;
     pageControl.currentPage = 0;
     
     // need to call this so that the first text gets a button to "share"
     // its content if it is share-able.
     [shareDelegate textFacebookShareCompatible:[self wantsFacebookShareForCurrentText]];
     
-    [self populateScrollView:model.numberOfTexts];
+    [self populateScrollView:_viewModel.numberOfTexts];
 }
 
 -(void)reloadDataAnimated:(BOOL)animated {

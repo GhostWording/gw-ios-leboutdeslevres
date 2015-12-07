@@ -8,12 +8,11 @@
 
 #import "RootiPadViewModel.h"
 #import "IntentionObject.h"
-#import "DataManager.h"
 #import "Text.h"
 #import "TextObject.h"
 
 @interface RootiPadViewModel () {
-    DataManager *dataMan;
+
 }
 
 @end
@@ -22,8 +21,6 @@
 
 -(id)init {
     if (self = [super init]) {
-        
-        dataMan = [[DataManager alloc] init];
         
     }
     
@@ -51,7 +48,8 @@
 #pragma mark - Image Fetching 
 
 -(NSArray*)randomImagesWithNum:(int)numImages {
-    return [dataMan randomImagesForNumberOfImages:numImages];
+    //return [dataMan randomImagesForNumberOfImages:numImages];
+    return nil;
 }
 
 // image fetching by adding two images from text image urls
@@ -60,7 +58,8 @@
 // them in the image scroll view already.
 -(NSArray*)randomImagesWithImagesBasedOnTexts:(NSArray*)theTexts WithNum:(int)numImages {
     NSLog(@"special random Images");
-    return [dataMan randomImagesWithSpecialImagesForTexts:theTexts withNumImages:numImages];
+    //return [dataMan randomImagesWithSpecialImagesForTexts:theTexts withNumImages:numImages];
+    return nil;
 }
 
 #pragma mark - Text Filtering and Fetching
@@ -68,7 +67,7 @@
 -(NSArray*)randomtTextWithNum:(int)numTexts {
     
     //NSArray *texts = [dataMan allTexts];
-    NSArray *texts = [dataMan allTextsFilteredWithUserDefaults];
+    NSArray *texts = nil; //[dataMan allTextsFilteredWithUserDefaults];
     
     NSLog(@"Adding texts: %d", (int)texts.count);
     

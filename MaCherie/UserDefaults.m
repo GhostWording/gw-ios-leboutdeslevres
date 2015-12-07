@@ -20,7 +20,6 @@
             [UserDefaults setFirstLaunchOfApp:YES];
             [UserDefaults setUserAgeSegment:[NSNumber numberWithInt:kAgeNone]];
             [UserDefaults setUserGender:[NSNumber numberWithInt:kGenderNone]];
-            [UserDefaults setUserWantsNotification:YES];
             [UserDefaults setNotificationMinutes:0];
             [UserDefaults setNotificationHour:16];
         }
@@ -70,6 +69,29 @@
     [[NSUserDefaults standardUserDefaults] setValue:installDate forKey:@"installDate"];
 }
 
++(NSDate*)lastActiveDate {
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"lastActiveDate"] == nil) {
+        [UserDefaults setLastActiveDate:[NSDate date]];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"lastActiveDate"];
+}
+
++(void)setLastActiveDate:(NSDate *)theLastActivedate {
+    [[NSUserDefaults standardUserDefaults] setValue:theLastActivedate forKey:@"lastActiveDate"];
+}
+
++(BOOL)isRegainingFocus {
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"regainingFocus"] == nil) {
+        [UserDefaults setRegainsFocus:YES];
+    }
+    
+    return [[[NSUserDefaults standardUserDefaults] valueForKey:@"regainingFocus"] boolValue];
+}
+
++(void)setRegainsFocus:(BOOL)regainsFocus {
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:regainsFocus] forKey:@"regainingFocus"];
+}
 
 +(NSNumber*)numberOfMessagesSent {
     
@@ -113,6 +135,11 @@
 
 
 +(NSNumber*)firstLaunchOfApp {
+    
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"firstLaunch"] == nil) {
+        [UserDefaults setFirstLaunchOfApp:YES];
+    }
+    
     return [[NSUserDefaults standardUserDefaults] valueForKey:@"firstLaunch"];
 }
 
@@ -120,6 +147,31 @@
     [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:firstLaunch] forKey:@"firstLaunch"];
 }
 
++(NSNumber *)welcomeTextsShown {
+    
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"welcomeTextsShown"] == nil) {
+        [UserDefaults setWelcomeTextsShow:NO];
+    }
+    
+    return [[NSUserDefaults standardUserDefaults] valueForKey:@"welcomeTextsShown"];
+    
+}
+
++(void)setWelcomeTextsShow:(BOOL)isShown {
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:isShown] forKey:@"welcomeTextsShown"];
+}
+
++(BOOL)welcomeImagesShown {
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"welcomeImagesShown"] == nil) {
+        [UserDefaults setWelcomeImagesShown:NO];
+    }
+    
+    return [[[NSUserDefaults standardUserDefaults] valueForKey:@"welcomeImagesShown"] boolValue];
+}
+
++(void)setWelcomeImagesShown:(BOOL)isShown {
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:isShown] forKey:@"welcomeImagesShown"];
+}
 
 // Number of times the user has denied the notifications
 +(NSDate*)lastTimeAskedForNotificationPermission {
@@ -277,16 +329,6 @@
 {
     return [[NSUserDefaults standardUserDefaults] setInteger:[gender integerValue] forKey:@"gender"];
 }
-
-
-+(NSNumber*)userWantsNotification {
-    return [[NSUserDefaults standardUserDefaults] valueForKey:@"wantsNotification"];
-}
-
-+(void)setUserWantsNotification:(BOOL)wantsNotification {
-    return [[NSUserDefaults standardUserDefaults] setBool:wantsNotification forKey:@"wantsNotification"];
-}
-
 
 +(NSNumber*)hasPressedIntentionButton {
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"hasPressedIntention"] == nil) {

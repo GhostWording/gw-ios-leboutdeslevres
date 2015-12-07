@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+#import "TextScrollViewModel.h"
 
 @protocol TextScrollViewDelegate <NSObject>
 
@@ -27,6 +28,7 @@
 @property (nonatomic, strong) UIFont *textFont;
 @property (nonatomic, strong) UIScrollView *textScrollView;
 @property (nonatomic, strong) UIPageControl *pageControl;
+@property (nonatomic, strong) TextScrollViewModel *viewModel;
 @property (nonatomic, weak) id <TextScrollViewDelegate> shareDelegate;
 @property (nonatomic, weak) id <TextScrollViewDataSource> textScrollViewDataSource;
 
