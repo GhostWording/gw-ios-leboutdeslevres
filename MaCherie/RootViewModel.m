@@ -225,8 +225,21 @@
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                         NSArray *theWelcomeImages = [[[GWDataManager alloc] init] fetchImagesWithImagePaths:theImagePaths];
-                        _firstLaunchImages = theWelcomeImages;
-                        block(theWelcomeImages, nil);
+                        NSMutableArray *uniqueImages = [NSMutableArray array];
+                        
+                        for (GWImage *image in theWelcomeImages) {
+                            for (int i = 0; i < uniqueImages.count; i++) {
+                                GWImage *uniqueImage = [uniqueImages objectAtIndex:i];
+                                
+                                if ([image.imageId isEqualToString:uniqueImage.imageId]) {
+                                    [uniqueImages addObject:image];
+                                }
+                                
+                            }
+                        }
+                        
+                        _firstLaunchImages = uniqueImages;
+                        block(_firstLaunchImages, nil);
                     });
                     
                 }

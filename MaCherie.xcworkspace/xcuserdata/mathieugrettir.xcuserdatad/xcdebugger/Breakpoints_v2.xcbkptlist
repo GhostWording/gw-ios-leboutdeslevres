@@ -425,12 +425,12 @@
                   moduleName = "MaCherie"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/mathieugrettir/Konta/Mobile%20&amp;%20Development/Projects/Olivier/Projects/MaChe%CC%81rie/MaCherie/MaCherie/SpecialOccasionViewModel.m"
-                  timestampString = "471149293.741782"
+                  timestampString = "471208754.479638"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "95"
                   endingLineNumber = "95"
-                  offsetFromSymbolStart = "201">
+                  offsetFromSymbolStart = "190">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -440,12 +440,12 @@
                   moduleName = "MaCherie"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/mathieugrettir/Konta/Mobile%20&amp;%20Development/Projects/Olivier/Projects/MaChe%CC%81rie/MaCherie/MaCherie/SpecialOccasionViewModel.m"
-                  timestampString = "471149293.742465"
+                  timestampString = "471208754.479978"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "95"
                   endingLineNumber = "95"
-                  offsetFromSymbolStart = "98">
+                  offsetFromSymbolStart = "81">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -921,12 +921,12 @@
                   moduleName = "MaCherie"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/mathieugrettir/Konta/Mobile%20&amp;%20Development/Projects/Olivier/Projects/MaChe%CC%81rie/MaCherie/MaCherie/RootViewModel.m"
-                  timestampString = "471149293.75431"
+                  timestampString = "471208754.510476"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "443"
                   endingLineNumber = "443"
-                  offsetFromSymbolStart = "311">
+                  offsetFromSymbolStart = "287">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -936,12 +936,12 @@
                   moduleName = "MaCherie"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/mathieugrettir/Konta/Mobile%20&amp;%20Development/Projects/Olivier/Projects/MaChe%CC%81rie/MaCherie/MaCherie/RootViewModel.m"
-                  timestampString = "471149293.754836"
+                  timestampString = "471208754.510831"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "443"
                   endingLineNumber = "443"
-                  offsetFromSymbolStart = "98">
+                  offsetFromSymbolStart = "81">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -1045,7 +1045,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewModel.m"
@@ -1129,12 +1129,12 @@
                   moduleName = "MaCherie"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/mathieugrettir/Konta/Mobile%20&amp;%20Development/Projects/Olivier/Projects/MaChe%CC%81rie/MaCherie/MaCherie/RootViewController.m"
-                  timestampString = "471149293.766493"
+                  timestampString = "471208754.529461"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1057"
                   endingLineNumber = "1057"
-                  offsetFromSymbolStart = "421">
+                  offsetFromSymbolStart = "374">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -1144,12 +1144,12 @@
                   moduleName = "MaCherie"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/mathieugrettir/Konta/Mobile%20&amp;%20Development/Projects/Olivier/Projects/MaChe%CC%81rie/MaCherie/MaCherie/RootViewController.m"
-                  timestampString = "471149293.767499"
+                  timestampString = "471208754.52981"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1057"
                   endingLineNumber = "1057"
-                  offsetFromSymbolStart = "24">
+                  offsetFromSymbolStart = "15">
                </Location>
             </Locations>
          </BreakpointContent>
