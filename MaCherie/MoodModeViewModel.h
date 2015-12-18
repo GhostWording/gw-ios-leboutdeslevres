@@ -11,6 +11,7 @@
 @interface MoodModeViewModel : NSObject
 
 -(void)downloadThemesWithCompletion:(void (^)(NSArray *theImages, NSError *theError))block;
+-(void)downloadIntentionImagesWithCompletion:(void (^)(NSArray *theImages, NSError *theError))block;
 
 -(void)reset;
 

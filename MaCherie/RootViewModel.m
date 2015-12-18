@@ -217,7 +217,7 @@
                 }
             }
             
-            [theDataMan downloadImagesWithUrls:imagePathsToDownload withCompletion:^(NSArray *theImagePaths, NSError *theError) {
+            [theDataMan downloadImagesWithUrls:imagePathsToDownload isRelativeURL:YES withCompletion:^(NSArray *theImagePaths, NSError *theError) {
                
                 _firstLaunchImageError = theError;
                 
@@ -407,7 +407,7 @@
             
             NSArray *randomImages = [anotherDataMan randomIndexesFromArray:imagePathsLeft withNumRandomIndexes:10];
             
-            [anotherDataMan downloadImagesWithUrls:randomImages withCompletion:^(NSArray *theImagePaths, NSError *error) {
+            [anotherDataMan downloadImagesWithUrls:randomImages isRelativeURL:YES withCompletion:^(NSArray *theImagePaths, NSError *error) {
                 
                 GWDataManager *newDownloadDataMan = [[GWDataManager alloc] init];
                 
@@ -496,7 +496,7 @@
     NSLog(@"number of special occasions texts: %d and special occasion text array: %d", _numSpecialOccasionImages, (int)specialOccasionTextArray.count);
     
     for (int i = 0; i < _numSpecialOccasionTexts && i < specialOccasionTextArray.count; i++) {
-        NSLog(@"going through array");
+
         TextObject *randomText = [self chooseRandomTextForIntention:tmpIntention];
         [textsToReturn addObject:randomText.text];
         [tmpIntention.textsForIntention removeObject:randomText];
@@ -509,6 +509,11 @@
 
 -(NSArray*)themeImages {
     return _themeImages;
+}
+
+-(void)setSpecialOccasionImages:(NSArray *)theSpecialOccasionImages {
+    _numSpecialOccasionImages = theSpecialOccasionImages.count;
+    specialOccasionImageArray = theSpecialOccasionImages;
 }
 
 -(NSArray*)specialOccasionImages {

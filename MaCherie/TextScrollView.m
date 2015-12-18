@@ -15,6 +15,8 @@
 #import "GoogleAnalyticsCommunication.h"
 #import "CustomAnalytics.h"
 #import "LBDLocalization.h"
+#import "IntentionModeView.h"
+#import "GWIntention.h"
 
 @interface TextScrollView () <UIScrollViewDelegate> {
     BoxedActivityIndicatorView *activityIndicator;
@@ -24,6 +26,8 @@
     NSInteger currentPage;
     int shakeRepeatCount;
     BOOL scrollViewHasBeenInteractedWith;
+    
+    void (^_intentionBlock)(GWIntention *theIntention);
 }
 
 @end
@@ -38,6 +42,8 @@
 -(id)initWithFrame:(CGRect)frame andTexts:(NSArray *)textArray {
     if (self = [super initWithFrame:frame]) {
         
+        self.backgroundColor = [UIColor whiteColor];
+        
         swipeViewForScroll = nil;
         
         textScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame))];
@@ -46,6 +52,7 @@
         textScrollView.showsVerticalScrollIndicator = NO;
         textScrollView.bounces = YES;
         textScrollView.delegate = self;
+        textScrollView.backgroundColor = [UIColor whiteColor];
         
         [self addSubview:textScrollView];
         
@@ -135,6 +142,7 @@
 
 -(void)addLastPageAtIndex:(int)index {
     
+    /*
     UIButton *refresh = [UIButton buttonWithType:UIButtonTypeCustom];
     refresh.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetHeight(self.frame) * 0.2 + CGRectGetWidth(self.frame) * index, CGRectGetHeight(self.frame) * 0.15, CGRectGetHeight(self.frame) * 0.4, CGRectGetHeight(self.frame) * 0.4);
     [refresh setBackgroundImage:[UIImage imageNamed:@"refreshIcon.png"] forState:UIControlStateNormal];
@@ -192,10 +200,31 @@
     editTextLabel.numberOfLines = 0;
     editTextLabel.font = [UIFont noteworthyBoldWithSize:14.0];
     [composeTextView addSubview:editTextLabel];
-    
+    */
+     
     _numPages++;
     
     textScrollView.contentSize = CGSizeMake(_numPages * CGRectGetWidth(self.frame), CGRectGetHeight(textScrollView.frame));
+    
+    IntentionModeView *intentionMode = [[IntentionModeView alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.frame) - CGRectGetWidth(self.frame) * 0.3 + CGRectGetWidth(self.frame) * index,  CGRectGetHeight(self.frame) * 0.12, CGRectGetWidth(self.frame) * 0.6, 70)];
+    [intentionMode intentionChosenWithCompletion:_intentionBlock];
+    [textScrollView addSubview:intentionMode];
+    
+    
+    UIButton *refresh = [UIButton buttonWithType:UIButtonTypeCustom];
+    refresh.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetHeight(self.frame) * 0.2 + CGRectGetWidth(self.frame) * index, CGRectGetMaxY(intentionMode.frame) + CGRectGetHeight(self.frame) * 0.1, CGRectGetHeight(self.frame) * 0.4, CGRectGetHeight(self.frame) * 0.36);
+    [refresh setBackgroundImage:[UIImage imageNamed:@"refreshIcon.png"] forState:UIControlStateNormal];
+    [refresh addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [scrollViewContents addObject:refresh];
+    [textScrollView addSubview:refresh];
+    
+    UILabel *refreshLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) * 0.1 + CGRectGetWidth(self.frame) * index, CGRectGetMaxY(refresh.frame) + CGRectGetHeight(self.frame) * 0.01, CGRectGetWidth(self.frame) * 0.8, 24)];
+    refreshLabel.textColor = [UIColor appBlueColor];
+    refreshLabel.textAlignment = NSTextAlignmentCenter;
+    refreshLabel.font = [UIFont helveticaNeueBoldWithSize:16];
+    refreshLabel.text = LBDLocalizedString(@"<LBDLNewTexts>", nil);
+    [scrollViewContents addObject:refreshLabel];
+    [textScrollView addSubview:refreshLabel];
     
 }
 
@@ -353,7 +382,9 @@
     
     // need to call this so that the first text gets a button to "share"
     // its content if it is share-able.
-    [shareDelegate textFacebookShareCompatible:[self wantsFacebookShareForCurrentText]];
+    if ([shareDelegate respondsToSelector:@selector(textFacebookShareCompatible:)]) {
+        [shareDelegate textFacebookShareCompatible:[self wantsFacebookShareForCurrentText]];
+    }
     
     [self populateScrollView:_viewModel.numberOfTexts];
 }
@@ -410,7 +441,9 @@
     pageControl.currentPage = pos;
     currentPage = pos;
     
-    [shareDelegate textFacebookShareCompatible:[self wantsFacebookShareForCurrentText]];
+    if ([shareDelegate respondsToSelector:@selector(textFacebookShareCompatible:)]) {
+        [shareDelegate textFacebookShareCompatible:[self wantsFacebookShareForCurrentText]];
+    }
     [shareDelegate scrolledToIndex:pos];
     
 }
@@ -429,6 +462,10 @@
     
     [self reloadDataAnimated:YES];
     
+}
+
+-(void)intentionChosenWithCompletion:(void (^)(GWIntention *))block {
+    _intentionBlock = [block copy];
 }
 
 /*

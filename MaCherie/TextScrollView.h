@@ -10,6 +10,8 @@
 
 #import "TextScrollViewModel.h"
 
+@class GWIntention;
+
 @protocol TextScrollViewDelegate <NSObject>
 
 -(void)textFacebookShareCompatible:(BOOL)shareCompatibility;
@@ -44,6 +46,8 @@
 -(void)shakeAnimateScrollViewAftertime:(float)theTime;
 -(void)reloadData;
 -(void)reloadDataAnimated:(BOOL)animated;
+
+-(void)intentionChosenWithCompletion:(void (^)(GWIntention *theIntention))block;
 
 @end
 

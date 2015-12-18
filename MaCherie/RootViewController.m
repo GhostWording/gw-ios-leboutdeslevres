@@ -98,6 +98,8 @@ const int numberOfTextsToLoad = 10;
     editTextView = nil;
     theSpecialOccasionView = nil;
     
+    self.view.backgroundColor = [UIColor whiteColor];
+    
     imagePicker = [[UIImagePickerController alloc] init];
     model = [[RootViewModel alloc] init];
     
@@ -190,11 +192,6 @@ const int numberOfTextsToLoad = 10;
     shareButton.layer.backgroundColor = [UIColor c_appFacebookBlueColor].CGColor;
     shareButton.layer.cornerRadius = 4.0;
     shareButton.frame = CGRectMake(CGRectGetWidth(self.view.frame) - 80 - 10, CGRectGetMinY(normalSendButton.frame), 80, 40);
-    
-    if (![theTextPagedView wantsFacebookShareForCurrentText]) {
-        shareButton.alpha = 0.0f;
-    }
-    
     shareButton.titleLabel.font = [UIFont helveticaNeueWithSize:17];
     [shareButton setTitle:LBDLocalizedString(@"<LBDLFacebookShare>", nil) forState:UIControlStateNormal];
     [shareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -228,6 +225,28 @@ const int numberOfTextsToLoad = 10;
     [center addObserver:self selector:@selector(keyboardOnScreen:) name:UIKeyboardDidShowNotification object:nil];
     
     
+    __weak typeof (self) wSelf = self;
+    
+    [theTextPagedView intentionChosenWithCompletion:^(GWIntention *theIntention) {
+        
+        // nil is returned when going into normal mode
+        if (theIntention == nil) {
+            model.isSpecialOccasionIntentionChosen = NO;
+            [specialOccasionButton setSelected:YES];
+            [wSelf createSpecialOccasionView];
+            return ;
+        }
+       
+        [wSelf showLoadingIndicator];
+        model.selectedSpecialOccasionIntention = theIntention;
+        model.isViewingTheme = NO;
+        [wSelf downloadSpecialOccasionImagesWithIntention:theIntention];
+        [wSelf downloadSpecialOccasionTextsWithIntention:theIntention];
+        
+        
+    }];
+    
+    
     UserDefaults *defaults = [[UserDefaults alloc] init];
     
     NSLog(@"is first launch: %@", [UserDefaults firstLaunchOfApp]);
@@ -255,8 +274,8 @@ const int numberOfTextsToLoad = 10;
         
         NewFeatureView *featureView = [[NewFeatureView alloc] initWithFrame:self.view.frame withType:kNextButtonType];
         [featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleOne>", nil) andImage:@"tut3.png"];
-        [featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleTwo>", nil) andImage:@"tut2.png"];
-        [featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleThree>", nil) andImage:@"tut1.png"];
+        [featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleTwo>", nil) andImage:@"tut2-1.png"];
+        //[featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleThree>", nil) andImage:@"tut1.png"];
         
         [featureView willDismissViewWithCompletion:^{
             
@@ -275,12 +294,6 @@ const int numberOfTextsToLoad = 10;
     }
     
     
-    if (![[UserDefaults hasPressedIntentionButton] boolValue] == YES && ([[UserDefaults numberOfTextRefreshesByUser] intValue] < 1 && [[UserDefaults numberOfImageRefreshesByUser] intValue] < 1)) {
-        
-        [specialOccasionButton setHidden:YES];
-        
-    }
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showViewDataWhenAppBecomesActive)
      
                                                  name:UIApplicationWillEnterForegroundNotification object:nil];
@@ -288,7 +301,6 @@ const int numberOfTextsToLoad = 10;
     
     // MARK: Pop up windows
     if ([[UserDefaults timeSpentInApp] intValue] >= 90) {
-        specialOccasionButton.hidden = NO;
         [self performSelector:@selector(showPulseIfAppropriate) withObject:nil afterDelay:0.2];
     }
     else {
@@ -301,13 +313,6 @@ const int numberOfTextsToLoad = 10;
     else {
         [self performSelector:@selector(showPulseForSettingsIfAppropriate) withObject:nil afterDelay:0.1];
     }
-    
-    MoodModeViewController *moodeModeView = [[MoodModeViewController alloc] initWithFrame:self.view.frame];
-    
-    /*
-    AppDelegate  *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [[appDelegate window] addSubview:moodeModeView];
-     */
 }
 
 -(void)showNotificationAlert {
@@ -892,6 +897,8 @@ const int numberOfTextsToLoad = 10;
         
         [theSpecialOccasionView selectedIntentionAndRecipient:^(GWIntention *intentionObject, RecipientObject *recipientObject) {
             
+            model.selectedSpecialOccasionIntention = intentionObject;
+            
             specialIntentionLabel.text = intentionObject.label;
             [UIView animateWithDuration:0.3 animations:^{
                 specialIntentionLabel.alpha = 1.0f;
@@ -901,72 +908,13 @@ const int numberOfTextsToLoad = 10;
             [wSelf dismissSpecialOccasionView];
             [wSelf showLoadingIndicator];
             
+            
             // images loading
             if (intentionObject && recipientObject) {
-                model.isSpecialOccasionIntentionChosen = YES;
-                NSLog(@"fetchedImages");
-                [model fetchImagesForIntention:intentionObject.imagePath withCompletion:^(NSArray *theImages, NSError *error) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (theImages != nil) {
-                            NSLog(@"the images for the special intentions are: %d", (int)theImages.count);
-                            [model setRandomImageForCurrentIntention:theImages withNum:(int)theImages.count];
-                            [theImagePagedView reloadDataAnimated:YES];
-                            
-                            [loadingIndicatorView fadeOutWithCompletion:^(BOOL completed) {
-                                
-                            }];
-                        }
-                        
-                    });
-                }];
+                [wSelf downloadSpecialOccasionImagesWithIntention:intentionObject];
+                [wSelf downloadSpecialOccasionTextsWithIntention:intentionObject];
             }
             
-            
-            /////////////////////////////////////////////
-            ///////////// TEXT HANDLING /////////////////
-            /*
-            if (intentionObject && !recipientObject) {
-                model.isSpecialOccasionIntentionChosen = YES;
-                [specialOccasionButton setSelected:YES];
-                
-                
-                [model fetchTextsForIntention:intentionObject.intentionSlug withCompletion:^(NSArray *theTexts, NSError *error) {
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [model setRandomTextForIntention:intentionObject.intentionSlug withNum:numberOfTextsToLoad];
-                        [theTextPagedView reloadDataAnimated:YES];
-                    });
-                        
-                }];
-                
-                
-            }
-            else */
-            if(intentionObject && recipientObject) {
-                
-                model.isSpecialOccasionIntentionChosen = YES;
-                [specialOccasionButton setSelected:YES];
-                
-                [model fetchTextsForIntention:intentionObject.slugPrototypeLink withCompletion:^(NSArray *theTexts, NSError *error) {
-                    
-                    if (!error) {
-                        
-                        [model setRandomTextForSpecialOccasionTexts:theTexts withFilter:[[TextFilter alloc] init]];
-                        [theTextPagedView reloadDataAnimated:YES];
-                    }
-                    else {
-                        
-                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:LBDLocalizedString(@"<LBDLOops>", nil) message:[error localizedDescription] delegate:nil cancelButtonTitle:LBDLocalizedString(@"<LBDLOk>", nil) otherButtonTitles: nil];
-                        [alertView show];
-                        
-                        model.isSpecialOccasionIntentionChosen = NO;
-                        [specialOccasionButton setSelected:NO];
-                        [theTextPagedView reloadDataAnimated:YES];
-                        NSLog(@"Error");
-                    }
-                    
-                }];
-            }
         }];
     }
     else {
@@ -987,6 +935,52 @@ const int numberOfTextsToLoad = 10;
     }
     
     [UserDefaults setHasPressedIntentionButton:YES];
+}
+
+-(void)downloadSpecialOccasionImagesWithIntention:(GWIntention*)theIntention {
+    
+    model.isSpecialOccasionIntentionChosen = YES;
+    NSLog(@"fetchedImages");
+    [model fetchImagesForIntention:theIntention.imagePath withCompletion:^(NSArray *theImages, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (theImages != nil) {
+                NSLog(@"the images for the special intentions are: %d", (int)theImages.count);
+                [model setRandomImageForCurrentIntention:theImages withNum:(int)theImages.count];
+                [theImagePagedView reloadDataAnimated:YES];
+                
+                [loadingIndicatorView fadeOutWithCompletion:^(BOOL completed) {
+                    
+                }];
+            }
+            
+        });
+    }];
+    
+}
+
+-(void)downloadSpecialOccasionTextsWithIntention:(GWIntention*)theIntention {
+    model.isSpecialOccasionIntentionChosen = YES;
+    [specialOccasionButton setSelected:YES];
+    
+    [model fetchTextsForIntention:theIntention.slugPrototypeLink withCompletion:^(NSArray *theTexts, NSError *error) {
+        
+        if (!error) {
+            
+            [model setRandomTextForSpecialOccasionTexts:theTexts withFilter:[[TextFilter alloc] init]];
+            [theTextPagedView reloadDataAnimated:YES];
+        }
+        else {
+            
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:LBDLocalizedString(@"<LBDLOops>", nil) message:[error localizedDescription] delegate:nil cancelButtonTitle:LBDLocalizedString(@"<LBDLOk>", nil) otherButtonTitles: nil];
+            [alertView show];
+            
+            model.isSpecialOccasionIntentionChosen = NO;
+            [specialOccasionButton setSelected:NO];
+            [theTextPagedView reloadDataAnimated:YES];
+            NSLog(@"Error");
+        }
+        
+    }];
 }
 
 -(void)showLoadingIndicator {
@@ -1544,23 +1538,6 @@ const int numberOfTextsToLoad = 10;
 
 #pragma mark - Text Scroll View Delegate
 
--(void)textFacebookShareCompatible:(BOOL)shareCompatibility {
-    
-    NSLog(@"share compatibility is: %d", shareCompatibility);
-    
-    if (shareCompatibility) {
-        [UIView animateWithDuration:0.3 animations:^{
-            shareButton.alpha = 1.0f;
-        }];
-    }
-    else {
-        
-        [UIView animateWithDuration:0.3 animations:^{
-            shareButton.alpha = 0.0f;
-        }];
-    }
-}
-
 -(void)scrolledToIndex:(int)index {
     
     
@@ -1663,10 +1640,9 @@ const int numberOfTextsToLoad = 10;
     
     //if (![[UserDefaults hasPressedIntentionButton] boolValue] && ([[UserDefaults numberOfImageRefreshesByUser] intValue] < 1 && [[UserDefaults numberOfTextRefreshesByUser] intValue] < 1 && [[UserDefaults timeSpentInApp] intValue] < 90)) {
     if ([[UserDefaults hasPressedIntentionButton] boolValue] == NO && ([[UserDefaults numberOfImageRefreshesByUser] intValue] < 1 && [[UserDefaults numberOfTextRefreshesByUser] intValue] < 1)) {
-        [specialOccasionButton setHidden:YES];
     }
     else {
-        [specialOccasionButton setHidden:NO];
+        
         [self showPulseIfAppropriate];
     }
     
@@ -1741,10 +1717,9 @@ const int numberOfTextsToLoad = 10;
     [UserDefaults setWelcomeImagesShown:YES];
     
     if (![[UserDefaults hasPressedIntentionButton] boolValue] && ([[UserDefaults numberOfImageRefreshesByUser] intValue] < 1 && [[UserDefaults numberOfTextRefreshesByUser] intValue] < 1)) {
-        [specialOccasionButton setHidden:YES];
+
     }
     else {
-        [specialOccasionButton setHidden:NO];
         [self showPulseIfAppropriate];
     }
     
@@ -1760,7 +1735,7 @@ const int numberOfTextsToLoad = 10;
     }
     
     if (model.isSpecialOccasionIntentionChosen) {
-        GWIntention *selectedOCcasionIntention = [theSpecialOccasionView selectedIntention];
+        GWIntention *selectedOCcasionIntention = [model selectedSpecialOccasionIntention];
         [self showLoadingIndicator];
 
         if (!model.isLoadingImages) {

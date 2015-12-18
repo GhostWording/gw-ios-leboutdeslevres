@@ -16,6 +16,7 @@
 #import "CustomAnalytics.h"
 #import "LBDLocalization.h"
 #import "MoodModeViewController.h"
+#import "UserDefaults.h"
 
 @interface ImageScrollView () <UIScrollViewDelegate> {
     BOOL isLoadingData;
@@ -41,6 +42,8 @@
         _viewModel = [[ImageScrollViewModel alloc] initWithArray:imageArray];
         NSLog(@"after model");
         
+        self.backgroundColor = [UIColor whiteColor];
+        
         swipeViewForScroll = nil;
         
         imageScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame))];
@@ -48,6 +51,7 @@
         imageScrollView.showsHorizontalScrollIndicator = NO;
         imageScrollView.showsVerticalScrollIndicator = NO;
         imageScrollView.delegate = self;
+        imageScrollView.backgroundColor = [UIColor whiteColor];
         [self addSubview:imageScrollView];
         
         pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(frame) - 20, CGRectGetWidth(frame), 20)];
@@ -73,6 +77,7 @@
         // we should just allocate it once as we do not want the image scroll view to reload the themes on every reload
         // of the image data
         moodModeView = [[MoodModeViewController alloc] init];
+        moodModeView.frame = CGRectZero;
         
     }
     return self;
@@ -202,17 +207,24 @@
     */
     __weak typeof (self) wSelf = self;
     
-    moodModeView.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetWidth(self.frame) * 0.26 + CGRectGetWidth(self.frame) * index,  CGRectGetHeight(self.frame) * 0.08, CGRectGetWidth(self.frame) * 0.52, 100);
-    [moodModeView reloadData];
-    [moodModeView themeChosenWithCompletion:^(NSString *themePath) {
-        if ([wSelf.imageScrollViewDelegate respondsToSelector:@selector(refreshImageWithImageScrollView:withThemePath:)]) {
-            [activityIndicator fadeInWithCompletion:^(BOOL completed) {
-                
-            }];
-            [wSelf.imageScrollViewDelegate refreshImageWithImageScrollView:self withThemePath:themePath];
-        }
-    }];
-    [imageScrollView addSubview:moodModeView];
+    if ([[UserDefaults numberOfImageRefreshesByUser] intValue] > 1) {
+        
+        moodModeView.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetWidth(self.frame) * 0.26 + CGRectGetWidth(self.frame) * index,  CGRectGetHeight(self.frame) * 0.08, CGRectGetWidth(self.frame) * 0.52, 100);
+        [moodModeView reloadData];
+        [moodModeView themeChosenWithCompletion:^(NSString *themePath) {
+            if ([wSelf.imageScrollViewDelegate respondsToSelector:@selector(refreshImageWithImageScrollView:withThemePath:)]) {
+                [activityIndicator fadeInWithCompletion:^(BOOL completed) {
+                    
+                }];
+                [wSelf.imageScrollViewDelegate refreshImageWithImageScrollView:self withThemePath:themePath];
+            }
+        }];
+        [imageScrollView addSubview:moodModeView];
+        
+    }
+    else {
+        moodModeView.frame = CGRectMake(0, CGRectGetHeight(self.frame) * 0.2, 0, 0);
+    }
     
     UIButton *refresh = [UIButton buttonWithType:UIButtonTypeCustom];
     //refresh.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetWidth(self.frame)*0.2 + CGRectGetWidth(self.frame) * index, CGRectGetHeight(self.frame) * 0.15, CGRectGetWidth(self.frame) * 0.4, CGRectGetWidth(self.frame) * 0.4);

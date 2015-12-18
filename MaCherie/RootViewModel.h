@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "GWIntention.h"
 
 @class TextFilter, IntentionObject, RecipientObject;
 
@@ -21,6 +22,8 @@
 
 @property (nonatomic, readwrite) int numSpecialOccasionTexts;
 @property (nonatomic, readwrite) int numSpecialOccasionImages;
+
+@property (nonatomic, strong) GWIntention *selectedSpecialOccasionIntention;
 
 @property (nonatomic, strong) NSArray *userSelectedImages;
 
@@ -49,6 +52,7 @@
 -(void)fetchImagesForThemePath:(NSString*)theThemePath withCompletion:(void (^)(NSArray *theImages, NSError *error))block;
 -(void)fetchImagesForCurrentThemePathWithCompletion:(void (^)(NSArray *theImages, NSError *error))block;
 -(NSArray*)specialOccasionTexts;
+-(void)setSpecialOccasionImages:(NSArray*)theSpecialOccasionImages;
 -(NSArray*)specialOccasionImages;
 -(NSArray*)themeImages;
 

@@ -11,6 +11,7 @@
 #import "UIFont+ArialAndHelveticaNeue.h"
 #import <Chameleon.h>
 #import "LBDLocalization.h"
+#import "UserDefaults.h"
 
 @interface NewFeatureView ()
 {
@@ -97,6 +98,7 @@
         contentWidth = 0;
         numPages = 0;
         
+        [UserDefaults setFirstLaunchOfApp:NO];
     }
     
     return self;
@@ -114,7 +116,7 @@
     
     
     if (theSubtitle != nil) {
-        UILabel *subtitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(contentWidth + CGRectGetWidth(bottomView.frame)*0.06, CGRectGetMaxY(titleLabel.frame), CGRectGetWidth(bottomView.frame)*0.88, CGRectGetHeight(bottomView.frame)*0.4)];
+        UILabel *subtitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(contentWidth + CGRectGetWidth(bottomView.frame)*0.1, CGRectGetMaxY(titleLabel.frame), CGRectGetWidth(bottomView.frame)*0.8, CGRectGetHeight(bottomView.frame)*0.3)];
         subtitleLabel.text = theSubtitle;
         subtitleLabel.textColor = [UIColor whiteColor];
         subtitleLabel.font = [UIFont arialWithSize:16];
@@ -125,12 +127,12 @@
         [bottomScrollView addSubview:subtitleLabel];
         
         if ([UIScreen mainScreen].bounds.size.width == 414.0f || [UIScreen mainScreen].bounds.size.width == 375.0f) {
-            subtitleLabel.font = [UIFont arialWithSize:18];
+            subtitleLabel.font = [UIFont arialWithSize:21];
         }
     }
     
     if ([UIScreen mainScreen].bounds.size.width == 414.0f || [UIScreen mainScreen].bounds.size.width == 375.0f) {
-        titleLabel.font = [UIFont arialBoldWithSize:20];
+        titleLabel.font = [UIFont arialBoldWithSize:24];
     }
     
     if (theImageNAme != nil) {

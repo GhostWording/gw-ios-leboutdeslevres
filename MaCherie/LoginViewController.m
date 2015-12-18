@@ -16,9 +16,11 @@
 #import "CustomAnalytics.h"
 #import "LBDLocalization.h"
 #import "RootViewModel.h"
+#import "RootViewController.h"
 #import "UserDefaults.h"
 #import "GWLocalizedBundle.h"
 #import "ConstantsManager.h"
+#import <MBProgressHUD.h>
 
 @interface LoginViewController () <FBSDKLoginButtonDelegate> {
     DefaultButton *frenchButton;
@@ -125,8 +127,9 @@
     [super viewDidAppear:animated];
     
     if ([FBSDKAccessToken currentAccessToken]) {
-        [self performSegueWithIdentifier:@"loginSegue" sender:self];
+        //[self performSegueWithIdentifier:@"loginSegue" sender:self];
         [UserDefaults setFacebookUserId:[FBSDKAccessToken currentAccessToken].userID];
+        [self showRootController];
     }
     
 }
@@ -186,7 +189,8 @@
     [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_LOGIN withAction:GA_ACTION_BUTTON_PRESSED withLabel:@"LoginWithoutFacebook" wtihValue:nil];
     [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_LOGIN targetType:@"Command" targetId:@"Login" targetParameter:@"LoginWithoutFacebook"];
     
-    [self performSegueWithIdentifier:@"loginSegue" sender:self];
+    //[self performSegueWithIdentifier:@"loginSegue" sender:self];
+    [self showRootController];
 }
 
 #pragma mark - Login Delegate
@@ -202,7 +206,9 @@
         [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_LOGIN withAction:GA_ACTION_BUTTON_PRESSED withLabel:@"LoginWithFacebook" wtihValue:nil];
         [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_LOGIN targetType:@"Command" targetId:@"Login" targetParameter:@"LoginWithFacebook"];
         
-        [self performSegueWithIdentifier:@"loginSegue" sender:self];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showRootController];
+        });
     }
 }
 
@@ -210,9 +216,25 @@
     
 }
 
-/*
-#pragma mark - Navigation
+-(void)showRootController {
+    
+    RootViewController *rootVC = [[RootViewController alloc] initWithNibName:nil bundle:nil];
+    
+    MBProgressHUD *progressHUD = [MBProgressHUD showHUDAddedTo:self.view  animated:YES];
+    progressHUD.mode = MBProgressHUDModeIndeterminate;
+    
+    [self presentViewController:rootVC animated:YES completion:^{
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [progressHUD hide:YES];
+        });
+        
+    }];
+    
+}
 
+#pragma mark - Navigation
+/*
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].

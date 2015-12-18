@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14E46" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="14F27" minimumToolsVersion="Automatic">
     <entity name="GWArea" representedClassName="GWArea" syncable="YES">
         <attribute name="areaId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastChangeTime" optional="YES" attributeType="Date" syncable="YES"/>
@@ -24,6 +24,7 @@
         <attribute name="intentionDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="intentionId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="label" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mediaUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mostRecentTextUpdate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="mostRecentTextUpdateEpoch" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="recurring" optional="YES" attributeType="String" syncable="YES"/>
@@ -81,10 +82,10 @@
         <element name="GWArea" positionX="-36" positionY="9" width="128" height="105"/>
         <element name="GWAreaCulture" positionX="18" positionY="171" width="128" height="90"/>
         <element name="GWImage" positionX="-18" positionY="135" width="128" height="75"/>
-        <element name="GWIntention" positionX="-54" positionY="-9" width="128" height="330"/>
+        <element name="GWIntention" positionX="-54" positionY="-9" width="128" height="345"/>
+        <element name="GWIntentionAreaBehavior" positionX="-18" positionY="108" width="128" height="120"/>
         <element name="GWIntentionLabel" positionX="0" positionY="144" width="128" height="120"/>
         <element name="GWTag" positionX="-18" positionY="27" width="128" height="75"/>
         <element name="GWText" positionX="-63" positionY="-18" width="128" height="360"/>
-        <element name="GWIntentionAreaBehavior" positionX="-18" positionY="108" width="128" height="120"/>
     </elements>
 </model>
