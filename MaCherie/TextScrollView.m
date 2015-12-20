@@ -17,6 +17,7 @@
 #import "LBDLocalization.h"
 #import "IntentionModeView.h"
 #import "GWIntention.h"
+#import "UserDefaults.h"
 
 @interface TextScrollView () <UIScrollViewDelegate> {
     BoxedActivityIndicatorView *activityIndicator;
@@ -206,15 +207,20 @@
     
     textScrollView.contentSize = CGSizeMake(_numPages * CGRectGetWidth(self.frame), CGRectGetHeight(textScrollView.frame));
     
-    IntentionModeView *intentionMode = [[IntentionModeView alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.frame) - CGRectGetWidth(self.frame) * 0.3 + CGRectGetWidth(self.frame) * index,  CGRectGetHeight(self.frame) * 0.12, CGRectGetWidth(self.frame) * 0.6, 70)];
-    [intentionMode intentionChosenWithCompletion:_intentionBlock];
-    [textScrollView addSubview:intentionMode];
+    CGRect intentionModeFrame = CGRectMake(0, CGRectGetHeight(self.frame) * 0.35, 0, 0);
+    
+    if ([[UserDefaults numberOfTextRefreshesByUser] intValue] > 1) {
+        intentionModeFrame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetWidth(self.frame) * 0.3 + CGRectGetWidth(self.frame) * index,  CGRectGetHeight(self.frame) * 0.12, CGRectGetWidth(self.frame) * 0.6, 70);;
+        IntentionModeView *intentionMode = [[IntentionModeView alloc] initWithFrame:intentionModeFrame];
+        [intentionMode intentionChosenWithCompletion:_intentionBlock];
+        [textScrollView addSubview:intentionMode];
+    }
     
     
     if ([UIScreen mainScreen].bounds.size.height == 480.0) {
         
         UIButton *refresh = [UIButton buttonWithType:UIButtonTypeCustom];
-        refresh.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetHeight(self.frame) * 0.2 + CGRectGetWidth(self.frame) * index, CGRectGetMaxY(intentionMode.frame) - 32, CGRectGetHeight(self.frame) * 0.4, CGRectGetHeight(self.frame) * 0.36);
+        refresh.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetHeight(self.frame) * 0.2 + CGRectGetWidth(self.frame) * index, CGRectGetMaxY(intentionModeFrame) - 32, CGRectGetHeight(self.frame) * 0.4, CGRectGetHeight(self.frame) * 0.36);
         [refresh setBackgroundImage:[UIImage imageNamed:@"refreshIcon.png"] forState:UIControlStateNormal];
         [refresh addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         [scrollViewContents addObject:refresh];
@@ -231,7 +237,7 @@
     else if([UIScreen mainScreen].bounds.size.height == 568.0) {
         
         UIButton *refresh = [UIButton buttonWithType:UIButtonTypeCustom];
-        refresh.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetHeight(self.frame) * 0.2 + CGRectGetWidth(self.frame) * index, CGRectGetMaxY(intentionMode.frame), CGRectGetHeight(self.frame) * 0.4, CGRectGetHeight(self.frame) * 0.36);
+        refresh.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetHeight(self.frame) * 0.2 + CGRectGetWidth(self.frame) * index, CGRectGetMaxY(intentionModeFrame), CGRectGetHeight(self.frame) * 0.4, CGRectGetHeight(self.frame) * 0.36);
         [refresh setBackgroundImage:[UIImage imageNamed:@"refreshIcon.png"] forState:UIControlStateNormal];
         [refresh addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         [scrollViewContents addObject:refresh];
@@ -247,7 +253,7 @@
     }
     else {
         UIButton *refresh = [UIButton buttonWithType:UIButtonTypeCustom];
-        refresh.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetHeight(self.frame) * 0.2 + CGRectGetWidth(self.frame) * index, CGRectGetMaxY(intentionMode.frame) + CGRectGetHeight(self.frame) * 0.1, CGRectGetHeight(self.frame) * 0.4, CGRectGetHeight(self.frame) * 0.36);
+        refresh.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetHeight(self.frame) * 0.2 + CGRectGetWidth(self.frame) * index, CGRectGetMaxY(intentionModeFrame) + CGRectGetHeight(self.frame) * 0.1, CGRectGetHeight(self.frame) * 0.4, CGRectGetHeight(self.frame) * 0.36);
         [refresh setBackgroundImage:[UIImage imageNamed:@"refreshIcon.png"] forState:UIControlStateNormal];
         [refresh addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         [scrollViewContents addObject:refresh];
@@ -336,7 +342,6 @@
     swipeLabel.font = [UIFont noteworthyBoldWithSize:21.0];
     [swipeViewForScroll addSubview:swipeLabel];
     
-    //UIImageView *leftArrowImage = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) * 0.06, CGRectGetHeight(self.frame) / 2.0 - CGRectGetHeight(self.frame)*0.215, CGRectGetMinX(swipeLabel.frame) - CGRectGetWidth(self.frame) * 0.12, CGRectGetHeight(self.frame) * 0.5)];
     UIImageView *leftArrowImage = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) * 0.03, CGRectGetHeight(self.frame) / 2.0 - 24, 60, 60)];
     leftArrowImage.image = [UIImage imageNamed:@"leftArrow.png"];
     leftArrowImage.contentMode = UIViewContentModeScaleAspectFit;
@@ -467,12 +472,6 @@
         [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_TEXT_INTERACTION withAction:GA_ACTION_SCROLLING withLabel:GA_LABEL_TEXT_SWIPE wtihValue:nil];
         [[CustomAnalytics sharedInstance] postActionWithType:@"Swipe" actionLocation:@"TextScrollView" targetType:@"Text" targetId:@"" targetParameter:@""];
     }
-    
-    /*
-    if (pos != _numPages - 1) {
-        pageControl.currentPage = pos;
-    }
-     */
     
     pageControl.currentPage = pos;
     currentPage = pos;
