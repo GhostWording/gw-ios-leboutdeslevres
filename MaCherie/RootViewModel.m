@@ -96,8 +96,18 @@
     
     NSLog(@"downloading intentions");
     
+    
+    
     GWDataManager *theDataMan = [[GWDataManager alloc] init];
     
+    [theDataMan downloadAllTextsWithBlockForArea:theArea withCulture:[UserDefaults currentCulture] withCompletion:block];
+    
+    /*
+    [theDataMan downloadAllTextsForArea:theArea withCulture:[UserDefaults currentCulture] withCompletion:^(NSArray *textIds, NSError *error) {
+        block(textIds, error);
+    }];*/
+    
+    /*
     [theDataMan downloadIntentionsWithArea:theArea withCulture:[UserDefaults currentCulture] withCompletion:^(NSArray *intentionIds, NSError *error) {
        
         NSLog(@"downlaod intention response");
@@ -121,7 +131,7 @@
         }];
         
     }];
-    
+    */
     
 }
 

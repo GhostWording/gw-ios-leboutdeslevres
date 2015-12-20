@@ -278,20 +278,8 @@ const int numberOfTextsToLoad = 10;
         }];
         
         
-        NewFeatureView *featureView = [[NewFeatureView alloc] initWithFrame:self.view.frame withType:kNextButtonType];
-        [featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleOne>", nil) andImage:@"tut3.png"];
-        [featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleTwo>", nil) andImage:@"tut2-1.png"];
-        
-        [featureView willDismissViewWithCompletion:^{
-            
-            [theTextPagedView shakeAnimateScrollViewAftertime:7.0];
-            [theImagePagedView shakeAnimateScrollViewAfterTime:20.0];
-            
-        }];
-        
-        AppDelegate  *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        [[appDelegate window] addSubview:featureView];
-        
+        [theTextPagedView shakeAnimateScrollViewAftertime:7.0];
+        [theImagePagedView shakeAnimateScrollViewAfterTime:20.0];
         
     }
     else {

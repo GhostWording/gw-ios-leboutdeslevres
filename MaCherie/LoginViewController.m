@@ -22,6 +22,9 @@
 #import "ConstantsManager.h"
 #import <MBProgressHUD.h>
 
+#import "NewFeatureView.h"
+#import "AppDelegate.h"
+
 @interface LoginViewController () <FBSDKLoginButtonDelegate> {
     DefaultButton *frenchButton;
     DefaultButton *englishButton;
@@ -189,7 +192,6 @@
     [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_LOGIN withAction:GA_ACTION_BUTTON_PRESSED withLabel:@"LoginWithoutFacebook" wtihValue:nil];
     [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_LOGIN targetType:@"Command" targetId:@"Login" targetParameter:@"LoginWithoutFacebook"];
     
-    //[self performSegueWithIdentifier:@"loginSegue" sender:self];
     [self showRootController];
 }
 
@@ -218,6 +220,26 @@
 
 -(void)showRootController {
     
+    if ([[UserDefaults firstLaunchOfApp] boolValue] == YES) {
+        NewFeatureView *featureView = [[NewFeatureView alloc] initWithFrame:self.view.frame withType:kNextButtonType];
+        [featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleOne>", nil) andImage:@"tut3.png"];
+        [featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleTwo>", nil) andImage:@"tut2-1.png"];
+        
+        [featureView willDismissViewWithCompletion:^{
+            [self performSegueForLogin];
+        }];
+        
+        
+        AppDelegate  *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [[appDelegate window] addSubview:featureView];
+    }
+    else {
+        [self performSegueForLogin];
+    }
+    
+}
+
+-(void)performSegueForLogin {
     RootViewController *rootVC = [[RootViewController alloc] initWithNibName:nil bundle:nil];
     
     MBProgressHUD *progressHUD = [MBProgressHUD showHUDAddedTo:self.view  animated:YES];
@@ -230,7 +252,6 @@
         });
         
     }];
-    
 }
 
 #pragma mark - Navigation

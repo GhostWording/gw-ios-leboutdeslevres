@@ -10,7 +10,23 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1309"
+            endingLineNumber = "1309"
+            landmarkName = "-messengerButtonPressed:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MaCherie/RootViewController.m"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1321"
@@ -26,27 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1333"
-            endingLineNumber = "1333"
-            landmarkName = "-messengerButtonPressed:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1334"
-            endingLineNumber = "1334"
+            startingLineNumber = "1322"
+            endingLineNumber = "1322"
             landmarkName = "-messengerButtonPressed:"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/AppDelegate.m"
-            timestampString = "469583526.035212"
+            timestampString = "472305149.551177"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "230"
-            endingLineNumber = "230"
+            startingLineNumber = "231"
+            endingLineNumber = "231"
             landmarkName = "-applicationWillTerminate:"
             landmarkType = "5">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewModel.m"
-            timestampString = "472262028.750311"
+            timestampString = "472305149.551177"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "288"
-            endingLineNumber = "288"
+            startingLineNumber = "298"
+            endingLineNumber = "298"
             landmarkName = "-downloadTextsWithPrototypeIds:withCompletion:"
             landmarkType = "5">
             <Locations>
@@ -137,87 +137,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewModel.m"
-            timestampString = "472262028.750311"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "266"
-            endingLineNumber = "266"
-            landmarkName = "-downloadTextsWithPrototypeIds:withCompletion:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1648"
-            endingLineNumber = "1648"
-            landmarkName = "-updateTextsScrollViewTexts"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "385"
-            endingLineNumber = "385"
-            landmarkName = "-updateViewLanguage"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1815"
-            endingLineNumber = "1815"
-            landmarkName = "-animationControllerForPresentedController:presentingController:sourceController:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "425"
-            endingLineNumber = "425"
-            landmarkName = "-showViewDataWhenAppBecomesActive"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MaCherie/RootViewModel.m"
-            timestampString = "472262028.750311"
+            timestampString = "472305149.551177"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "276"
@@ -233,11 +153,91 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "424"
-            endingLineNumber = "424"
+            startingLineNumber = "1636"
+            endingLineNumber = "1636"
+            landmarkName = "-updateTextsScrollViewTexts"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MaCherie/RootViewController.m"
+            timestampString = "472313290.03903"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "373"
+            endingLineNumber = "373"
+            landmarkName = "-updateViewLanguage"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MaCherie/RootViewController.m"
+            timestampString = "472313290.03903"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1803"
+            endingLineNumber = "1803"
+            landmarkName = "-animationControllerForPresentedController:presentingController:sourceController:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MaCherie/RootViewController.m"
+            timestampString = "472313290.03903"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "413"
+            endingLineNumber = "413"
+            landmarkName = "-showViewDataWhenAppBecomesActive"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MaCherie/RootViewModel.m"
+            timestampString = "472305149.551177"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "286"
+            endingLineNumber = "286"
+            landmarkName = "-downloadTextsWithPrototypeIds:withCompletion:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MaCherie/RootViewController.m"
+            timestampString = "472313290.03903"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "412"
+            endingLineNumber = "412"
             landmarkName = "-viewWillAppear:"
             landmarkType = "5">
          </BreakpointContent>
@@ -249,11 +249,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "426"
-            endingLineNumber = "426"
+            startingLineNumber = "414"
+            endingLineNumber = "414"
             landmarkName = "-showViewDataWhenAppBecomesActive"
             landmarkType = "5">
          </BreakpointContent>
@@ -265,11 +265,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1363"
-            endingLineNumber = "1363"
+            startingLineNumber = "1351"
+            endingLineNumber = "1351"
             landmarkName = "-smsButtonPressed:"
             landmarkType = "5">
          </BreakpointContent>
@@ -281,11 +281,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1364"
-            endingLineNumber = "1364"
+            startingLineNumber = "1352"
+            endingLineNumber = "1352"
             landmarkName = "-smsButtonPressed:"
             landmarkType = "5">
          </BreakpointContent>
@@ -297,11 +297,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1666"
-            endingLineNumber = "1666"
+            startingLineNumber = "1654"
+            endingLineNumber = "1654"
             landmarkName = "-updateTextsScrollViewTexts"
             landmarkType = "5">
          </BreakpointContent>
@@ -425,12 +425,12 @@
                   moduleName = "MaCherie"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/mathieugrettir/Konta/Mobile%20&amp;%20Development/Projects/Olivier/Projects/MaChe%CC%81rie/MaCherie/MaCherie/SpecialOccasionViewModel.m"
-                  timestampString = "472263876.847186"
+                  timestampString = "472313367.422413"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "95"
                   endingLineNumber = "95"
-                  offsetFromSymbolStart = "190">
+                  offsetFromSymbolStart = "204">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -440,12 +440,12 @@
                   moduleName = "MaCherie"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/mathieugrettir/Konta/Mobile%20&amp;%20Development/Projects/Olivier/Projects/MaChe%CC%81rie/MaCherie/MaCherie/SpecialOccasionViewModel.m"
-                  timestampString = "472263876.847692"
+                  timestampString = "472313367.423234"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "95"
                   endingLineNumber = "95"
-                  offsetFromSymbolStart = "81">
+                  offsetFromSymbolStart = "84">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -473,11 +473,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "297"
-            endingLineNumber = "297"
+            startingLineNumber = "285"
+            endingLineNumber = "285"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -489,11 +489,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "299"
-            endingLineNumber = "299"
+            startingLineNumber = "287"
+            endingLineNumber = "287"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -505,11 +505,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1641"
-            endingLineNumber = "1641"
+            startingLineNumber = "1629"
+            endingLineNumber = "1629"
             landmarkName = "-updateTextsScrollViewTexts"
             landmarkType = "5">
          </BreakpointContent>
@@ -521,11 +521,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1644"
-            endingLineNumber = "1644"
+            startingLineNumber = "1632"
+            endingLineNumber = "1632"
             landmarkName = "-updateTextsScrollViewTexts"
             landmarkType = "5">
          </BreakpointContent>
@@ -537,11 +537,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1640"
-            endingLineNumber = "1640"
+            startingLineNumber = "1628"
+            endingLineNumber = "1628"
             landmarkName = "-updateTextsScrollViewTexts"
             landmarkType = "5">
          </BreakpointContent>
@@ -553,11 +553,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1591"
-            endingLineNumber = "1591"
+            startingLineNumber = "1579"
+            endingLineNumber = "1579"
             landmarkName = "-writeText"
             landmarkType = "5">
          </BreakpointContent>
@@ -569,11 +569,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "296"
-            endingLineNumber = "296"
+            startingLineNumber = "284"
+            endingLineNumber = "284"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -649,11 +649,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewModel.m"
-            timestampString = "472262028.750311"
+            timestampString = "472305149.551177"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "445"
-            endingLineNumber = "445"
+            startingLineNumber = "455"
+            endingLineNumber = "455"
             landmarkName = "-fetchImagesForThemePath:withCompletion:"
             landmarkType = "5">
             <Locations>
@@ -665,12 +665,12 @@
                   moduleName = "MaCherie"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/mathieugrettir/Konta/Mobile%20&amp;%20Development/Projects/Olivier/Projects/MaChe%CC%81rie/MaCherie/MaCherie/RootViewModel.m"
-                  timestampString = "472263876.878868"
+                  timestampString = "472313367.471816"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "445"
-                  endingLineNumber = "445"
-                  offsetFromSymbolStart = "287">
+                  startingLineNumber = "455"
+                  endingLineNumber = "455"
+                  offsetFromSymbolStart = "308">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -680,12 +680,12 @@
                   moduleName = "MaCherie"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/mathieugrettir/Konta/Mobile%20&amp;%20Development/Projects/Olivier/Projects/MaChe%CC%81rie/MaCherie/MaCherie/RootViewModel.m"
-                  timestampString = "472263876.879447"
+                  timestampString = "472313367.472381"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "445"
-                  endingLineNumber = "445"
-                  offsetFromSymbolStart = "81">
+                  startingLineNumber = "455"
+                  endingLineNumber = "455"
+                  offsetFromSymbolStart = "84">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -697,11 +697,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewModel.m"
-            timestampString = "472262028.750311"
+            timestampString = "472305149.551177"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "449"
-            endingLineNumber = "449"
+            startingLineNumber = "459"
+            endingLineNumber = "459"
             landmarkName = "-fetchImagesForThemePath:withCompletion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -713,11 +713,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1769"
-            endingLineNumber = "1769"
+            startingLineNumber = "1757"
+            endingLineNumber = "1757"
             landmarkName = "-refreshImagesPressedWithImageScrollView:"
             landmarkType = "5">
          </BreakpointContent>
@@ -729,11 +729,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewModel.m"
-            timestampString = "472262028.750311"
+            timestampString = "472305149.551177"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "448"
-            endingLineNumber = "448"
+            startingLineNumber = "458"
+            endingLineNumber = "458"
             landmarkName = "-fetchImagesForThemePath:withCompletion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -745,11 +745,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewModel.m"
-            timestampString = "472262028.750311"
+            timestampString = "472305149.551177"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "457"
-            endingLineNumber = "457"
+            startingLineNumber = "467"
+            endingLineNumber = "467"
             landmarkName = "-fetchImagesForThemePath:withCompletion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -761,11 +761,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewModel.m"
-            timestampString = "472262028.750311"
+            timestampString = "472305149.551177"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "441"
-            endingLineNumber = "441"
+            startingLineNumber = "451"
+            endingLineNumber = "451"
             landmarkName = "-fetchImagesForThemePath:withCompletion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -777,11 +777,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewModel.m"
-            timestampString = "471068877.494857"
+            timestampString = "472305149.551177"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "214"
-            endingLineNumber = "214"
+            startingLineNumber = "224"
+            endingLineNumber = "224"
             landmarkName = "-downloadWelcomeImagesWithCompletion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -825,11 +825,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1655"
-            endingLineNumber = "1655"
+            startingLineNumber = "1643"
+            endingLineNumber = "1643"
             landmarkName = "-updateTextsScrollViewTexts"
             landmarkType = "5">
          </BreakpointContent>
@@ -837,15 +837,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1693"
-            endingLineNumber = "1693"
+            startingLineNumber = "1681"
+            endingLineNumber = "1681"
             landmarkName = "-updateImageScrollViewImages"
             landmarkType = "5">
          </BreakpointContent>
@@ -873,11 +873,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1599"
-            endingLineNumber = "1599"
+            startingLineNumber = "1587"
+            endingLineNumber = "1587"
             landmarkName = "-refreshButtonPressed"
             landmarkType = "5">
          </BreakpointContent>
@@ -889,11 +889,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1697"
-            endingLineNumber = "1697"
+            startingLineNumber = "1685"
+            endingLineNumber = "1685"
             landmarkName = "-updateImageScrollViewImages"
             landmarkType = "5">
          </BreakpointContent>
@@ -905,23 +905,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1701"
-            endingLineNumber = "1701"
-            landmarkName = "-updateImageScrollViewImages"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1689"
@@ -937,11 +921,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1686"
-            endingLineNumber = "1686"
+            startingLineNumber = "1677"
+            endingLineNumber = "1677"
             landmarkName = "-updateImageScrollViewImages"
             landmarkType = "5">
          </BreakpointContent>
@@ -953,11 +937,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1704"
-            endingLineNumber = "1704"
+            startingLineNumber = "1674"
+            endingLineNumber = "1674"
             landmarkName = "-updateImageScrollViewImages"
             landmarkType = "5">
          </BreakpointContent>
@@ -969,11 +953,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1665"
-            endingLineNumber = "1665"
+            startingLineNumber = "1692"
+            endingLineNumber = "1692"
+            landmarkName = "-updateImageScrollViewImages"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MaCherie/RootViewController.m"
+            timestampString = "472313290.03903"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1653"
+            endingLineNumber = "1653"
             landmarkName = "-updateTextsScrollViewTexts"
             landmarkType = "5">
          </BreakpointContent>
@@ -985,11 +985,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1668"
-            endingLineNumber = "1668"
+            startingLineNumber = "1656"
+            endingLineNumber = "1656"
             landmarkName = "-updateTextsScrollViewTexts"
             landmarkType = "5">
          </BreakpointContent>
@@ -1001,11 +1001,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1678"
-            endingLineNumber = "1678"
+            startingLineNumber = "1666"
+            endingLineNumber = "1666"
             landmarkName = "-updateTextsScrollViewTexts"
             landmarkType = "5">
          </BreakpointContent>
@@ -1017,11 +1017,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewModel.m"
-            timestampString = "471068872.703806"
+            timestampString = "472305149.551177"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "167"
-            endingLineNumber = "167"
+            startingLineNumber = "177"
+            endingLineNumber = "177"
             landmarkName = "-downloadWelcomeTextsWithCompletion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1033,11 +1033,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewModel.m"
-            timestampString = "472262028.750311"
+            timestampString = "472305149.551177"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "280"
-            endingLineNumber = "280"
+            startingLineNumber = "290"
+            endingLineNumber = "290"
             landmarkName = "-downloadTextsWithPrototypeIds:withCompletion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1365,81 +1365,17 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
+            timestampString = "472313290.03903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1692"
-            endingLineNumber = "1692"
+            startingLineNumber = "1680"
+            endingLineNumber = "1680"
             landmarkName = "-updateImageScrollViewImages"
             landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MaCherie/RootViewModel.m"
-            timestampString = "472262028.750311"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "231"
-            endingLineNumber = "231"
-            landmarkName = "-downloadWelcomeImagesWithCompletion:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MaCherie/RootViewModel.m"
-            timestampString = "472261473.898924"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "220"
-            endingLineNumber = "220"
-            landmarkName = "-downloadWelcomeImagesWithCompletion:"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__53-[RootViewModel downloadWelcomeImagesWithCompletion:]_block_invoke"
-                  moduleName = "MaCherie"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mathieugrettir/Konta/Mobile%20&amp;%20Development/Projects/Olivier/Projects/MaChe%CC%81rie/MaCherie/MaCherie/RootViewModel.m"
-                  timestampString = "472263876.919868"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "220"
-                  endingLineNumber = "220"
-                  offsetFromSymbolStart = "1474">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__53-[RootViewModel downloadWelcomeImagesWithCompletion:]_block_invoke_2"
-                  moduleName = "MaCherie"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mathieugrettir/Konta/Mobile%20&amp;%20Development/Projects/Olivier/Projects/MaChe%CC%81rie/MaCherie/MaCherie/RootViewModel.m"
-                  timestampString = "472263876.920437"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "220"
-                  endingLineNumber = "220"
-                  offsetFromSymbolStart = "79">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1449,61 +1385,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MaCherie/RootViewModel.m"
-            timestampString = "472261481.777399"
+            timestampString = "472305149.551177"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "200"
-            endingLineNumber = "200"
+            startingLineNumber = "210"
+            endingLineNumber = "210"
             landmarkName = "-downloadWelcomeImagesWithCompletion:"
             landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MaCherie/RootViewController.m"
-            timestampString = "472263205.431567"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "276"
-            endingLineNumber = "276"
-            landmarkName = "-viewDidLoad"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[RootViewController viewDidLoad]"
-                  moduleName = "MaCherie"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mathieugrettir/Konta/Mobile%20&amp;%20Development/Projects/Olivier/Projects/MaChe%CC%81rie/MaCherie/MaCherie/RootViewController.m"
-                  timestampString = "472263876.923372"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "276"
-                  endingLineNumber = "276"
-                  offsetFromSymbolStart = "15481">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__33-[RootViewController viewDidLoad]_block_invoke223"
-                  moduleName = "MaCherie"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mathieugrettir/Konta/Mobile%20&amp;%20Development/Projects/Olivier/Projects/MaChe%CC%81rie/MaCherie/MaCherie/RootViewController.m"
-                  timestampString = "472263876.923955"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "276"
-                  endingLineNumber = "276"
-                  offsetFromSymbolStart = "67">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1545,12 +1433,12 @@
                   moduleName = "MaCherie"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/mathieugrettir/Konta/Mobile%20&amp;%20Development/Projects/Olivier/Projects/MaChe%CC%81rie/MaCherie/MaCherie/RootViewController.m"
-                  timestampString = "472263876.926837"
+                  timestampString = "472313367.486547"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "244"
                   endingLineNumber = "244"
-                  offsetFromSymbolStart = "426">
+                  offsetFromSymbolStart = "488">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -1560,14 +1448,46 @@
                   moduleName = "MaCherie"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/mathieugrettir/Konta/Mobile%20&amp;%20Development/Projects/Olivier/Projects/MaChe%CC%81rie/MaCherie/MaCherie/RootViewController.m"
-                  timestampString = "472263876.927381"
+                  timestampString = "472313367.48708"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "244"
                   endingLineNumber = "244"
-                  offsetFromSymbolStart = "20">
+                  offsetFromSymbolStart = "36">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MaCherie/AppDelegate.m"
+            timestampString = "472305136.129611"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "184"
+            endingLineNumber = "184"
+            landmarkName = "-applicationDidBecomeActive:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../../../../../Documents/GWFramework/GWFramework/GWDataManager.m"
+            timestampString = "472305164.952791"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1060"
+            endingLineNumber = "1060"
+            landmarkName = "-downloadTextsWithBlockForArea:queue:dataMan:withIntentionIds:withCulture:withCompletion:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
