@@ -172,7 +172,7 @@
     
     for (GWImage *image in theImages) {
         
-        if ([image.imageId isEqualToString:theIntention.mediaUrl]) {
+        if ([[self imageIdWithPrefixForPath:image.imageId] isEqualToString:theIntention.mediaUrl]) {
             return image;
         }
         

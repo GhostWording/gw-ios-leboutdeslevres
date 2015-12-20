@@ -225,20 +225,9 @@
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                         NSArray *theWelcomeImages = [[[GWDataManager alloc] init] fetchImagesWithImagePaths:theImagePaths];
-                        NSMutableArray *uniqueImages = [NSMutableArray array];
                         
-                        for (GWImage *image in theWelcomeImages) {
-                            for (int i = 0; i < uniqueImages.count; i++) {
-                                GWImage *uniqueImage = [uniqueImages objectAtIndex:i];
-                                
-                                if ([image.imageId isEqualToString:uniqueImage.imageId]) {
-                                    [uniqueImages addObject:image];
-                                }
-                                
-                            }
-                        }
                         
-                        _firstLaunchImages = uniqueImages;
+                        _firstLaunchImages = theWelcomeImages;
                         block(_firstLaunchImages, nil);
                     });
                     
@@ -512,7 +501,7 @@
 }
 
 -(void)setSpecialOccasionImages:(NSArray *)theSpecialOccasionImages {
-    _numSpecialOccasionImages = theSpecialOccasionImages.count;
+    _numSpecialOccasionImages = (int)theSpecialOccasionImages.count;
     specialOccasionImageArray = theSpecialOccasionImages;
 }
 

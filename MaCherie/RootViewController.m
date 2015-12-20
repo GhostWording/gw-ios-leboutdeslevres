@@ -239,6 +239,12 @@ const int numberOfTextsToLoad = 10;
        
         [wSelf showLoadingIndicator];
         model.selectedSpecialOccasionIntention = theIntention;
+        specialIntentionLabel.text = theIntention.label;
+        
+        [UIView animateWithDuration:0.3 animations:^{
+            specialIntentionLabel.alpha = 1.0;
+        }];
+        
         model.isViewingTheme = NO;
         [wSelf downloadSpecialOccasionImagesWithIntention:theIntention];
         [wSelf downloadSpecialOccasionTextsWithIntention:theIntention];
@@ -275,7 +281,6 @@ const int numberOfTextsToLoad = 10;
         NewFeatureView *featureView = [[NewFeatureView alloc] initWithFrame:self.view.frame withType:kNextButtonType];
         [featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleOne>", nil) andImage:@"tut3.png"];
         [featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleTwo>", nil) andImage:@"tut2-1.png"];
-        //[featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleThree>", nil) andImage:@"tut1.png"];
         
         [featureView willDismissViewWithCompletion:^{
             
@@ -1090,7 +1095,7 @@ const int numberOfTextsToLoad = 10;
 
 -(void)isSufficientResourcesDownloaded {
 
-    if ([model minimumImagesAndTextsToDownloadWithNumTexts:100 withNumImages:5] && (model.firstLaunchTexts.count != 0 || model.firstLaunchError == nil)) {
+    if ([model minimumImagesAndTextsToDownloadWithNumTexts:100 withNumImages:5] && (model.firstLaunchTexts.count != 0 || model.firstLaunchError == nil) && (model.firstLaunchImages.count != 0 || model.firstLaunchImageError == nil)) {
         [self performSelectorOnMainThread:@selector(updateViewData) withObject:nil waitUntilDone:YES];
         
         if (loadingIndicatorView) {

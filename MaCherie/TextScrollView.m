@@ -211,20 +211,56 @@
     [textScrollView addSubview:intentionMode];
     
     
-    UIButton *refresh = [UIButton buttonWithType:UIButtonTypeCustom];
-    refresh.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetHeight(self.frame) * 0.2 + CGRectGetWidth(self.frame) * index, CGRectGetMaxY(intentionMode.frame) + CGRectGetHeight(self.frame) * 0.1, CGRectGetHeight(self.frame) * 0.4, CGRectGetHeight(self.frame) * 0.36);
-    [refresh setBackgroundImage:[UIImage imageNamed:@"refreshIcon.png"] forState:UIControlStateNormal];
-    [refresh addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    [scrollViewContents addObject:refresh];
-    [textScrollView addSubview:refresh];
-    
-    UILabel *refreshLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) * 0.1 + CGRectGetWidth(self.frame) * index, CGRectGetMaxY(refresh.frame) + CGRectGetHeight(self.frame) * 0.01, CGRectGetWidth(self.frame) * 0.8, 24)];
-    refreshLabel.textColor = [UIColor appBlueColor];
-    refreshLabel.textAlignment = NSTextAlignmentCenter;
-    refreshLabel.font = [UIFont helveticaNeueBoldWithSize:16];
-    refreshLabel.text = LBDLocalizedString(@"<LBDLNewTexts>", nil);
-    [scrollViewContents addObject:refreshLabel];
-    [textScrollView addSubview:refreshLabel];
+    if ([UIScreen mainScreen].bounds.size.height == 480.0) {
+        
+        UIButton *refresh = [UIButton buttonWithType:UIButtonTypeCustom];
+        refresh.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetHeight(self.frame) * 0.2 + CGRectGetWidth(self.frame) * index, CGRectGetMaxY(intentionMode.frame) - 32, CGRectGetHeight(self.frame) * 0.4, CGRectGetHeight(self.frame) * 0.36);
+        [refresh setBackgroundImage:[UIImage imageNamed:@"refreshIcon.png"] forState:UIControlStateNormal];
+        [refresh addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        [scrollViewContents addObject:refresh];
+        [textScrollView addSubview:refresh];
+        
+        UILabel *refreshLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) * 0.1 + CGRectGetWidth(self.frame) * index, CGRectGetMaxY(refresh.frame) + CGRectGetHeight(self.frame) * 0.01, CGRectGetWidth(self.frame) * 0.8, 24)];
+        refreshLabel.textColor = [UIColor appBlueColor];
+        refreshLabel.textAlignment = NSTextAlignmentCenter;
+        refreshLabel.font = [UIFont helveticaNeueBoldWithSize:16];
+        refreshLabel.text = LBDLocalizedString(@"<LBDLNewTexts>", nil);
+        [scrollViewContents addObject:refreshLabel];
+        [textScrollView addSubview:refreshLabel];
+    }
+    else if([UIScreen mainScreen].bounds.size.height == 568.0) {
+        
+        UIButton *refresh = [UIButton buttonWithType:UIButtonTypeCustom];
+        refresh.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetHeight(self.frame) * 0.2 + CGRectGetWidth(self.frame) * index, CGRectGetMaxY(intentionMode.frame), CGRectGetHeight(self.frame) * 0.4, CGRectGetHeight(self.frame) * 0.36);
+        [refresh setBackgroundImage:[UIImage imageNamed:@"refreshIcon.png"] forState:UIControlStateNormal];
+        [refresh addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        [scrollViewContents addObject:refresh];
+        [textScrollView addSubview:refresh];
+        
+        UILabel *refreshLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) * 0.1 + CGRectGetWidth(self.frame) * index, CGRectGetMaxY(refresh.frame) + CGRectGetHeight(self.frame) * 0.01, CGRectGetWidth(self.frame) * 0.8, 24)];
+        refreshLabel.textColor = [UIColor appBlueColor];
+        refreshLabel.textAlignment = NSTextAlignmentCenter;
+        refreshLabel.font = [UIFont helveticaNeueBoldWithSize:16];
+        refreshLabel.text = LBDLocalizedString(@"<LBDLNewTexts>", nil);
+        [scrollViewContents addObject:refreshLabel];
+        [textScrollView addSubview:refreshLabel];
+    }
+    else {
+        UIButton *refresh = [UIButton buttonWithType:UIButtonTypeCustom];
+        refresh.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetHeight(self.frame) * 0.2 + CGRectGetWidth(self.frame) * index, CGRectGetMaxY(intentionMode.frame) + CGRectGetHeight(self.frame) * 0.1, CGRectGetHeight(self.frame) * 0.4, CGRectGetHeight(self.frame) * 0.36);
+        [refresh setBackgroundImage:[UIImage imageNamed:@"refreshIcon.png"] forState:UIControlStateNormal];
+        [refresh addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        [scrollViewContents addObject:refresh];
+        [textScrollView addSubview:refresh];
+        
+        UILabel *refreshLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) * 0.1 + CGRectGetWidth(self.frame) * index, CGRectGetMaxY(refresh.frame) + CGRectGetHeight(self.frame) * 0.01, CGRectGetWidth(self.frame) * 0.8, 24)];
+        refreshLabel.textColor = [UIColor appBlueColor];
+        refreshLabel.textAlignment = NSTextAlignmentCenter;
+        refreshLabel.font = [UIFont helveticaNeueBoldWithSize:16];
+        refreshLabel.text = LBDLocalizedString(@"<LBDLNewTexts>", nil);
+        [scrollViewContents addObject:refreshLabel];
+        [textScrollView addSubview:refreshLabel];
+    }
     
 }
 

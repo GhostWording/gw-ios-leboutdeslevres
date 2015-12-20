@@ -22,6 +22,9 @@
 // has three different keys fr-FR, en-EN and es-ES for the labels
 @property (nonatomic, strong) NSDictionary *moodImageNamesDict;
 
+@property (nonatomic, strong) NSString *moodName;
+@property (nonatomic, strong) UIImage *moodNormalImage;
+
 
 
 @end
@@ -62,7 +65,7 @@
 }
 
 -(void)reset {
-    [self randomizeThemeImages:_themeImages themeData:_themeData];
+    [self randomizeComposedData];
 }
 
 -(void)downloadThemesWithCompletion:(void (^)(NSArray *, NSError *))block {
@@ -103,7 +106,6 @@
                     for (GWImage *image in _themeImages) {
                         for (int i = 0; i < imageUrls.count; i++) {
                             NSString *currentImage = [imageUrls objectAtIndex:i];
-                            NSString *imageId = image.imageId;
                             if ([currentImage isEqualToString:image.imageId]) {
                                 [imageUrls removeObject:currentImage];
                             }
@@ -174,7 +176,6 @@
         NSString *imageId = [NSString stringWithFormat:@"/%@", [themes objectForKey:@"DefaultImage"]];
         
         for (GWImage *image in theImages) {
-            NSString *theImageId = image.imageId;
             if ([imageId isEqualToString:image.imageId]) {
                 [themesWithImages addObject:themes];
                 break;
@@ -196,8 +197,6 @@
     }
     
     GWImage *themeImage = [_themeImages objectAtIndex:theIndex];
-    
-    NSString *themeId = themeImage.imageId;
     
     return [UIImage imageWithData:themeImage.imageData];
 }
@@ -230,6 +229,10 @@
     
     // add the normal button to go back
     if (_isRandomTheme == NO) {
+        MoodDataObject *dataObj = [[MoodDataObject alloc] init];
+        dataObj.moodName = @"Normal";
+        dataObj.moodNormalImage = [UIImage imageNamed:@"randomImage.png"];
+        [_themeRandomComposedData insertObject:dataObj atIndex:0];
         
     }
 }
@@ -242,9 +245,7 @@
     if (_isRandomTheme == NO) {
         UIImage *normalTheme = [UIImage imageNamed:@"randomImage.png"];
         NSDictionary *normalThemeData = @{ @"Labels" : @[ @{ @"Language" : @"fr-FR", @"Label" : @"Normal"} , @{ @"Language" : @"en-EN", @"Label" : @"Normal" }, @{ @"Language" : @"es-ES", @"Label" : @"Normal" } ] };
-        
-        int randIndex = arc4random_uniform(4);
-        
+                
         [_randomThemeImages insertObject:normalTheme atIndex:0];
         [_randomThemeData insertObject:normalThemeData atIndex:0];
     }
@@ -281,25 +282,13 @@
     
     MoodDataObject *dataObj = [_themeRandomComposedData objectAtIndex:theIndex];
     
-    return [UIImage imageWithData:dataObj.moodImage.imageData];
-    
-    /*
-    if (theIndex >= _randomThemeImages.count) {
-        return nil;
+    if (dataObj.moodImage != nil) {
+        return [UIImage imageWithData:dataObj.moodImage.imageData];
+    }
+    else {
+        return dataObj.moodNormalImage;
     }
     
-    id themedImage = [_randomThemeImages objectAtIndex:theIndex];
-    
-    if ([themedImage isKindOfClass:[GWImage class]]) {
-        
-        return [UIImage imageWithData:[(GWImage*)themedImage imageData]];
-    }
-    else if([themedImage isKindOfClass:[UIImage class]]) {
-        return themedImage;
-    }
-    
-    return nil;
-     */
 }
 
 -(NSString*)randomThemeNameAtIndex:(NSInteger)theIndex {
@@ -321,36 +310,24 @@
         }
     }
     
-    return @"";
+    return dataObj.moodName;
     
-    /*
-    if (theIndex >= _randomThemeData.count) {
-        return nil;
-    }
-    
-    NSDictionary *dict = [_randomThemeData objectAtIndex:theIndex];
-    NSArray *themeLanguageTranslations = [dict objectForKey:@"Labels"];
-    
-    for (id languageDict in themeLanguageTranslations) {
-        if ([languageDict isKindOfClass:[NSDictionary class]]) {
-            if ([(NSString*)[(NSDictionary *)languageDict objectForKey:@"Language"] isEqualToString:[GWLocalizedBundle currentLocaleAPIString]]) {
-                return [languageDict objectForKey:@"Label"];
-            }
-        }
-    }
-    
-    return @"";
-     */
 }
 
 -(NSString*)randomThemePathAtIndex:(NSInteger)theIndex {
-    if (theIndex >= _randomThemeData.count) {
+    
+    if (theIndex >= _themeRandomComposedData.count) {
         return nil;
     }
     
-    NSDictionary *dict = [_randomThemeData objectAtIndex:theIndex];
+    MoodDataObject *dataObject = [_themeRandomComposedData objectAtIndex:theIndex];
     
-    return [NSString stringWithFormat:@"/%@", (NSString*)[dict objectForKey:@"Path"]];
+    if (dataObject.moodImageNamesDict != nil) {
+        return [NSString stringWithFormat:@"/%@", (NSString*)[dataObject.moodImageNamesDict objectForKey:@"Path"]];
+    }
+    else  {
+        return @"Random";
+    }
     
 }
 
@@ -359,13 +336,14 @@
 }
 
 -(BOOL)isRandomThemeAtIndex:(NSInteger)theIndex {
-    if (theIndex >= _randomThemeImages.count) {
+    
+    if (theIndex >= _themeRandomComposedData.count) {
         return NO;
     }
     
-    id themedImage = [_randomThemeImages objectAtIndex:theIndex];
+    MoodDataObject *dataObj = [_themeRandomComposedData objectAtIndex:theIndex];
     
-    if ([themedImage isKindOfClass:[UIImage class]]) {
+    if (dataObj.moodNormalImage != nil) {
         return YES;
     }
     

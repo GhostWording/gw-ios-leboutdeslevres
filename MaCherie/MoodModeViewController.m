@@ -188,7 +188,7 @@
 -(void)insertImages {
     
     // if the themes are odd we have to add one row to it
-    int numRows = [_viewModel numThemeImages] / 2 + ([_viewModel numThemeImages] % 2);
+    int numRows = (int) [_viewModel numThemeImages] / 2 + ([_viewModel numThemeImages] % 2);
     
     for (int i = 0; i < numRows; i++) {
         
