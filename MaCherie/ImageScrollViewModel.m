@@ -31,7 +31,7 @@
 }
 
 -(NSInteger)numberOfImages {
-    NSLog(@"image count is: %lu", (unsigned long)images.count);
+
     return images.count;
 }
 

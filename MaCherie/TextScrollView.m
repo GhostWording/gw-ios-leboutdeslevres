@@ -371,7 +371,7 @@
 }
 
 -(BOOL)isLastPage {
-    NSLog(@"current page: %d and number of pages: %d", (int)currentPage, (int)_numPages);
+
     if (currentPage == _numPages - 1) {
         return YES;
     }

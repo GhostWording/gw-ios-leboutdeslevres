@@ -150,9 +150,7 @@ const int numberOfTextsToLoad = 10;
     [addPhotoRollButton addTarget:self action:@selector(cameraRollButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [theImagePagedView addSubview:addPhotoRollButton];
     
-    
-    NSLog(@"after scroll view");
-    
+        
     editButton = [UIButton buttonWithType:UIButtonTypeCustom];
     editButton.frame = CGRectMake(CGRectGetWidth(self.view.frame) - 55, CGRectGetMaxY(theImagePagedView.frame) - 5, 40, 40);
     editButton.layer.backgroundColor = [UIColor flatOrangeColor].CGColor;
@@ -254,8 +252,6 @@ const int numberOfTextsToLoad = 10;
     
     
     UserDefaults *defaults = [[UserDefaults alloc] init];
-    
-    NSLog(@"is first launch: %@", [UserDefaults firstLaunchOfApp]);
     
     if ([[UserDefaults firstLaunchOfApp] boolValue] == YES) {
         
@@ -415,7 +411,7 @@ const int numberOfTextsToLoad = 10;
     
     [[GoogleAnalyticsCommunication sharedInstance] setScreenName:GA_SCREEN_MAIN];
     [[CustomAnalytics sharedInstance] postActionWithType:@"init" actionLocation:GA_SCREEN_MAIN targetType:@"init" targetId:@"init" targetParameter:@""];
-    NSLog(@"first launch of app: %@ and are photos selected: %d", [UserDefaults firstLaunchOfApp], model.isUserPhotosSelected);
+
     if (model.isUserPhotosSelected == NO && [[UserDefaults firstLaunchOfApp] boolValue] == NO) {
         [self updateViewData];
     }
@@ -425,11 +421,7 @@ const int numberOfTextsToLoad = 10;
 
 -(void)showPulseForSettingsIfAppropriate {
     
-    NSLog(@"show pulse for settings if appropriate");
-    
     if ([[UserDefaults hasViewedSettings] boolValue] == NO) {
-        
-        NSLog(@"showing pulse for settings");
         
         CAShapeLayer *shape = [CAShapeLayer layer];
         shape.path = [UIBezierPath bezierPathWithArcCenter:CGPointMake(25, 25) radius:25 startAngle:0 endAngle:2*M_PI clockwise:YES].CGPath;
@@ -465,11 +457,7 @@ const int numberOfTextsToLoad = 10;
 
 -(void)showPulseIfAppropriate {
     
-    NSLog(@"calling show pulse if appropriate");
-    
     if (![[UserDefaults hasPressedIntentionButton] boolValue] && !([[UserDefaults numberOfTextRefreshesByUser] intValue] < 1 && [[UserDefaults numberOfImageRefreshesByUser] intValue] < 1) && specialOccasionButton.hidden == NO) {
-        
-        NSLog(@"show pulse if appropriate running");
         
         CAShapeLayer *shape = [CAShapeLayer layer];
         shape.path = [UIBezierPath bezierPathWithArcCenter:CGPointMake(25, 25) radius:25 startAngle:0 endAngle:2*M_PI clockwise:YES].CGPath;
@@ -508,14 +496,9 @@ const int numberOfTextsToLoad = 10;
 
 -(void)showRatingViewIfAppropriate {
     
-    NSLog(@"showing rating view if appropriate");
-    
-    NSLog(@"number sent messages and share: %d", [[UserDefaults numberOfFacebookShares] intValue] + [[UserDefaults numberOfMessagesSent] intValue] );
-    NSLog(@"time interval: %f", [[UserDefaults dateInstalled] timeIntervalSinceNow]);
-    NSLog(@"date installed: %@", [UserDefaults dateInstalled]);
+
     if (model.isShowingRatingView == NO && ([[UserDefaults numberOfFacebookShares] intValue] + [[UserDefaults numberOfMessagesSent] intValue]) >= 2 && [[UserDefaults hasRatedApp] boolValue] == NO ) {
         
-        NSLog(@"performing selector to show rating window");
         [self performSelector:@selector(showRatingWindowAfterDelay) withObject:nil afterDelay:1.5];
     }
         
@@ -523,7 +506,6 @@ const int numberOfTextsToLoad = 10;
 
 -(void)showRatingWindowAfterDelay {
     
-    NSLog(@"showing rating window after delay");
     model.isShowingRatingView = YES;
     
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:LBDLocalizedString(@"<LBDLAlertThankYouTitle>", nil) message:LBDLocalizedString(@"<LBDLRatingMessage>", nil) delegate:self cancelButtonTitle:LBDLocalizedString(@"<LBDLNo>", nil) otherButtonTitles:LBDLocalizedString(@"<LBDLYes>", nil), nil];
@@ -1625,7 +1607,7 @@ const int numberOfTextsToLoad = 10;
 -(NSArray*)updateTextsScrollViewTexts {
     
     [UIView animateWithDuration:0.3 animations:^{
-        NSLog(@"edit button alpha");
+
         editButton.alpha = 1.0;
     }];
     

@@ -102,37 +102,6 @@
     
     [theDataMan downloadAllTextsWithBlockForArea:theArea withCulture:[UserDefaults currentCulture] withCompletion:block];
     
-    /*
-    [theDataMan downloadAllTextsForArea:theArea withCulture:[UserDefaults currentCulture] withCompletion:^(NSArray *textIds, NSError *error) {
-        block(textIds, error);
-    }];*/
-    
-    /*
-    [theDataMan downloadIntentionsWithArea:theArea withCulture:[UserDefaults currentCulture] withCompletion:^(NSArray *intentionIds, NSError *error) {
-       
-        NSLog(@"downlaod intention response");
-        
-        GWDataManager *newDataMan = [[GWDataManager alloc] init];
-        
-        NSArray *allIntentions = [newDataMan fetchIntentionsOnBackgroundThread];
-        //NSLog(@"all intentions: %@", allIntentions);
-        NSArray *slugsFromArray = [allIntentions valueForKey:@"slugPrototypeLink"];
-        NSMutableSet *set = [[NSMutableSet alloc] initWithArray:slugsFromArray];
-        NSLog(@"unique intentions: %@", set);
-        if (error) {
-            block(nil, error);
-            return ;
-        }
-        
-        GWDataManager *anotherDataMan = [[GWDataManager alloc] init];
-        [anotherDataMan downloadTextsWithArea:theArea withIntentionSlugs:[set allObjects] withCulture:[UserDefaults currentCulture] withCompletion:^(NSArray *textIds, NSError *error) {
-            NSLog(@"downloading texts on main thread in text ids: %@", textIds);
-            block(textIds, error);
-        }];
-        
-    }];
-    */
-    
 }
 
 
@@ -142,7 +111,7 @@
     GWDataManager *theDataManager = [[GWDataManager alloc] init];
     [theDataManager downloadImagesAndPersistWithRecipientId:theRecipientId withNumImagesToDownload:numImages withCompletion:^(NSArray *theImageIds, NSError *error)  {
         
-        NSLog(@"the number of images downloaded: %d, the number of images to download: %d", (int)theImageIds.count, (int)numImages);
+       
         block(theImageIds, error);
         
     }];
@@ -279,7 +248,6 @@
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 
-                NSLog(@"current culture is: %@", [UserDefaults currentCulture]);
                 
                 NSArray *theTexts = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                 GWDataManager *theDataMan = [[GWDataManager alloc] init];
@@ -290,8 +258,6 @@
                     GWText *theText = [theDataMan persistTextOrUpdateWithJson:theDict withArray:fetchedTexts withContext:[[GWCoreDataManager sharedInstance] mainObjectContext]];
                     [textsToReturn addObject:theText];
                 }
-                
-                 NSLog(@"texts to return are: %@", textsToReturn);
                 
                 block(textsToReturn, nil);
                 
@@ -380,9 +346,7 @@
     // download the image paths
     
     [downloadImagesNotAvailable downloadImagePathsWithRelativePath:theIntention withCompletion:^(NSArray *theImagePaths, NSError *error) {
-        
-        NSLog(@"image paths are: %d", (int)theImagePaths.count);
-        
+                
         GWDataManager *anotherDataMan = [[GWDataManager alloc] init];
         
         // remove the iamge paths of the images we have stored and store them in a separate array
@@ -456,8 +420,12 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (theError == nil) {
-                if (theImageIds.count == 0) {                    
-                    NSArray *theImages = [dataMan fetchRandomImagesWithPredicate:[NSPredicate predicateWithFormat:@"imageId LIKE[cd] %@", theThemePath] withNum:10];
+                if (theImageIds.count < 10) {
+                    NSMutableArray *theImages = [NSMutableArray arrayWithArray:[dataMan fetchImagesWithImagePaths:theImageIds]];
+                    
+                    NSArray *additionalImages = [dataMan fetchRandomImagesWithPredicate:[NSPredicate predicateWithFormat:@"imageId CONTAINS[cd] %@", theThemePath] withNum:10 - (int)theImageIds.count];
+                    [theImages addObjectsFromArray:additionalImages];
+                    
                     _themeImages = theImages;
                     block(theImages, nil);
                     

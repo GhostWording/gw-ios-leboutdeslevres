@@ -98,7 +98,6 @@
         contentWidth = 0;
         numPages = 0;
         
-        [UserDefaults setFirstLaunchOfApp:NO];
     }
     
     return self;
@@ -211,7 +210,7 @@
         _dismissBlock();
     }
     
-    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:NO] forKey:@"firstLaunch"];
+    [UserDefaults setTutorialShown:YES];
     [self removeFromSuperview];
 }
 

@@ -134,6 +134,18 @@
 }
 
 
++(BOOL)tutorialShow {
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"tutorialShown"] == nil) {
+        [UserDefaults setTutorialShown:NO];
+    }
+    
+    return [[[NSUserDefaults standardUserDefaults] valueForKey:@"tutorialShown"] boolValue];
+}
+
++(void)setTutorialShown:(BOOL)isShown {
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:isShown] forKey:@"tutorialShown"];
+}
+
 +(NSNumber*)firstLaunchOfApp {
     
     if ([[NSUserDefaults standardUserDefaults] valueForKey:@"firstLaunch"] == nil) {

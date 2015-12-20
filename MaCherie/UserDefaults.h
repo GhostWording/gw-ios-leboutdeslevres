@@ -47,6 +47,9 @@ static NSString *spanishCultureString = @"es-ES";
 +(NSString*)currentCulture;
 +(void)setCulture:(NSString*)newCulture;
 
++(BOOL)tutorialShow;
++(void)setTutorialShown:(BOOL)isShown;
+
 +(NSNumber*)firstLaunchOfApp;
 +(void)setFirstLaunchOfApp:(BOOL)firstLaunch;
 

@@ -220,7 +220,7 @@
 
 -(void)showRootController {
     
-    if ([[UserDefaults firstLaunchOfApp] boolValue] == YES) {
+    if ([UserDefaults tutorialShow] == NO) {
         NewFeatureView *featureView = [[NewFeatureView alloc] initWithFrame:self.view.frame withType:kNextButtonType];
         [featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleOne>", nil) andImage:@"tut3.png"];
         [featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleTwo>", nil) andImage:@"tut2-1.png"];
