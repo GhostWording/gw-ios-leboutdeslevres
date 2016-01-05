@@ -13,6 +13,7 @@ target 'MaCherie' do
     pod 'Fabric', '~> 1.5.1'
     pod 'MBProgressHUD', '~> 0.9.1'
     pod 'GoogleAnalytics', '~> 3.13.0'
+    pod 'GoogleTagManager', '~> 3.15.0'
 
 end
 

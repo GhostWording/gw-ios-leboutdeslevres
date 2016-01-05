@@ -210,7 +210,7 @@
     CGRect intentionModeFrame = CGRectMake(0, CGRectGetHeight(self.frame) * 0.35, 0, 0);
     
     if ([[UserDefaults numberOfTextRefreshesByUser] intValue] > 1) {
-        intentionModeFrame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetWidth(self.frame) * 0.3 + CGRectGetWidth(self.frame) * index,  CGRectGetHeight(self.frame) * 0.12, CGRectGetWidth(self.frame) * 0.6, 70);;
+        intentionModeFrame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetWidth(self.frame) * 0.3 + CGRectGetWidth(self.frame) * index,  CGRectGetHeight(self.frame) * 0.2, CGRectGetWidth(self.frame) * 0.6, 70);
         IntentionModeView *intentionMode = [[IntentionModeView alloc] initWithFrame:intentionModeFrame];
         [intentionMode intentionChosenWithCompletion:_intentionBlock];
         [textScrollView addSubview:intentionMode];

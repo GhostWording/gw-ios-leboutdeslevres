@@ -70,7 +70,7 @@
 
 +(instancetype)helveticaNeueMediumWitihSize:(float)size
 {
-    return [UIFont fontWithName:@"HelveticaNeue-Medium " size:size];
+    return [UIFont fontWithName:@"HelveticaNeue-Medium" size:size];
 }
 
 +(instancetype)helveticaNeueMediumItalicWithSize:(float)size

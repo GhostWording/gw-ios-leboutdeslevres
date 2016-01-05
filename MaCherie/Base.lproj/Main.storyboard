@@ -40,7 +40,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <segue destination="qIi-Ic-yUZ" kind="presentation" identifier="loginSegue" modalTransitionStyle="crossDissolve" id="C87-oR-fl8"/>
+                        <segue destination="qIi-Ic-yUZ" kind="presentation" identifier="settingsSegue" id="C87-oR-fl8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPC-vx-IW7" sceneMemberID="firstResponder"/>

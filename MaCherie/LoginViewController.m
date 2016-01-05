@@ -31,6 +31,7 @@
     DefaultButton *spanishButton;
     UIButton *noFacebookLoginButton;
     RootViewModel *_viewModel;
+    NewFeatureView *currentFeatureView;
     
 }
 
@@ -41,6 +42,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    currentFeatureView = nil;
     _viewModel = [[RootViewModel alloc] init];
     
     UIImageView *appLogo = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame) * 0.28, CGRectGetHeight(self.view.frame) * 0.1, CGRectGetWidth(self.view.frame) * 0.44, CGRectGetWidth(self.view.frame) * 0.44)];
@@ -221,17 +223,21 @@
 -(void)showRootController {
     
     if ([UserDefaults tutorialShow] == NO) {
-        NewFeatureView *featureView = [[NewFeatureView alloc] initWithFrame:self.view.frame withType:kNextButtonType];
-        [featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleOne>", nil) andImage:@"tut3.png"];
-        [featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleTwo>", nil) andImage:@"tut2-1.png"];
         
-        [featureView willDismissViewWithCompletion:^{
-            [self performSegueForLogin];
-        }];
-        
-        
-        AppDelegate  *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        [[appDelegate window] addSubview:featureView];
+        if (currentFeatureView == nil) {
+            NewFeatureView *featureView = [[NewFeatureView alloc] initWithFrame:self.view.frame withType:kNextButtonType];
+            currentFeatureView = featureView;
+            [featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleOne>", nil) andImage:@"tut3.png"];
+            [featureView addItemWithTitle:@"" andSubtitle:LBDLocalizedString(@"<LBDLTutorialSubtitleTwo>", nil) andImage:@"tut2-1.png"];
+            
+            [featureView willDismissViewWithCompletion:^{
+                [self performSegueForLogin];
+            }];
+            
+            AppDelegate  *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            [[appDelegate window] addSubview:featureView];
+            
+        }
     }
     else {
         [self performSegueForLogin];
@@ -240,15 +246,22 @@
 }
 
 -(void)performSegueForLogin {
-    RootViewController *rootVC = [[RootViewController alloc] initWithNibName:nil bundle:nil];
     
     MBProgressHUD *progressHUD = [MBProgressHUD showHUDAddedTo:self.view  animated:YES];
     progressHUD.mode = MBProgressHUDModeIndeterminate;
+    [self performSelector:@selector(presentViewControllerForSegue) withObject:nil afterDelay:0.05];
     
-    [self presentViewController:rootVC animated:YES completion:^{
+}
+
+-(void)presentViewControllerForSegue {
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    RootViewController *rootController = [storyboard instantiateViewControllerWithIdentifier:@"rootViewController"];
+    
+    [self presentViewController:rootController animated:YES completion:^{
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [progressHUD hide:YES];
+            //[progressHUD hide:YES];
         });
         
     }];

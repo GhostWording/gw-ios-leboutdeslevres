@@ -365,9 +365,7 @@
             return ;
         }
         else {
-            
-            NSLog(@"image paths are not zero");
-            
+                        
             NSArray *randomImages = [anotherDataMan randomIndexesFromArray:imagePathsLeft withNumRandomIndexes:10];
             
             [anotherDataMan downloadImagesWithUrls:randomImages isRelativeURL:YES withCompletion:^(NSArray *theImagePaths, NSError *error) {

@@ -207,8 +207,8 @@ const int numberOfTextsToLoad = 10;
     specialOccasionButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
     [self.view addSubview:specialOccasionButton];
     
-    specialIntentionLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame)*0.1, CGRectGetMaxY(theTextPagedView.pageControl.frame) + CGRectGetMaxY(theImagePagedView.frame) + 2, CGRectGetWidth(self.view.frame) * 0.8, 16)];
-    specialIntentionLabel.font = [UIFont helveticaNeueWithSize:16];
+    specialIntentionLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame)*0.1, CGRectGetMaxY(theTextPagedView.pageControl.frame) + CGRectGetMaxY(theImagePagedView.frame) + 1, CGRectGetWidth(self.view.frame) * 0.8, 16)];
+    specialIntentionLabel.font = [UIFont helveticaNeueWithSize:14];
     specialIntentionLabel.textAlignment = NSTextAlignmentCenter;
     specialIntentionLabel.textColor = [UIColor lightGrayColor];
     specialIntentionLabel.alpha = 0.0f;
@@ -608,7 +608,7 @@ const int numberOfTextsToLoad = 10;
 {
     [UserDefaults setHasViewedSettings:[NSNumber numberWithBool:YES]];
     [settingsPulse removeFromSuperview];
-    [self performSegueWithIdentifier:@"loginSegue" sender:self];
+    [self performSegueWithIdentifier:@"settingsSegue" sender:self];
 }
 
 #pragma mark - Edit Text View
@@ -873,6 +873,9 @@ const int numberOfTextsToLoad = 10;
         [theSpecialOccasionView selectedIntentionAndRecipient:^(GWIntention *intentionObject, RecipientObject *recipientObject) {
             
             model.selectedSpecialOccasionIntention = intentionObject;
+            
+            [UserDefaults setWelcomeTextsShow:YES];
+            [UserDefaults setWelcomeImagesShown:YES];
             
             specialIntentionLabel.text = intentionObject.label;
             [UIView animateWithDuration:0.3 animations:^{
@@ -1797,7 +1800,7 @@ const int numberOfTextsToLoad = 10;
 
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([[segue identifier] isEqualToString:@"loginSegue"]) {
+    if ([[segue identifier] isEqualToString:@"settingsSegue"]) {
         UIViewController *destinationVC = (UIViewController*)[segue destinationViewController];
         
         destinationVC.transitioningDelegate = self;
