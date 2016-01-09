@@ -264,11 +264,11 @@ const int numberOfTextsToLoad = 10;
         
         __weak typeof (self) wSelf = self;
         [model downloadWelcomeTextsWithCompletion:^(NSArray *theTexts, NSError *theError) {
-            [wSelf updateViewData];
+            [wSelf isSufficientResourcesDownloaded];
         }];
         
         [model downloadWelcomeImagesWithCompletion:^(NSArray *theImages, NSError *theError) {
-            [wSelf updateViewData];
+            [wSelf isSufficientResourcesDownloaded];
         }];
         
         
@@ -1026,11 +1026,15 @@ const int numberOfTextsToLoad = 10;
 -(void)dismissFirstLaunchView {
     
     
-    if ([model minimumImagesAndTextsToDownloadWithNumTexts:100 withNumImages:5] && (model.firstLaunchTexts.count != 0 || model.firstLaunchError != nil)) {
+    if ([model minimumImagesAndTextsToDownloadWithNumTexts:100 withNumImages:5] && (model.firstLaunchTexts.count != 0 || model.firstLaunchError == nil) && (model.firstLaunchImages.count != 0 || model.firstLaunchImageError == nil)) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+           [self isSufficientResourcesDownloaded];
+        });
+        
         [UIView animateWithDuration:0.3 animations:^{
-            firstLaunView.alpha = 0.0f;
             
-            [self performSelectorOnMainThread:@selector(updateViewData) withObject:nil waitUntilDone:YES];
+            firstLaunView.alpha = 0.0f;
         
         } completion:^(BOOL finished) {
             [firstLaunView removeFromSuperview];
@@ -1070,7 +1074,10 @@ const int numberOfTextsToLoad = 10;
 -(void)isSufficientResourcesDownloaded {
 
     if ([model minimumImagesAndTextsToDownloadWithNumTexts:100 withNumImages:5] && (model.firstLaunchTexts.count != 0 || model.firstLaunchError == nil) && (model.firstLaunchImages.count != 0 || model.firstLaunchImageError == nil)) {
-        [self performSelectorOnMainThread:@selector(updateViewData) withObject:nil waitUntilDone:YES];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self performSelector:@selector(updateViewData) withObject:nil afterDelay:1.0];
+        });
         
         if (loadingIndicatorView) {
             [loadingIndicatorView fadeOutWithCompletion:^(BOOL completed) {
