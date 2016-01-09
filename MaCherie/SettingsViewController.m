@@ -7,11 +7,11 @@
 //
 
 #import "SettingsViewController.h"
+#import "RootViewController.h"
 #import "UserDefaults.h"
 #import "UIColor+Extension.h"
 #import "UIFont+ArialAndHelveticaNeue.h"
 #import "DefaultButton.h"
-#import "TimePicker.h"
 #import "GoogleAnalyticsCommunication.h"
 #import "CustomAnalytics.h"
 #import "RootViewModel.h"
@@ -45,7 +45,6 @@ const float heightOffset = 20.0;
     
     UIActivityIndicatorView *activityIndicator;
     UIView *activityIndicatorView;
-    TimePicker *timePicker;
     
     UILabel *maleLabel, *femaleLabel, *genderLabel, *ageLabel, *title, *languageLabel, *notificationLabel;
 }
@@ -291,12 +290,9 @@ const float heightOffset = 20.0;
 {
     //activityIndicatorView.hidden = NO;
     
-    if (timePicker.hasChanged) {
-        NSString *hour = [timePicker currentStringInComponent:0];
-        NSString *minute = [timePicker currentStringInComponent:2];
-        NSString *time = [NSString stringWithFormat:@"%@:%@", hour, minute];
-        [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_LABEL_USER_NOTIFICATION_TIME withLabel:time wtihValue:nil];
-        [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTiON_PICKER_SELECTION actionLocation:GA_SCREEN_SETTINGS targetType:@"Command" targetId:@"UserNotification" targetParameter:time];
+    if ([self.presentingViewController isKindOfClass:[RootViewController class]]) {
+        RootViewController *vc = (RootViewController*)self.presentingViewController;
+        [vc showViewDataWhenAppBecomesActive];
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];

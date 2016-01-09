@@ -21,6 +21,7 @@
 
 -(id)initWithFrame:(CGRect)frame andImages:(NSArray*)imageArray;
 
+-(NSInteger)numberOfPages;
 -(UIImage*)selectedImage;
 -(NSString*)selectedImageId;
 -(NSString*)selectedImagePath;

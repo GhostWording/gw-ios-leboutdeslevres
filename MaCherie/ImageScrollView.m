@@ -253,6 +253,10 @@
     imageScrollView.contentSize = CGSizeMake(numPages * CGRectGetWidth(self.frame), CGRectGetHeight(imageScrollView.frame));
 }
 
+-(NSInteger)numberOfPages {
+    return _viewModel.numberOfImages;
+}
+
 -(UIImage*)selectedImage {
     if (currentPage < _viewModel.numberOfImages) {
         return [_viewModel imageAtIndex:currentPage];

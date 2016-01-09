@@ -19,7 +19,12 @@
 
 -(id)initWithTextArray:(NSArray *)theTexts {
     if (self = [super init]) {
-        texts = [[NSMutableArray alloc] initWithArray:theTexts];
+        if (theTexts != nil) {
+            texts = [[NSMutableArray alloc] initWithArray:theTexts];
+        }
+        else {
+            theTexts = [NSMutableArray array];
+        }
     }
     return self;
 }

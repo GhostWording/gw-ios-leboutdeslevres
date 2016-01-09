@@ -136,10 +136,8 @@
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
     }
     
-    /*
-    NotificationManager *notifMan = [[NotificationManager alloc] init];
-    [notifMan scheduleNotification:[UserDefaults notificationHour] andMinute:[UserDefaults notificationMinutes]];
-    */
+    [UserDefaults setLastActiveDate:[NSDate date]];
+    
     
     NSLog(@"scheduled notification: %lu", (unsigned long)[[UIApplication sharedApplication] scheduledLocalNotifications].count);
     
@@ -150,6 +148,12 @@
     
     // MARK: here we set the welcome texts to no, if we want to change these conditions we will have to remove this or edit
     [UserDefaults setWelcomeTextsShow:YES];
+    [UserDefaults setWelcomeImagesShown:YES];
+    
+    UIViewController *rootVC = self.window.rootViewController.presentedViewController;
+    if ([rootVC isKindOfClass:[RootViewController class]]) {
+        [(RootViewController*)rootVC showViewDataWhenAppBecomesActive];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -189,15 +193,6 @@
     // Call the 'activateApp' method to log an app event for use
     // in analytics and advertising reporting.
     [FBSDKAppEvents activateApp];
-    
-    // bool variable to make sure the view will appear method won't be called when we launch the app
-    // but we need it when it becomes active
-    NSLog(@"did become active");
-    // only refresh after 5 minutes
-    if (!didFinishLaunching && [[UserDefaults lastActiveDate] timeIntervalSinceNow] == (-1) * (60) * 5) {
-        NSLog(@"did finish launching");
-        [self.window.rootViewController viewWillAppear:YES];
-    }
     
     didFinishLaunching = NO;
     

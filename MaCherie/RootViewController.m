@@ -105,8 +105,6 @@ const int numberOfTextsToLoad = 10;
     
     imagePicker.delegate = self;
     
-    NSArray *randomText = [model randomtTextWithNum:numberOfTextsToLoad ignoringTexts:nil];
-    
     theImagePagedView = [[ImageScrollView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)*0.5 + 20) andImages:nil];
     theImagePagedView.imageScrollViewDataSource = self;
     theImagePagedView.imageScrollViewDelegate = self;
@@ -125,7 +123,7 @@ const int numberOfTextsToLoad = 10;
     [button addTarget:self action:@selector(settingsSegue:) forControlEvents:UIControlEventTouchUpInside];
     [settingsView addSubview:button];
     
-    theTextPagedView = [[TextScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(theImagePagedView.frame), CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)*0.5 - bottomHeight - 20) andTexts:randomText];
+    theTextPagedView = [[TextScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(theImagePagedView.frame), CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)*0.5 - bottomHeight - 20) andTexts:nil];
     theTextPagedView.shareDelegate = self;
     theTextPagedView.textScrollViewDataSource = self;
     [self.view addSubview:theTextPagedView];
@@ -201,7 +199,7 @@ const int numberOfTextsToLoad = 10;
     
     specialOccasionButton = [UIButton buttonWithType:UIButtonTypeCustom];
     specialOccasionButton.frame = CGRectMake(10, CGRectGetMinY(normalSendButton.frame) + 3, 60, 40);
-    [specialOccasionButton setImage:[UIImage imageNamed:@"fire.png"] forState:UIControlStateNormal];
+    [specialOccasionButton setImage:[UIImage imageNamed:@"listIcon.png"] forState:UIControlStateNormal];
     [specialOccasionButton setImage:[UIImage imageNamed:@"arrowBackButtonRed.png"] forState:UIControlStateSelected];
     [specialOccasionButton addTarget:self action:@selector(createSpecialOccasionView) forControlEvents:UIControlEventTouchUpInside];
     specialOccasionButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -258,7 +256,7 @@ const int numberOfTextsToLoad = 10;
         if (![self setGenderBasedOnFacebookData]) {
             
             [self createFirstLaunView];
-            
+         
         }
         else {
             [self dismissFirstLaunchView];
@@ -283,10 +281,6 @@ const int numberOfTextsToLoad = 10;
     }
     
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showViewDataWhenAppBecomesActive)
-     
-                                                 name:UIApplicationWillEnterForegroundNotification object:nil];
-    
     
     // MARK: Pop up windows
     if ([[UserDefaults timeSpentInApp] intValue] >= 90) {
@@ -302,6 +296,11 @@ const int numberOfTextsToLoad = 10;
     else {
         [self performSelector:@selector(showPulseForSettingsIfAppropriate) withObject:nil afterDelay:0.1];
     }
+    
+    if ([[UserDefaults firstLaunchOfApp] boolValue] == NO) {
+        [self updateViewData];
+    }
+    
 }
 
 -(void)showNotificationAlert {
@@ -403,20 +402,22 @@ const int numberOfTextsToLoad = 10;
         editButton.alpha = 1.0f;
     }];
     
-    [self showViewDataWhenAppBecomesActive];
-    
+    [[GoogleAnalyticsCommunication sharedInstance] setScreenName:GA_SCREEN_MAIN];
+    [[CustomAnalytics sharedInstance] postActionWithType:@"init" actionLocation:GA_SCREEN_MAIN targetType:@"init" targetId:@"init" targetParameter:@""];
 }
 
 -(void)showViewDataWhenAppBecomesActive {
-    
-    [[GoogleAnalyticsCommunication sharedInstance] setScreenName:GA_SCREEN_MAIN];
-    [[CustomAnalytics sharedInstance] postActionWithType:@"init" actionLocation:GA_SCREEN_MAIN targetType:@"init" targetId:@"init" targetParameter:@""];
 
-    if (model.isUserPhotosSelected == NO && [[UserDefaults firstLaunchOfApp] boolValue] == NO) {
-        [self updateViewData];
+    float idleTime = [[UserDefaults lastActiveDate] timeIntervalSinceNow];
+    if (idleTime <= (-1) * 5 * 60) {
+        if (model.isUserPhotosSelected == NO && [[UserDefaults firstLaunchOfApp] boolValue] == NO) {
+            [self updateViewData];
+        }
+        
+        [self showPulseIfAppropriate];
     }
     
-    [self showPulseIfAppropriate];
+    
 }
 
 -(void)showPulseForSettingsIfAppropriate {
@@ -1792,7 +1793,6 @@ const int numberOfTextsToLoad = 10;
     
     NSLog(@"dismiss controller");
     
-    [self updateViewData];
     [self updateViewLanguage];
     
     return slideAnimator;

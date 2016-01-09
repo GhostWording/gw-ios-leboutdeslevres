@@ -142,6 +142,8 @@
 		88CC383B1AF6C52300DCECD8 /* UIFont+ArialAndHelveticaNeue.m in Sources */ = {isa = PBXBuildFile; fileRef = 88CC383A1AF6C52300DCECD8 /* UIFont+ArialAndHelveticaNeue.m */; };
 		88CC383E1AF6DA0400DCECD8 /* UIViewController+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 88CC383D1AF6DA0400DCECD8 /* UIViewController+Extension.m */; };
 		88D298EA1C1DD092001E3BC0 /* IntentionModeViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88D298E91C1DD092001E3BC0 /* IntentionModeViewModel.m */; };
+		88DF2E741C3F298A0090E8D3 /* listIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88DF2E721C3F298A0090E8D3 /* listIcon@2x.png */; };
+		88DF2E751C3F298A0090E8D3 /* listIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88DF2E731C3F298A0090E8D3 /* listIcon@3x.png */; };
 		88E3466E1BFD524F0019DFAA /* MoodModeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88E3466D1BFD524F0019DFAA /* MoodModeViewController.m */; };
 		88E346711BFD52960019DFAA /* MoodModeViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88E346701BFD52960019DFAA /* MoodModeViewModel.m */; };
 		88E4142A1B17B03800487698 /* messengerIconAlpha@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88E414281B17B03800487698 /* messengerIconAlpha@2x.png */; };
@@ -389,6 +391,8 @@
 		88CC383D1AF6DA0400DCECD8 /* UIViewController+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Extension.m"; sourceTree = "<group>"; };
 		88D298E81C1DD092001E3BC0 /* IntentionModeViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntentionModeViewModel.h; sourceTree = "<group>"; };
 		88D298E91C1DD092001E3BC0 /* IntentionModeViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntentionModeViewModel.m; sourceTree = "<group>"; };
+		88DF2E721C3F298A0090E8D3 /* listIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "listIcon@2x.png"; sourceTree = "<group>"; };
+		88DF2E731C3F298A0090E8D3 /* listIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "listIcon@3x.png"; sourceTree = "<group>"; };
 		88E3466C1BFD524F0019DFAA /* MoodModeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodModeViewController.h; sourceTree = "<group>"; };
 		88E3466D1BFD524F0019DFAA /* MoodModeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodModeViewController.m; sourceTree = "<group>"; };
 		88E3466F1BFD52960019DFAA /* MoodModeViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodModeViewModel.h; sourceTree = "<group>"; };
@@ -919,6 +923,8 @@
 			children = (
 				88821F5B1C1BAD9A00B99DD2 /* tut3.png */,
 				88821F571C1BAD1F00B99DD2 /* tut2-1.png */,
+				88DF2E721C3F298A0090E8D3 /* listIcon@2x.png */,
+				88DF2E731C3F298A0090E8D3 /* listIcon@3x.png */,
 				883C7A641C0E7136002B0E09 /* randomImage@2x.png */,
 				883C7A651C0E7136002B0E09 /* randomImage@3x.png */,
 				8844D4FD1BACDD7400EA8DB8 /* createNewTextIcon@2x.png */,
@@ -1188,6 +1194,7 @@
 				882F5B991AF8436000B8A26E /* femaleGender@3x.png in Resources */,
 				882F5B9B1AF8436000B8A26E /* femaleGenderSelected@3x.png in Resources */,
 				88821F5C1C1BAD9A00B99DD2 /* tut3.png in Resources */,
+				88DF2E751C3F298A0090E8D3 /* listIcon@3x.png in Resources */,
 				88468BAA1BACB0D900A6C0FD /* mailButton@2x.png in Resources */,
 				8826323F1B38DA2100A26F9F /* appDisplayIcon@3x.png in Resources */,
 				880686CE1B24BC4C0062D183 /* photoIcon@3x.png in Resources */,
@@ -1211,6 +1218,7 @@
 				8874093E1B33AC5C002A9C7F /* flashIcon@2x.png in Resources */,
 				88CC38341AF6BAD400DCECD8 /* settings@3x.png in Resources */,
 				886201FD1B573086003CAC97 /* fire@3x.png in Resources */,
+				88DF2E741C3F298A0090E8D3 /* listIcon@2x.png in Resources */,
 				88CC38371AF6C28300DCECD8 /* cancel@2x.png in Resources */,
 				882F5B9D1AF8436000B8A26E /* maleGender@3x.png in Resources */,
 				8874093A1B33ABE0002A9C7F /* arrowBackButtonRed@2x.png in Resources */,

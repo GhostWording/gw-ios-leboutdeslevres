@@ -12,5 +12,7 @@
 
 @interface RootViewController : UIViewController 
 
+-(void)showViewDataWhenAppBecomesActive;
+
 @end
 
