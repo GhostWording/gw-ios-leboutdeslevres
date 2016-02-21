@@ -142,66 +142,6 @@
 }
 
 -(void)addLastPageAtIndex:(int)index {
-    
-    /*
-    UIButton *refresh = [UIButton buttonWithType:UIButtonTypeCustom];
-    refresh.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetHeight(self.frame) * 0.2 + CGRectGetWidth(self.frame) * index, CGRectGetHeight(self.frame) * 0.15, CGRectGetHeight(self.frame) * 0.4, CGRectGetHeight(self.frame) * 0.4);
-    [refresh setBackgroundImage:[UIImage imageNamed:@"refreshIcon.png"] forState:UIControlStateNormal];
-    [refresh addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    [scrollViewContents addObject:refresh];
-    [textScrollView addSubview:refresh];
-    
-    UILabel *refreshLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) * 0.1 + CGRectGetWidth(self.frame) * index, CGRectGetMaxY(refresh.frame) + CGRectGetHeight(self.frame) * 0.01, CGRectGetWidth(self.frame) * 0.8, 24)];
-    refreshLabel.textColor = [UIColor appBlueColor];
-    refreshLabel.textAlignment = NSTextAlignmentCenter;
-    refreshLabel.font = [UIFont helveticaNeueBoldWithSize:16];
-    refreshLabel.text = LBDLocalizedString(@"<LBDLNewTexts>", nil);
-    [scrollViewContents addObject:refreshLabel];
-    [textScrollView addSubview:refreshLabel];
-    
-    
-    // creating the camera image view
-    UIView *cameraViewButton = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) * index, CGRectGetMaxY(refreshLabel.frame), CGRectGetWidth(self.frame) / 2.0, CGRectGetHeight(self.frame) - CGRectGetMaxY(refreshLabel.frame))];
-    [scrollViewContents addObject:cameraViewButton];
-    [textScrollView addSubview:cameraViewButton];
-    
-    UITapGestureRecognizer *cameraTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoOnlyViewTapped)];
-    [cameraViewButton addGestureRecognizer:cameraTap];
-    
-    UIImageView *cameraImageView = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(cameraViewButton.frame) * 0.04, CGRectGetHeight(cameraViewButton.frame)/2.0 - 15, 30, 30)];
-    cameraImageView.image = [UIImage imageNamed:@"photoIcon.png"];
-    cameraImageView.contentMode = UIViewContentModeScaleAspectFit;
-    [cameraViewButton addSubview:cameraImageView];
-    
-    UILabel *onlyImageLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(cameraImageView.frame) + 5, 0, CGRectGetWidth(cameraViewButton.frame) - CGRectGetMaxX(cameraImageView.frame) - 5 - 5, CGRectGetHeight(cameraViewButton.frame))];
-    onlyImageLabel.text = LBDLocalizedString(@"<LBDLSendPhoto>", nil);
-    onlyImageLabel.textColor = [UIColor appBlueColor];
-    onlyImageLabel.textAlignment = NSTextAlignmentLeft;
-    onlyImageLabel.numberOfLines = 0;
-    onlyImageLabel.font = [UIFont noteworthyBoldWithSize:14.0];
-    [cameraViewButton addSubview:onlyImageLabel];
-    
-    // creating the compose text view
-    UIView *composeTextView = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) * index + CGRectGetWidth(cameraViewButton.frame), CGRectGetMaxY(refreshLabel.frame), CGRectGetWidth(self.frame) / 2.0, CGRectGetHeight(self.frame) - CGRectGetMaxY(refreshLabel.frame))];
-    [scrollViewContents addObject:composeTextView];
-    [textScrollView addSubview:composeTextView];
-    
-    UITapGestureRecognizer *textTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(editTextViewTapped)];
-    [composeTextView addGestureRecognizer:textTap];
-    
-    UIImageView *composeTextIcon = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(composeTextView.frame) - CGRectGetWidth(composeTextView.frame) * 0.04 - 30, CGRectGetHeight(composeTextView.frame) / 2.0 - 15, 30, 30)];
-    composeTextIcon.image = [UIImage imageNamed:@"editButton.png"];
-    composeTextIcon.contentMode = UIViewContentModeScaleAspectFit;
-    [composeTextView addSubview:composeTextIcon];
-    
-    UILabel *editTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, CGRectGetMinX(composeTextIcon.frame) - 10, CGRectGetHeight(composeTextView.frame))];
-    editTextLabel.text = LBDLocalizedString(@"<LBDLWriteNewText>", nil);
-    editTextLabel.textColor = [UIColor appBlueColor];
-    editTextLabel.textAlignment = NSTextAlignmentRight;
-    editTextLabel.numberOfLines = 0;
-    editTextLabel.font = [UIFont noteworthyBoldWithSize:14.0];
-    [composeTextView addSubview:editTextLabel];
-    */
      
     _numPages++;
     
@@ -297,7 +237,7 @@
 }
 
 -(void)shakeAnimateScrollView {
-    NSLog(@"shake animating");
+
     shakeRepeatCount++;
     [CATransaction begin];
     CAKeyframeAnimation *bounceAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position.x"];
@@ -309,11 +249,10 @@
     [CATransaction setCompletionBlock:^{
         NSLog(@"completion block");
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (shakeRepeatCount < 5) {
+            if (shakeRepeatCount < 2) {
                 [self performSelector:@selector(shakeAnimateScrollView) withObject:nil afterDelay:1];
             }
             else {
-                NSLog(@"finished shake repeating");
                 [self showScrollMessage];
             }
         });
@@ -323,7 +262,7 @@
 }
 
 -(void)showScrollMessage {
-    NSLog(@"showing scrollView");
+    
     swipeViewForScroll = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame))];
     swipeViewForScroll.backgroundColor = [UIColor clearColor];
     swipeViewForScroll.userInteractionEnabled = NO;

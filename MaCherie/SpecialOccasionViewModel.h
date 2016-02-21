@@ -27,6 +27,6 @@
 -(RecipientObject*)sweetheartBasedOnUserDefaults;
 
 -(void)fetchIntentionsForArea:(NSString*)theArea withCulture:(NSString*)theCulture withCompletion:(void (^)(NSArray *theIntentions, NSError *error))block;
-
+-(void)reloadIntentionsWithArea:(NSString *)theArea withCulture:(NSString *)theCulture;
 
 @end

@@ -12,6 +12,7 @@
 #import "UserDefaults.h"
 #import "Image.h"
 #import "GWDataManager.h"
+#import "GWIntention.h"
 
 @interface SpecialOccasionViewModel () {
     NSArray *intentions;
@@ -41,6 +42,7 @@
         intentions = [dataMan fetchIntentionsWithArea:theArea withCulture:theCulture];
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"sortOrderInArea" ascending:YES];
         intentions = [intentions sortedArrayUsingDescriptors:@[sortDescriptor]];
+        intentions = [self removeDuplicateIntentions:intentions];
         sessionDataTask = nil;
     }
     
@@ -109,6 +111,37 @@
         }];
         
     }
+    
+}
+
+-(void)reloadIntentionsWithArea:(NSString *)theArea withCulture:(NSString *)theCulture {
+    intentions = [dataMan fetchIntentionsWithArea:theArea withCulture:theCulture];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"sortOrderInArea" ascending:YES];
+    intentions = [intentions sortedArrayUsingDescriptors:@[sortDescriptor]];
+    intentions = [self removeDuplicateIntentions:intentions];
+}
+
+-(NSArray*)removeDuplicateIntentions:(NSArray*)theIntentions {
+    NSMutableArray *uniqueIntentions = [NSMutableArray array];
+    
+    for (GWIntention *theIntention in theIntentions) {
+        
+        BOOL hasFoundIntention = NO;
+        for (int i = 0; i < uniqueIntentions.count; i++) {
+            GWIntention *compIntention = [uniqueIntentions objectAtIndex:i];
+            if ([compIntention.intentionId isEqualToString:theIntention.intentionId]) {
+                hasFoundIntention = YES;
+                break;
+            }
+        }
+        
+        if (hasFoundIntention == NO) {
+            [uniqueIntentions addObject:theIntention];
+        }
+        
+    }
+    
+    return uniqueIntentions;
     
 }
 

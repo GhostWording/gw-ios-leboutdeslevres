@@ -38,9 +38,8 @@
 -(id)initWithFrame:(CGRect)frame andImages:(NSArray *)imageArray {
     
     if (self = [super initWithFrame:frame]) {
-        NSLog(@"before model");
+
         _viewModel = [[ImageScrollViewModel alloc] initWithArray:imageArray];
-        NSLog(@"after model");
         
         self.backgroundColor = [UIColor whiteColor];
         
@@ -96,6 +95,7 @@
 }
 
 -(void)shakeAnimateScrollView {
+    
     shakeRepeatCount++;
     
     [CATransaction begin];
@@ -106,13 +106,12 @@
     bounceAnimation.additive = YES;
     bounceAnimation.repeatCount = 2;
     [CATransaction setCompletionBlock:^{
-        NSLog(@"completion block");
+
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (shakeRepeatCount < 5) {
+            if (shakeRepeatCount < 2) {
                 [self performSelector:@selector(shakeAnimateScrollView) withObject:nil afterDelay:1];
             }
             else {
-                NSLog(@"finished shake repeating");
                 [self showScrollMessage];
             }
         });
@@ -124,7 +123,7 @@
 }
 
 -(void)showScrollMessage {
-    NSLog(@"showing scrollView");
+
     swipeViewForScroll = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame))];
     swipeViewForScroll.backgroundColor = [UIColor clearColor];
     swipeViewForScroll.userInteractionEnabled = NO;
@@ -189,22 +188,6 @@
 
 -(void)addLastPageAtIndex:(int)index {
     
-    /*
-    UIButton *refresh = [UIButton buttonWithType:UIButtonTypeCustom];
-    //refresh.frame = CGRectMake(CGRectGetMidX(self.frame) - CGRectGetWidth(self.frame)*0.2 + CGRectGetWidth(self.frame) * index, CGRectGetHeight(self.frame) * 0.15, CGRectGetWidth(self.frame) * 0.4, CGRectGetWidth(self.frame) * 0.4);
-    refresh.frame = CGRectMake(CGRectGetWidth(self.frame) * index + CGRectGetMidX(self.frame) - CGRectGetHeight(self.frame) * 0.17, CGRectGetHeight(self.frame)*0.1, CGRectGetHeight(self.frame) * 0.34, CGRectGetHeight(self.frame) * 0.34);
-    [refresh setBackgroundImage:[UIImage imageNamed:@"refreshIcon.png"] forState:UIControlStateNormal];
-    [refresh addTarget:self action:@selector(refreshButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    //[imageScrollView addSubview:refresh];
-    
-    
-    UILabel *refreshLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) * 0.1 + CGRectGetWidth(self.frame)*index, CGRectGetMaxY(refresh.frame), CGRectGetWidth(self.frame) * 0.8, CGRectGetHeight(self.frame) * 0.09)];
-    refreshLabel.textColor = [UIColor appBlueColor];
-    refreshLabel.textAlignment = NSTextAlignmentCenter;
-    refreshLabel.font = [UIFont helveticaNeueBoldWithSize:17.0];
-    refreshLabel.text = LBDLocalizedString(@"<LBDLNewImages>", nil);
-    //[imageScrollView addSubview:refreshLabel];
-    */
     __weak typeof (self) wSelf = self;
     
     if ([[UserDefaults numberOfImageRefreshesByUser] intValue] > 1) {

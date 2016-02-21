@@ -485,6 +485,11 @@
     NSMutableArray *specialOccasionImagesToReturn = [NSMutableArray array];
     NSMutableArray *specialOccasionImages = [[NSMutableArray alloc] initWithArray:specialOccasionImageArray];
     
+    if (specialOccasionImageArray.count == 0) {
+        return [self randomImagesWithNum:10 ignoringImages:@[] numberOfImagesInDB:10];
+        
+    }
+    
     for (int i = 0; i < specialOccasionImageArray.count && i < _numSpecialOccasionImages; i++) {
         int randomPos = rand() % specialOccasionImages.count;
         GWImage *currentImage = [specialOccasionImages objectAtIndex:randomPos];

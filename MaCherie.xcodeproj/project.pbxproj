@@ -135,6 +135,10 @@
 		88B9A2071B78059F0057F734 /* ConstantsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B9A2061B78059F0057F734 /* ConstantsManager.m */; };
 		88B9E8CB1AFFE30800B1213A /* ImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B9E8CA1AFFE30800B1213A /* ImageScrollView.m */; };
 		88B9E8CE1AFFE41F00B1213A /* ImageScrollViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B9E8CD1AFFE41F00B1213A /* ImageScrollViewModel.m */; };
+		88C4CE3A1C533236008E282E /* shareIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C4CE381C533236008E282E /* shareIcon@2x.png */; };
+		88C4CE3B1C533236008E282E /* shareIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C4CE391C533236008E282E /* shareIcon@3x.png */; };
+		88C4CE401C5336AA008E282E /* cancelWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C4CE3E1C5336AA008E282E /* cancelWhite@2x.png */; };
+		88C4CE411C5336AA008E282E /* cancelWhite@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88C4CE3F1C5336AA008E282E /* cancelWhite@3x.png */; };
 		88CC38331AF6BAD400DCECD8 /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88CC38311AF6BAD400DCECD8 /* settings@2x.png */; };
 		88CC38341AF6BAD400DCECD8 /* settings@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88CC38321AF6BAD400DCECD8 /* settings@3x.png */; };
 		88CC38371AF6C28300DCECD8 /* cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88CC38351AF6C28300DCECD8 /* cancel@2x.png */; };
@@ -152,6 +156,9 @@
 		88E4142F1B17C90000487698 /* refreshIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88E4142D1B17C90000487698 /* refreshIcon@3x.png */; };
 		88E414321B17D0BC00487698 /* BoxedActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 88E414311B17D0BC00487698 /* BoxedActivityIndicatorView.m */; };
 		88E414351B19E2C800487698 /* NavigationSlideAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 88E414341B19E2C800487698 /* NavigationSlideAnimator.m */; };
+		88F355651C512609003983C0 /* IntentionModeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88F355641C512609003983C0 /* IntentionModeViewController.m */; };
+		88F3556A1C512678003983C0 /* listIcon4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88F355681C512678003983C0 /* listIcon4@2x.png */; };
+		88F3556B1C512678003983C0 /* listIcon4@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88F355691C512678003983C0 /* listIcon4@3x.png */; };
 		E62095942441ED026A4579D9 /* libPods-MaCherie.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B3A0A52E500A933978EF3791 /* libPods-MaCherie.a */; };
 /* End PBXBuildFile section */
 
@@ -381,6 +388,10 @@
 		88B9E8CA1AFFE30800B1213A /* ImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageScrollView.m; sourceTree = "<group>"; };
 		88B9E8CC1AFFE41F00B1213A /* ImageScrollViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageScrollViewModel.h; sourceTree = "<group>"; };
 		88B9E8CD1AFFE41F00B1213A /* ImageScrollViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageScrollViewModel.m; sourceTree = "<group>"; };
+		88C4CE381C533236008E282E /* shareIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shareIcon@2x.png"; sourceTree = "<group>"; };
+		88C4CE391C533236008E282E /* shareIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shareIcon@3x.png"; sourceTree = "<group>"; };
+		88C4CE3E1C5336AA008E282E /* cancelWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cancelWhite@2x.png"; sourceTree = "<group>"; };
+		88C4CE3F1C5336AA008E282E /* cancelWhite@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cancelWhite@3x.png"; sourceTree = "<group>"; };
 		88CC38311AF6BAD400DCECD8 /* settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings@2x.png"; sourceTree = "<group>"; };
 		88CC38321AF6BAD400DCECD8 /* settings@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings@3x.png"; sourceTree = "<group>"; };
 		88CC38351AF6C28300DCECD8 /* cancel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cancel@2x.png"; sourceTree = "<group>"; };
@@ -406,6 +417,10 @@
 		88E414311B17D0BC00487698 /* BoxedActivityIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoxedActivityIndicatorView.m; sourceTree = "<group>"; };
 		88E414331B19E2C800487698 /* NavigationSlideAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationSlideAnimator.h; sourceTree = "<group>"; };
 		88E414341B19E2C800487698 /* NavigationSlideAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationSlideAnimator.m; sourceTree = "<group>"; };
+		88F355631C512609003983C0 /* IntentionModeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntentionModeViewController.h; sourceTree = "<group>"; };
+		88F355641C512609003983C0 /* IntentionModeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntentionModeViewController.m; sourceTree = "<group>"; };
+		88F355681C512678003983C0 /* listIcon4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "listIcon4@2x.png"; sourceTree = "<group>"; };
+		88F355691C512678003983C0 /* listIcon4@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "listIcon4@3x.png"; sourceTree = "<group>"; };
 		B3A0A52E500A933978EF3791 /* libPods-MaCherie.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MaCherie.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2C2CE2A48D3EF459569EB67 /* Pods-MaCherie.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MaCherie.release.xcconfig"; path = "Pods/Target Support Files/Pods-MaCherie/Pods-MaCherie.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -712,6 +727,8 @@
 		8848BFE51B263119005B3EF2 /* Special Occasion View */ = {
 			isa = PBXGroup;
 			children = (
+				88F355631C512609003983C0 /* IntentionModeViewController.h */,
+				88F355641C512609003983C0 /* IntentionModeViewController.m */,
 				8848BFE91B29E9D1005B3EF2 /* SpecialOccasionViewModel.h */,
 				8848BFEA1B29E9D1005B3EF2 /* SpecialOccasionViewModel.m */,
 				8848BFE61B26316D005B3EF2 /* SpecialOccasionView.h */,
@@ -921,8 +938,12 @@
 		888EB4ED1AF6A13300C99587 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				88F355681C512678003983C0 /* listIcon4@2x.png */,
+				88F355691C512678003983C0 /* listIcon4@3x.png */,
 				88821F5B1C1BAD9A00B99DD2 /* tut3.png */,
 				88821F571C1BAD1F00B99DD2 /* tut2-1.png */,
+				88C4CE381C533236008E282E /* shareIcon@2x.png */,
+				88C4CE391C533236008E282E /* shareIcon@3x.png */,
 				88DF2E721C3F298A0090E8D3 /* listIcon@2x.png */,
 				88DF2E731C3F298A0090E8D3 /* listIcon@3x.png */,
 				883C7A641C0E7136002B0E09 /* randomImage@2x.png */,
@@ -972,6 +993,8 @@
 				882F5B971AF8436000B8A26E /* maleGenderSelected@3x.png */,
 				88CC38351AF6C28300DCECD8 /* cancel@2x.png */,
 				88CC38361AF6C28300DCECD8 /* cancel@3x.png */,
+				88C4CE3E1C5336AA008E282E /* cancelWhite@2x.png */,
+				88C4CE3F1C5336AA008E282E /* cancelWhite@3x.png */,
 				88CC38311AF6BAD400DCECD8 /* settings@2x.png */,
 				88CC38321AF6BAD400DCECD8 /* settings@3x.png */,
 			);
@@ -1185,6 +1208,7 @@
 				8844D4F91BACDD6C00EA8DB8 /* editTextIcon@2x.png in Resources */,
 				880686D21B2505D10062D183 /* leftArrow@3x.png in Resources */,
 				883C7A661C0E7136002B0E09 /* randomImage@2x.png in Resources */,
+				88C4CE411C5336AA008E282E /* cancelWhite@3x.png in Resources */,
 				880686C91B24895C0062D183 /* cameraIcon@2x.png in Resources */,
 				882F5B9F1AF8436000B8A26E /* maleGenderSelected@3x.png in Resources */,
 				888F82A11BA8CB5000A92E5F /* LBDLocalizedStrings.strings in Resources */,
@@ -1198,14 +1222,18 @@
 				88468BAA1BACB0D900A6C0FD /* mailButton@2x.png in Resources */,
 				8826323F1B38DA2100A26F9F /* appDisplayIcon@3x.png in Resources */,
 				880686CE1B24BC4C0062D183 /* photoIcon@3x.png in Resources */,
+				88F3556A1C512678003983C0 /* listIcon4@2x.png in Resources */,
 				888EB4CB1AF6676300C99587 /* Main.storyboard in Resources */,
 				88468BAB1BACB0D900A6C0FD /* mailButton@3x.png in Resources */,
 				88821F581C1BAD1F00B99DD2 /* tut2-1.png in Resources */,
 				8844D4FF1BACDD7400EA8DB8 /* createNewTextIcon@2x.png in Resources */,
 				88A767FA1B0975DD00D3B7CE /* editButton@2x.png in Resources */,
+				88C4CE3A1C533236008E282E /* shareIcon@2x.png in Resources */,
+				88C4CE401C5336AA008E282E /* cancelWhite@2x.png in Resources */,
 				880686C11B1FE51F0062D183 /* settingsBlue@2x.png in Resources */,
 				880686CD1B24BC4C0062D183 /* photoIcon@2x.png in Resources */,
 				882F5B9A1AF8436000B8A26E /* femaleGenderSelected@2x.png in Resources */,
+				88C4CE3B1C533236008E282E /* shareIcon@3x.png in Resources */,
 				882F5B9C1AF8436000B8A26E /* maleGender@2x.png in Resources */,
 				8814A3651BC0C949008B14B9 /* MaCherie.entitlements in Resources */,
 				88CC38331AF6BAD400DCECD8 /* settings@2x.png in Resources */,
@@ -1220,6 +1248,7 @@
 				886201FD1B573086003CAC97 /* fire@3x.png in Resources */,
 				88DF2E741C3F298A0090E8D3 /* listIcon@2x.png in Resources */,
 				88CC38371AF6C28300DCECD8 /* cancel@2x.png in Resources */,
+				88F3556B1C512678003983C0 /* listIcon4@3x.png in Resources */,
 				882F5B9D1AF8436000B8A26E /* maleGender@3x.png in Resources */,
 				8874093A1B33ABE0002A9C7F /* arrowBackButtonRed@2x.png in Resources */,
 				8826323E1B38DA2100A26F9F /* appDisplayIcon@2x.png in Resources */,
@@ -1313,6 +1342,7 @@
 				888C18901B077A9E00FD8C91 /* TextObject.m in Sources */,
 				882F5BA21AF9438F00B8A26E /* TimePicker.m in Sources */,
 				8822FA101B7A9E75007D0140 /* GWImage.m in Sources */,
+				88F355651C512609003983C0 /* IntentionModeViewController.m in Sources */,
 				885047CF1AF9803D00B7293A /* UIView+RenderViewToImage.m in Sources */,
 				8848BFEB1B29E9D1005B3EF2 /* SpecialOccasionViewModel.m in Sources */,
 				88119FC71BFD423D00839829 /* NewFeatureView.m in Sources */,

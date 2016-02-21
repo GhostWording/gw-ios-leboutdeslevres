@@ -111,4 +111,8 @@
     return [UIColor colorWithRed:0.05 green:0.05 blue:0.05 alpha:0.9];
 }
 
++(UIColor *)c_darkGrayTextColor {
+    return [UIColor colorWithHexString:@"302f2d"];
+}
+
 @end

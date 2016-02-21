@@ -36,6 +36,7 @@
 #import "BlocksAlertView.h"
 #import "NewFeatureView.h"
 #import "MoodModeViewController.h"
+#import "IntentionModeViewController.h"
 
 #import <MobileCoreServices/MobileCoreServices.h>
 
@@ -61,7 +62,6 @@ const int numberOfTextsToLoad = 10;
     UIView *settingsPulse;
     UIView *chooseSendMethodView;
     UIView *chooseEditMethodView;
-    UIView *settingsView;
     
     UIButton *dismissEditViewButton;
     UIButton *dismissKeyboardButton;
@@ -75,6 +75,7 @@ const int numberOfTextsToLoad = 10;
     UIButton *specialOccasionButton;
     UIButton *buttonUsedToSend;
     UIButton *addPhotoCameraButton, *addPhotoRollButton;
+    UIButton *_settingsButton;
     FBSDKSharePhotoContent *photoContent;
     
     UIAlertView *alert;
@@ -84,6 +85,7 @@ const int numberOfTextsToLoad = 10;
     BOOL isShowingRatingView;
     
     float timeSinceLastAlert;
+    int _numRefreshesPressed;
 }
 
 @end
@@ -110,18 +112,6 @@ const int numberOfTextsToLoad = 10;
     theImagePagedView.imageScrollViewDelegate = self;
     [self.view addSubview:theImagePagedView];
     
-    settingsView = [[UIView alloc] initWithFrame:CGRectMake(10, 25, CGRectGetWidth(self.view.frame)*0.13, CGRectGetWidth(self.view.frame)*0.13)];
-    settingsView.backgroundColor = [UIColor clearColor];
-    settingsView.alpha = 0.8;
-    settingsView.layer.cornerRadius = 4.0f;
-    [self.view addSubview:settingsView];
-    
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = CGRectMake(CGRectGetWidth(self.view.frame)*0.01, CGRectGetWidth(self.view.frame)*0.01, CGRectGetWidth(self.view.frame)*0.11, CGRectGetWidth(self.view.frame)*0.11);
-    button.tintColor = [UIColor appBlueColor];
-    [button setImage:[UIImage imageNamed:@"settings.png"] forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(settingsSegue:) forControlEvents:UIControlEventTouchUpInside];
-    [settingsView addSubview:button];
     
     theTextPagedView = [[TextScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(theImagePagedView.frame), CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)*0.5 - bottomHeight - 20) andTexts:nil];
     theTextPagedView.shareDelegate = self;
@@ -129,18 +119,25 @@ const int numberOfTextsToLoad = 10;
     [self.view addSubview:theTextPagedView];
     
     
+    _settingsButton = [[UIButton alloc] initWithFrame:CGRectMake(5, 20, 50, 50)];
+    _settingsButton.layer.backgroundColor = [UIColor clearColor].CGColor;
+    _settingsButton.layer.cornerRadius = 4.0;
+    _settingsButton.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
+    [_settingsButton setImage:[UIImage imageNamed:@"settings.png"] forState:UIControlStateNormal];
+    [_settingsButton addTarget:self action:@selector(settingsSegue:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_settingsButton];
+    
     addPhotoCameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    addPhotoCameraButton.frame = CGRectMake(CGRectGetWidth(theImagePagedView.frame) - 70, 20, 50, 50);
+    addPhotoCameraButton.frame = CGRectMake(CGRectGetWidth(theImagePagedView.frame) - 55, 20, 50, 50);
     addPhotoCameraButton.layer.backgroundColor = [UIColor clearColor].CGColor;
     addPhotoCameraButton.layer.cornerRadius = 4.0;
     addPhotoCameraButton.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
     [addPhotoCameraButton setImage:[UIImage imageNamed:@"cameraIcon.png"] forState:UIControlStateNormal];
     [addPhotoCameraButton addTarget:self action:@selector(cameraButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    //[addPhotoRollButton addTarget:self action:@sele forControlEvents:<#(UIControlEvents)#>]
-    [theImagePagedView addSubview:addPhotoCameraButton];
+    [self.view addSubview:addPhotoCameraButton];
     
     addPhotoRollButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    addPhotoRollButton.frame = CGRectMake(CGRectGetWidth(theImagePagedView.frame) - 70, CGRectGetMaxY(addPhotoCameraButton.frame) + 10, 50, 50);
+    addPhotoRollButton.frame = CGRectMake(CGRectGetWidth(theImagePagedView.frame) - 55, CGRectGetMaxY(addPhotoCameraButton.frame) + 10, 50, 50);
     addPhotoRollButton.layer.backgroundColor = [UIColor clearColor].CGColor;
     addPhotoRollButton.layer.cornerRadius = 4.0;
     addPhotoRollButton.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
@@ -185,21 +182,23 @@ const int numberOfTextsToLoad = 10;
     }
     
     shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    shareButton.layer.backgroundColor = [UIColor c_appFacebookBlueColor].CGColor;
-    shareButton.layer.cornerRadius = 4.0;
-    shareButton.frame = CGRectMake(CGRectGetWidth(self.view.frame) - 80 - 10, CGRectGetMinY(normalSendButton.frame), 80, 40);
-    shareButton.titleLabel.font = [UIFont helveticaNeueWithSize:17];
-    [shareButton setTitle:LBDLocalizedString(@"<LBDLFacebookShare>", nil) forState:UIControlStateNormal];
+    shareButton.frame = CGRectMake(CGRectGetWidth(self.view.frame) - 72, CGRectGetMidY(normalSendButton.frame) - 28, 80, 50);
+    [shareButton setImage:[UIImage imageNamed:@"shareIcon.png"] forState:UIControlStateNormal];
+    
+    shareButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    shareButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
+    shareButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
+    
     [shareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [shareButton setTitleColor:[UIColor appLightGrayColor] forState:UIControlStateSelected];
     [shareButton setTitleColor:[UIColor appLightGrayColor] forState:UIControlStateHighlighted];
-    [shareButton addTarget:self action:@selector(shareButton:) forControlEvents:UIControlEventTouchUpInside];
+    [shareButton addTarget:self action:@selector(shareExtensionPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:shareButton];
     
     
     specialOccasionButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    specialOccasionButton.frame = CGRectMake(10, CGRectGetMinY(normalSendButton.frame) + 3, 60, 40);
-    [specialOccasionButton setImage:[UIImage imageNamed:@"listIcon.png"] forState:UIControlStateNormal];
+    specialOccasionButton.frame = CGRectMake(5, CGRectGetMidY(normalSendButton.frame) - 25, 60, 50);
+    [specialOccasionButton setImage:[UIImage imageNamed:@"listIcon4.png"] forState:UIControlStateNormal];
     [specialOccasionButton setImage:[UIImage imageNamed:@"arrowBackButtonRed.png"] forState:UIControlStateSelected];
     [specialOccasionButton addTarget:self action:@selector(createSpecialOccasionView) forControlEvents:UIControlEventTouchUpInside];
     specialOccasionButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -263,17 +262,24 @@ const int numberOfTextsToLoad = 10;
         }
         
         __weak typeof (self) wSelf = self;
+        __block BOOL hasDownloadedTextOrImages = NO;
         [model downloadWelcomeTextsWithCompletion:^(NSArray *theTexts, NSError *theError) {
-            [wSelf isSufficientResourcesDownloaded];
+            if (hasDownloadedTextOrImages == YES) {
+                [wSelf isSufficientResourcesDownloaded];
+            }
+            hasDownloadedTextOrImages = YES;
         }];
         
         [model downloadWelcomeImagesWithCompletion:^(NSArray *theImages, NSError *theError) {
-            [wSelf isSufficientResourcesDownloaded];
+            if (hasDownloadedTextOrImages == YES) {
+                [wSelf isSufficientResourcesDownloaded];
+            }
+            hasDownloadedTextOrImages = YES;
         }];
         
         
         [theTextPagedView shakeAnimateScrollViewAftertime:7.0];
-        [theImagePagedView shakeAnimateScrollViewAfterTime:20.0];
+        [theImagePagedView shakeAnimateScrollViewAfterTime:7.0];
         
     }
     else {
@@ -446,7 +452,7 @@ const int numberOfTextsToLoad = 10;
         [settingsPulse removeFromSuperview];
         settingsPulse = nil;
         
-        settingsPulse = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMidX(settingsView.frame) - 25, CGRectGetMidY(settingsView.frame) - 25, 50, 50)];
+        settingsPulse = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMidX(_settingsButton.frame) - 25, CGRectGetMidY(_settingsButton.frame) - 25, 50, 50)];
         settingsPulse.backgroundColor = [UIColor clearColor];
         settingsPulse.tag = 200;
         settingsPulse.userInteractionEnabled = NO;
@@ -520,15 +526,12 @@ const int numberOfTextsToLoad = 10;
         [[[FBSDKGraphRequest alloc] initWithGraphPath:@"me" parameters:@{@"fields" : @"id, name, gender, age_range"}]
          startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
              if (!error) {
-                 NSLog(@"fetched user:%@", result);
                  
                  if ([result valueForKey:@"gender"] != nil) {
                      
                      NSString *theGender = (NSString*)[result valueForKey:@"gender"];
                      
                      if ([theGender isEqualToString:@"male"]) {
-                         
-                         NSLog(@"gender is male");
                          
                          [UserDefaults setUserGender:[NSNumber numberWithInt:kGenderMale]];
                          
@@ -537,7 +540,7 @@ const int numberOfTextsToLoad = 10;
                          
                      }
                      else if([theGender isEqualToString:@"female"]) {
-                         NSLog(@"gender is female");
+
                          [UserDefaults setUserGender:[NSNumber numberWithInt:kGenderFemale]];
                          
                          [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_ACTION_BUTTON_PRESSED withLabel:GA_LABEL_GENDER_FEMALE wtihValue:nil];
@@ -850,35 +853,16 @@ const int numberOfTextsToLoad = 10;
         [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_MAIN targetType:@"Command" targetId:@"showSpecialIntention" targetParameter:@""];
         
         
-        specialOccasionContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame))];
-        specialOccasionContainerView.backgroundColor = [UIColor appLightOverlayColor];
-        [self.view addSubview:specialOccasionContainerView];
+        IntentionModeViewController *intentionVC = [[IntentionModeViewController alloc] init];
         
-        //UITapGestureRecognizer *specialOccasionDismissTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissSpecialOccasionView)];
-        //[specialOccasionContainerView addGestureRecognizer:specialOccasionDismissTapGesture];
-        
-        UIButton *dismissButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        dismissButton.frame = CGRectMake(CGRectGetWidth(specialOccasionContainerView.frame) - 120, 0, 100, 60);
-        dismissButton.contentMode = UIViewContentModeRight;
-        [dismissButton setTitle:LBDLocalizedString(@"<LBDLCancel>", nil) forState:UIControlStateNormal];
-        [dismissButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [dismissButton setTitleColor:[UIColor clearColor] forState:UIControlStateHighlighted];
-        [dismissButton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
-        [dismissButton addTarget:self action:@selector(dismissSpecialOccasionView) forControlEvents:UIControlEventTouchUpInside];
-        [specialOccasionContainerView addSubview:dismissButton];
-        
-        theSpecialOccasionView = [[SpecialOccasionView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame) * 0.1, CGRectGetHeight(self.view.frame) * 0.15, CGRectGetWidth(self.view.frame) * 0.8, CGRectGetHeight(self.view.frame) * 0.7)];
-        [specialOccasionContainerView addSubview:theSpecialOccasionView];
-        
-        
-        [theSpecialOccasionView selectedIntentionAndRecipient:^(GWIntention *intentionObject, RecipientObject *recipientObject) {
+        [intentionVC selectedIntentionChosenWithCompletion:^(GWIntention *intention) {
             
-            model.selectedSpecialOccasionIntention = intentionObject;
+            model.selectedSpecialOccasionIntention = intention;
             
             [UserDefaults setWelcomeTextsShow:YES];
             [UserDefaults setWelcomeImagesShown:YES];
             
-            specialIntentionLabel.text = intentionObject.label;
+            specialIntentionLabel.text = intention.label;
             [UIView animateWithDuration:0.3 animations:^{
                 specialIntentionLabel.alpha = 1.0f;
             }];
@@ -889,12 +873,16 @@ const int numberOfTextsToLoad = 10;
             
             
             // images loading
-            if (intentionObject && recipientObject) {
-                [wSelf downloadSpecialOccasionImagesWithIntention:intentionObject];
-                [wSelf downloadSpecialOccasionTextsWithIntention:intentionObject];
+            if (intention != nil) {
+                [wSelf downloadSpecialOccasionImagesWithIntention:intention];
+                [wSelf downloadSpecialOccasionTextsWithIntention:intention];
             }
+
             
         }];
+        
+        [self presentViewController:intentionVC animated:YES completion:nil];
+        
     }
     else {
         
@@ -923,7 +911,7 @@ const int numberOfTextsToLoad = 10;
     [model fetchImagesForIntention:theIntention.imagePath withCompletion:^(NSArray *theImages, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (theImages != nil) {
-                NSLog(@"the images for the special intentions are: %d", (int)theImages.count);
+
                 [model setRandomImageForCurrentIntention:theImages withNum:(int)theImages.count];
                 [theImagePagedView reloadDataAnimated:YES];
                 
@@ -956,14 +944,14 @@ const int numberOfTextsToLoad = 10;
             model.isSpecialOccasionIntentionChosen = NO;
             [specialOccasionButton setSelected:NO];
             [theTextPagedView reloadDataAnimated:YES];
-            NSLog(@"Error");
+
         }
         
     }];
 }
 
 -(void)showLoadingIndicator {
-    NSLog(@"show loading indicator");
+
     [loadingIndicatorView removeFromSuperview];
     loadingIndicatorView = nil;
     
@@ -1028,10 +1016,6 @@ const int numberOfTextsToLoad = 10;
     
     if ([model minimumImagesAndTextsToDownloadWithNumTexts:100 withNumImages:5] && (model.firstLaunchTexts.count != 0 || model.firstLaunchError == nil) && (model.firstLaunchImages.count != 0 || model.firstLaunchImageError == nil)) {
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-           [self isSufficientResourcesDownloaded];
-        });
-        
         [UIView animateWithDuration:0.3 animations:^{
             
             firstLaunView.alpha = 0.0f;
@@ -1064,15 +1048,14 @@ const int numberOfTextsToLoad = 10;
             firstLaunView.frame = CGRectMake(-CGRectGetWidth(firstLaunView.frame), CGRectGetMinY(firstLaunView.frame), CGRectGetWidth(firstLaunView.frame), CGRectGetHeight(firstLaunView.frame));
             newView.frame = CGRectMake(0, 0, CGRectGetWidth(newView.frame), CGRectGetHeight(newView.frame));
         } completion:^(BOOL completion) {
-            NSLog(@"completion run");
             firstLaunView = nil;
-            [self performSelector:@selector(isSufficientResourcesDownloaded) withObject:nil afterDelay:0.5];
         }];
     }
 }
 
 -(void)isSufficientResourcesDownloaded {
 
+     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(isSufficientResourcesDownloaded) object:nil];
     if ([model minimumImagesAndTextsToDownloadWithNumTexts:100 withNumImages:5] && (model.firstLaunchTexts.count != 0 || model.firstLaunchError == nil) && (model.firstLaunchImages.count != 0 || model.firstLaunchImageError == nil)) {
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -1092,7 +1075,7 @@ const int numberOfTextsToLoad = 10;
         }];
         
     } else {
-        [self performSelector:@selector(isSufficientResourcesDownloaded) withObject:nil afterDelay:0.5];
+        [self performSelector:@selector(isSufficientResourcesDownloaded) withObject:nil afterDelay:1.0];
     }
 }
 
@@ -1510,6 +1493,29 @@ const int numberOfTextsToLoad = 10;
     
 }
 
+-(void)shareExtensionPressed:(UIButton *)theButton {
+    
+    NSString *selectedText = [theTextPagedView selectedText];
+    UIImage *selectedImage = [theImagePagedView selectedImage];
+    
+    if (selectedText != nil && selectedImage != nil) {
+        UIImage *image = [self createImageWithText:selectedText];
+        
+        NSString *selectedTextId = [theTextPagedView selectedTextId];
+        NSString *selectedImageId = [theImagePagedView selectedImageId];
+        
+        
+        UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[image] applicationActivities:nil];
+        
+        NSArray *excludeActivities = @[UIActivityTypeAirDrop];
+        
+        activityVC.excludedActivityTypes = excludeActivities;
+        
+        [self presentViewController:activityVC animated:YES completion:nil];
+    }
+    
+}
+
 #pragma mark - System Notification Permission Dialog
 
 -(void)notificationSystemPermission {
@@ -1574,7 +1580,12 @@ const int numberOfTextsToLoad = 10;
 }
 
 -(void)refreshButtonPressed {
-    [self showNotificationAlert];
+    _numRefreshesPressed++;
+    
+    if (_numRefreshesPressed >= 2) {
+        [self showNotificationAlert];
+    }
+    
     [self showRatingViewIfAppropriate];
     [UserDefaults increaseNumberOfTextRefreshesByUser];
     [UserDefaults setWelcomeTextsShow:YES];
@@ -1690,7 +1701,12 @@ const int numberOfTextsToLoad = 10;
 
 -(void)refreshImagesPressedWithImageScrollView:(ImageScrollView *)theScrollView {
     
-    [self showNotificationAlert];
+    _numRefreshesPressed++;
+    
+    if (_numRefreshesPressed >= 2) {
+        [self showNotificationAlert];
+    }
+    
     [self showRatingViewIfAppropriate];
     
     [UserDefaults increaseNumberOfImageRefreshesByUser];
