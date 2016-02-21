@@ -52,7 +52,7 @@
     
     self.isSpecialIntention = NO;
     
-    NSArray *fetchedIntentions = [dataMan fetchIntentionsWithArea:[ConstantsManager sharedInstance].specialOccasionArea withCulture:[UserDefaults currentCulture]];
+    NSArray *fetchedIntentions = [dataMan fetchIntentionsWithAreaName:[ConstantsManager sharedInstance].specialOccasionArea withIntentionsIds:nil];
     fetchedIntentions = [self intentionsWithMediaFromIntentionArray:fetchedIntentions];
     _intentions = fetchedIntentions;
     
