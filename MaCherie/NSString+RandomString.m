@@ -27,4 +27,15 @@
     return string;
 }
 
+-(NSString*)removeImageBaseURLFromString {
+    
+    NSMutableString *mutableImageId = [[NSMutableString alloc] initWithString:self];
+    if ([self hasPrefix:@"http://gw-static.azurewebsites.net"]) {
+        [mutableImageId deleteCharactersInRange:NSMakeRange(0, [NSString stringWithFormat:@"http://gw-static.azurewebsites.net"].length)];
+    }
+    
+    return mutableImageId;
+}
+
+
 @end

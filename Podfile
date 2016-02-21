@@ -7,13 +7,11 @@ target 'MaCherie' do
     pod 'FBSDKShareKit', '~> 4.6.0'
     pod 'FBSDKLoginKit', '~> 4.6.0'
     pod 'FBSDKMessengerShareKit', '~> 1.3.1'
-    pod 'FBAudienceNetwork', '~> 4.6.0'
     pod 'ChameleonFramework', '~> 2.0.2.2'
     pod 'Crashlytics', '~> 3.3.1'
     pod 'Fabric', '~> 1.5.1'
     pod 'MBProgressHUD', '~> 0.9.1'
-    pod 'GoogleAnalytics', '~> 3.13.0'
-    pod 'GoogleTagManager', '~> 3.15.0'
+    pod 'GoogleAnalytics', '~> 3.14.0'
 
 end
 

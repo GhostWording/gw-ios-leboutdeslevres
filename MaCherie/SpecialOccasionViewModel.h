@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @class IntentionObject, RecipientObject, GWIntention;
 
@@ -21,12 +22,16 @@
 -(GWIntention*)intentionAtIndex:(NSInteger)theIndex;
 -(NSInteger)numberOfIntentions;
 
+-(UIImage*)imageForIntentionAtIndex:(NSInteger)theIndex;
+
 -(RecipientObject*)recipientAtIndex:(NSInteger)theIndex;
 -(NSInteger)numberOfRecipients;
 
 -(RecipientObject*)sweetheartBasedOnUserDefaults;
 
 -(void)fetchIntentionsForArea:(NSString*)theArea withCulture:(NSString*)theCulture withCompletion:(void (^)(NSArray *theIntentions, NSError *error))block;
+
 -(void)reloadIntentionsWithArea:(NSString *)theArea withCulture:(NSString *)theCulture;
 
+-(void)downloadImagesWithCompletion:(void (^)(NSError *error))completion;
 @end

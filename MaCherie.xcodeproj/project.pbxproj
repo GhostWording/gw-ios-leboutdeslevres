@@ -65,10 +65,6 @@
 		88468B941BACAC0000A6C0FD /* smsIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88468B921BACAC0000A6C0FD /* smsIcon@3x.png */; };
 		88468BAA1BACB0D900A6C0FD /* mailButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88468BA81BACB0D900A6C0FD /* mailButton@2x.png */; };
 		88468BAB1BACB0D900A6C0FD /* mailButton@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88468BA91BACB0D900A6C0FD /* mailButton@3x.png */; };
-		8848BFE11B262E91005B3EF2 /* alertBlueButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8848BFDD1B262E91005B3EF2 /* alertBlueButton@2x.png */; };
-		8848BFE21B262E91005B3EF2 /* alertBlueButton@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8848BFDE1B262E91005B3EF2 /* alertBlueButton@3x.png */; };
-		8848BFE31B262E91005B3EF2 /* alertRedFillButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8848BFDF1B262E91005B3EF2 /* alertRedFillButton@2x.png */; };
-		8848BFE41B262E91005B3EF2 /* alertRedFillButton@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8848BFE01B262E91005B3EF2 /* alertRedFillButton@3x.png */; };
 		8848BFE81B26316D005B3EF2 /* SpecialOccasionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8848BFE71B26316D005B3EF2 /* SpecialOccasionView.m */; };
 		8848BFEB1B29E9D1005B3EF2 /* SpecialOccasionViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8848BFEA1B29E9D1005B3EF2 /* SpecialOccasionViewModel.m */; };
 		8848BFEE1B2A2AAE005B3EF2 /* RecipientObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 8848BFED1B2A2AAE005B3EF2 /* RecipientObject.m */; };
@@ -85,6 +81,7 @@
 		8874093B1B33ABE0002A9C7F /* arrowBackButtonRed@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 887409391B33ABE0002A9C7F /* arrowBackButtonRed@3x.png */; };
 		8874093E1B33AC5C002A9C7F /* flashIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8874093C1B33AC5C002A9C7F /* flashIcon@2x.png */; };
 		8874093F1B33AC5C002A9C7F /* flashIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8874093D1B33AC5C002A9C7F /* flashIcon@3x.png */; };
+		887EA6FB1C7A4A5700F837D5 /* IntentionImageAndTextCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 887EA6FA1C7A4A5700F837D5 /* IntentionImageAndTextCollectionViewCell.m */; };
 		88821F581C1BAD1F00B99DD2 /* tut2-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 88821F571C1BAD1F00B99DD2 /* tut2-1.png */; };
 		88821F5C1C1BAD9A00B99DD2 /* tut3.png in Resources */ = {isa = PBXBuildFile; fileRef = 88821F5B1C1BAD9A00B99DD2 /* tut3.png */; };
 		8882C2C61B1A317000B0DA0D /* GoogleAnalyticsCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = 8882C2C51B1A317000B0DA0D /* GoogleAnalyticsCommunication.m */; };
@@ -146,8 +143,6 @@
 		88CC383B1AF6C52300DCECD8 /* UIFont+ArialAndHelveticaNeue.m in Sources */ = {isa = PBXBuildFile; fileRef = 88CC383A1AF6C52300DCECD8 /* UIFont+ArialAndHelveticaNeue.m */; };
 		88CC383E1AF6DA0400DCECD8 /* UIViewController+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 88CC383D1AF6DA0400DCECD8 /* UIViewController+Extension.m */; };
 		88D298EA1C1DD092001E3BC0 /* IntentionModeViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88D298E91C1DD092001E3BC0 /* IntentionModeViewModel.m */; };
-		88DF2E741C3F298A0090E8D3 /* listIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88DF2E721C3F298A0090E8D3 /* listIcon@2x.png */; };
-		88DF2E751C3F298A0090E8D3 /* listIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88DF2E731C3F298A0090E8D3 /* listIcon@3x.png */; };
 		88E3466E1BFD524F0019DFAA /* MoodModeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 88E3466D1BFD524F0019DFAA /* MoodModeViewController.m */; };
 		88E346711BFD52960019DFAA /* MoodModeViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88E346701BFD52960019DFAA /* MoodModeViewModel.m */; };
 		88E4142A1B17B03800487698 /* messengerIconAlpha@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 88E414281B17B03800487698 /* messengerIconAlpha@2x.png */; };
@@ -298,10 +293,6 @@
 		88468B921BACAC0000A6C0FD /* smsIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "smsIcon@3x.png"; sourceTree = "<group>"; };
 		88468BA81BACB0D900A6C0FD /* mailButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mailButton@2x.png"; sourceTree = "<group>"; };
 		88468BA91BACB0D900A6C0FD /* mailButton@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mailButton@3x.png"; sourceTree = "<group>"; };
-		8848BFDD1B262E91005B3EF2 /* alertBlueButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alertBlueButton@2x.png"; sourceTree = "<group>"; };
-		8848BFDE1B262E91005B3EF2 /* alertBlueButton@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alertBlueButton@3x.png"; sourceTree = "<group>"; };
-		8848BFDF1B262E91005B3EF2 /* alertRedFillButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alertRedFillButton@2x.png"; sourceTree = "<group>"; };
-		8848BFE01B262E91005B3EF2 /* alertRedFillButton@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alertRedFillButton@3x.png"; sourceTree = "<group>"; };
 		8848BFE61B26316D005B3EF2 /* SpecialOccasionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialOccasionView.h; sourceTree = "<group>"; };
 		8848BFE71B26316D005B3EF2 /* SpecialOccasionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpecialOccasionView.m; sourceTree = "<group>"; };
 		8848BFE91B29E9D1005B3EF2 /* SpecialOccasionViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialOccasionViewModel.h; sourceTree = "<group>"; };
@@ -327,6 +318,8 @@
 		887409391B33ABE0002A9C7F /* arrowBackButtonRed@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrowBackButtonRed@3x.png"; sourceTree = "<group>"; };
 		8874093C1B33AC5C002A9C7F /* flashIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "flashIcon@2x.png"; sourceTree = "<group>"; };
 		8874093D1B33AC5C002A9C7F /* flashIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "flashIcon@3x.png"; sourceTree = "<group>"; };
+		887EA6F91C7A4A5700F837D5 /* IntentionImageAndTextCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntentionImageAndTextCollectionViewCell.h; sourceTree = "<group>"; };
+		887EA6FA1C7A4A5700F837D5 /* IntentionImageAndTextCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntentionImageAndTextCollectionViewCell.m; sourceTree = "<group>"; };
 		88821F571C1BAD1F00B99DD2 /* tut2-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tut2-1.png"; sourceTree = "<group>"; };
 		88821F5B1C1BAD9A00B99DD2 /* tut3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tut3.png; sourceTree = "<group>"; };
 		8882C2C41B1A317000B0DA0D /* GoogleAnalyticsCommunication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleAnalyticsCommunication.h; sourceTree = "<group>"; };
@@ -402,8 +395,6 @@
 		88CC383D1AF6DA0400DCECD8 /* UIViewController+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Extension.m"; sourceTree = "<group>"; };
 		88D298E81C1DD092001E3BC0 /* IntentionModeViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntentionModeViewModel.h; sourceTree = "<group>"; };
 		88D298E91C1DD092001E3BC0 /* IntentionModeViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntentionModeViewModel.m; sourceTree = "<group>"; };
-		88DF2E721C3F298A0090E8D3 /* listIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "listIcon@2x.png"; sourceTree = "<group>"; };
-		88DF2E731C3F298A0090E8D3 /* listIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "listIcon@3x.png"; sourceTree = "<group>"; };
 		88E3466C1BFD524F0019DFAA /* MoodModeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodModeViewController.h; sourceTree = "<group>"; };
 		88E3466D1BFD524F0019DFAA /* MoodModeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoodModeViewController.m; sourceTree = "<group>"; };
 		88E3466F1BFD52960019DFAA /* MoodModeViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoodModeViewModel.h; sourceTree = "<group>"; };
@@ -713,22 +704,13 @@
 			name = Subclasses;
 			sourceTree = "<group>";
 		};
-		8848BFDC1B262E81005B3EF2 /* Alert button */ = {
-			isa = PBXGroup;
-			children = (
-				8848BFDD1B262E91005B3EF2 /* alertBlueButton@2x.png */,
-				8848BFDE1B262E91005B3EF2 /* alertBlueButton@3x.png */,
-				8848BFDF1B262E91005B3EF2 /* alertRedFillButton@2x.png */,
-				8848BFE01B262E91005B3EF2 /* alertRedFillButton@3x.png */,
-			);
-			name = "Alert button";
-			sourceTree = "<group>";
-		};
 		8848BFE51B263119005B3EF2 /* Special Occasion View */ = {
 			isa = PBXGroup;
 			children = (
 				88F355631C512609003983C0 /* IntentionModeViewController.h */,
 				88F355641C512609003983C0 /* IntentionModeViewController.m */,
+				887EA6F91C7A4A5700F837D5 /* IntentionImageAndTextCollectionViewCell.h */,
+				887EA6FA1C7A4A5700F837D5 /* IntentionImageAndTextCollectionViewCell.m */,
 				8848BFE91B29E9D1005B3EF2 /* SpecialOccasionViewModel.h */,
 				8848BFEA1B29E9D1005B3EF2 /* SpecialOccasionViewModel.m */,
 				8848BFE61B26316D005B3EF2 /* SpecialOccasionView.h */,
@@ -944,8 +926,6 @@
 				88821F571C1BAD1F00B99DD2 /* tut2-1.png */,
 				88C4CE381C533236008E282E /* shareIcon@2x.png */,
 				88C4CE391C533236008E282E /* shareIcon@3x.png */,
-				88DF2E721C3F298A0090E8D3 /* listIcon@2x.png */,
-				88DF2E731C3F298A0090E8D3 /* listIcon@3x.png */,
 				883C7A641C0E7136002B0E09 /* randomImage@2x.png */,
 				883C7A651C0E7136002B0E09 /* randomImage@3x.png */,
 				8844D4FD1BACDD7400EA8DB8 /* createNewTextIcon@2x.png */,
@@ -964,7 +944,6 @@
 				8874093D1B33AC5C002A9C7F /* flashIcon@3x.png */,
 				887409381B33ABE0002A9C7F /* arrowBackButtonRed@2x.png */,
 				887409391B33ABE0002A9C7F /* arrowBackButtonRed@3x.png */,
-				8848BFDC1B262E81005B3EF2 /* Alert button */,
 				880686CF1B2505D10062D183 /* leftArrow@2x.png */,
 				880686D01B2505D10062D183 /* leftArrow@3x.png */,
 				880686CB1B24BC4C0062D183 /* photoIcon@2x.png */,
@@ -1105,6 +1084,7 @@
 				8822F98E1B7A85ED007D0140 /* Embed Frameworks */,
 				47339C365F77950AC2029581 /* Copy Pods Resources */,
 				88DBF4EA1BBC660C00A9343D /* Embed App Extensions */,
+				5946BD2E80493E64E2E5B589 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1218,7 +1198,6 @@
 				882F5B991AF8436000B8A26E /* femaleGender@3x.png in Resources */,
 				882F5B9B1AF8436000B8A26E /* femaleGenderSelected@3x.png in Resources */,
 				88821F5C1C1BAD9A00B99DD2 /* tut3.png in Resources */,
-				88DF2E751C3F298A0090E8D3 /* listIcon@3x.png in Resources */,
 				88468BAA1BACB0D900A6C0FD /* mailButton@2x.png in Resources */,
 				8826323F1B38DA2100A26F9F /* appDisplayIcon@3x.png in Resources */,
 				880686CE1B24BC4C0062D183 /* photoIcon@3x.png in Resources */,
@@ -1240,20 +1219,17 @@
 				880686C21B1FE51F0062D183 /* settingsBlue@3x.png in Resources */,
 				8822FA0E1B7A9E75007D0140 /* IntentionLocalizedStrings.strings in Resources */,
 				88CC38381AF6C28300DCECD8 /* cancel@3x.png in Resources */,
-				8848BFE11B262E91005B3EF2 /* alertBlueButton@2x.png in Resources */,
 				88E4142E1B17C90000487698 /* refreshIcon@2x.png in Resources */,
 				888EB4D01AF6676300C99587 /* LaunchScreen.xib in Resources */,
 				8874093E1B33AC5C002A9C7F /* flashIcon@2x.png in Resources */,
 				88CC38341AF6BAD400DCECD8 /* settings@3x.png in Resources */,
 				886201FD1B573086003CAC97 /* fire@3x.png in Resources */,
-				88DF2E741C3F298A0090E8D3 /* listIcon@2x.png in Resources */,
 				88CC38371AF6C28300DCECD8 /* cancel@2x.png in Resources */,
 				88F3556B1C512678003983C0 /* listIcon4@3x.png in Resources */,
 				882F5B9D1AF8436000B8A26E /* maleGender@3x.png in Resources */,
 				8874093A1B33ABE0002A9C7F /* arrowBackButtonRed@2x.png in Resources */,
 				8826323E1B38DA2100A26F9F /* appDisplayIcon@2x.png in Resources */,
 				88A767FE1B09775B00D3B7CE /* editButtonSelected@2x.png in Resources */,
-				8848BFE41B262E91005B3EF2 /* alertRedFillButton@3x.png in Resources */,
 				882F5B9E1AF8436000B8A26E /* maleGenderSelected@2x.png in Resources */,
 				88E4142B1B17B03800487698 /* messengerIconAlpha@3x.png in Resources */,
 				88A767FF1B09775B00D3B7CE /* editButtonSelected@3x.png in Resources */,
@@ -1262,9 +1238,7 @@
 				88A767FB1B0975DD00D3B7CE /* editButton@3x.png in Resources */,
 				88468B931BACAC0000A6C0FD /* smsIcon@2x.png in Resources */,
 				883C7A671C0E7136002B0E09 /* randomImage@3x.png in Resources */,
-				8848BFE31B262E91005B3EF2 /* alertRedFillButton@2x.png in Resources */,
 				888EB4CD1AF6676300C99587 /* Images.xcassets in Resources */,
-				8848BFE21B262E91005B3EF2 /* alertBlueButton@3x.png in Resources */,
 				880686C51B1FE6B90062D183 /* alarmButton@2x.png in Resources */,
 				88E4142F1B17C90000487698 /* refreshIcon@3x.png in Resources */,
 				88E4142A1B17B03800487698 /* messengerIconAlpha@2x.png in Resources */,
@@ -1299,6 +1273,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MaCherie/Pods-MaCherie-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5946BD2E80493E64E2E5B589 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MaCherie/Pods-MaCherie-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8846680F1B082EA000263E78 /* ShellScript */ = {
@@ -1340,6 +1329,7 @@
 				88A2280C1AFED8DD00223685 /* TextScrollViewModel.m in Sources */,
 				88B9E8CB1AFFE30800B1213A /* ImageScrollView.m in Sources */,
 				888C18901B077A9E00FD8C91 /* TextObject.m in Sources */,
+				887EA6FB1C7A4A5700F837D5 /* IntentionImageAndTextCollectionViewCell.m in Sources */,
 				882F5BA21AF9438F00B8A26E /* TimePicker.m in Sources */,
 				8822FA101B7A9E75007D0140 /* GWImage.m in Sources */,
 				88F355651C512609003983C0 /* IntentionModeViewController.m in Sources */,
@@ -1570,7 +1560,8 @@
 				CODE_SIGN_ENTITLEMENTS = MaCherie/MaCherie.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				ENABLE_BITCODE = NO;
+				COMPRESS_PNG_FILES = NO;
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MaCherie",
@@ -1599,7 +1590,8 @@
 				CODE_SIGN_ENTITLEMENTS = MaCherie/MaCherie.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				ENABLE_BITCODE = NO;
+				COMPRESS_PNG_FILES = NO;
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MaCherie",
@@ -1613,7 +1605,7 @@
 					"$(PROJECT_DIR)/MaCherie",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "dd6b81be-46b2-4470-9897-59d3b24a2579";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

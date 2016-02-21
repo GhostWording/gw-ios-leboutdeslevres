@@ -21,9 +21,9 @@
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
+      "filename" : "splash-iPhone42.png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
-      "filename" : "splash-iPhone42.png",
       "scale" : "2x"
     },
     {

@@ -13,12 +13,18 @@
 #import "Image.h"
 #import "GWDataManager.h"
 #import "GWIntention.h"
+#import "GWImage.h"
+#import "NSString+RandomString.h"
+#import <UIKit/UIKit.h>
 
 @interface SpecialOccasionViewModel () {
     NSArray *intentions;
+    NSArray *intentionImages;
     NSArray *recipients;
     GWDataManager *dataMan;
     NSURLSessionDataTask *sessionDataTask;
+    
+    NSString *currentArea;
 }
 
 @end
@@ -39,10 +45,13 @@
     if (self = [super init]) {
         
         dataMan = [[GWDataManager alloc] init];
-        intentions = [dataMan fetchIntentionsWithAreaName:theArea withIntentionsIds:nil];
+        currentArea = theArea;
+        intentions = [dataMan fetchIntentionsWithAreaName:theArea withIntentionsIds:nil];// [dataMan fetchIntentionsWithArea:theArea withCulture:theCulture];
+        NSLog(@"intentions are: %@", intentions);
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"sortOrderInArea" ascending:YES];
         intentions = [intentions sortedArrayUsingDescriptors:@[sortDescriptor]];
         intentions = [self removeDuplicateIntentions:intentions];
+        [self reloadIntentionImages];
         sessionDataTask = nil;
     }
     
@@ -62,6 +71,17 @@
     return intentions.count;
 }
 
+
+-(UIImage*)imageForIntentionAtIndex:(NSInteger)theIndex {
+    
+    if (theIndex < intentionImages.count) {
+        
+        return [intentionImages objectAtIndex:theIndex];
+        
+    }
+    
+    return nil;
+}
 
 
 -(RecipientObject*)recipientAtIndex:(NSInteger)theIndex {
@@ -102,6 +122,7 @@
                 
                 if (error == nil) {
                     intentions = [dataMan fetchIntentionsWithAreaName:theArea withIntentionsIds:nil];
+                    NSLog(@"The intentions are: %@", intentions);
                 }
                 
                 block(intentionIds, error);
@@ -115,10 +136,105 @@
 }
 
 -(void)reloadIntentionsWithArea:(NSString *)theArea withCulture:(NSString *)theCulture {
-    intentions = [dataMan fetchIntentionsWithAreaName:theArea withIntentionsIds:nil];
+    intentions = [dataMan fetchIntentionsWithAreaName:theArea withIntentionsIds:nil]; //[dataMan fetchIntentionsWithArea:theArea withCulture:theCulture];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"sortOrderInArea" ascending:YES];
     intentions = [intentions sortedArrayUsingDescriptors:@[sortDescriptor]];
     intentions = [self removeDuplicateIntentions:intentions];
+}
+
+-(void)reloadIntentionImages {
+    
+    NSArray *imagePaths = [self mediaUrlsFromIntentions:intentions];
+    NSArray *theGWImages = [dataMan fetchImagesWithImagePaths:imagePaths];
+    
+    NSMutableArray *images = [NSMutableArray array];
+    for (GWImage *image in theGWImages) {
+        [images addObject:[UIImage imageWithData:image.imageData]];
+    }
+    
+    intentionImages = images;
+    
+}
+
+-(void)downloadImagesWithCompletion:(void (^)(NSError *))completion {
+    
+    [completion copy];
+    
+    if (intentions.count != 0) {
+        
+        NSMutableArray *theImageUrls = [self mediaUrlsFromIntentions:intentions];
+        NSArray *images = [dataMan fetchImagesWithImagePaths:theImageUrls];
+        
+        if (theImageUrls.count != images.count) {
+            theImageUrls = [self removeCommonPathsForPersistedImages:theImageUrls withImages:images];
+        }
+        else {
+            // we had all the images all along no need to download them
+            return ;
+        }
+        
+        __weak typeof (self) wSelf = self;
+        [dataMan downloadImagesWithUrls:theImageUrls isRelativeURL:YES withCompletion:^(NSArray *theImages, NSError *theError) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                [wSelf reloadIntentionsWithArea:currentArea withCulture:[UserDefaults currentCulture]];
+                [wSelf reloadIntentionImages];
+                completion(theError);
+            });
+            
+        }];
+        
+    }
+    else {
+        
+        __weak typeof (self) wSelf = self;
+        [self fetchIntentionsForArea:currentArea withCulture:[UserDefaults currentCulture] withCompletion:^(NSArray *theIntentions, NSError *error) {
+            
+            [wSelf reloadIntentionsWithArea:currentArea withCulture:[UserDefaults currentCulture]];
+            [wSelf downloadImagesWithCompletion:completion];
+            
+        }];
+    }
+    
+}
+
+#pragma mark - Helpers
+
+-(NSMutableArray*)removeCommonPathsForPersistedImages:(NSArray*)theURLs withImages:(NSArray*)theImages {
+    
+    NSMutableArray *urlsForImagesNotPersisted = [NSMutableArray arrayWithArray:theURLs];
+    
+    for (NSString *imagePath in theURLs) {
+        for (GWImage *image in theImages) {
+            
+            if ([imagePath isEqualToString:image.imageId] == YES) {
+                [urlsForImagesNotPersisted removeObjectIdenticalTo:imagePath];
+            }
+            
+        }
+    }
+    
+    return urlsForImagesNotPersisted;
+}
+
+-(NSMutableArray*)mediaUrlsFromIntentions:(NSArray*)theIntentions {
+    
+    NSMutableArray *array = [NSMutableArray array];
+    NSArray *allImages = [dataMan fetchImages];
+    
+    // only download images that exist
+    for (GWIntention *theIntention in theIntentions) {
+        if (theIntention.mediaUrl != nil) {
+            [array addObject:[theIntention.mediaUrl removeImageBaseURLFromString]];
+        }else {
+            int randPos = arc4random_uniform((int)allImages.count);
+            GWImage *currentImage = [allImages objectAtIndex:randPos];
+            [array addObject:currentImage.imageId];
+        }
+    }
+    
+    return array;
 }
 
 -(NSArray*)removeDuplicateIntentions:(NSArray*)theIntentions {

@@ -11,5 +11,6 @@
 @interface NSString (RandomString)
 
 +(NSString*)generateRandStringWithLength:(int)length;
+-(NSString*)removeImageBaseURLFromString;
 
 @end

@@ -40,6 +40,9 @@
     
     NSLog(@"did finish launching");
     viewModel = [[RootViewModel alloc] init];
+    // create the main object context and persistent coordinator on the main thread before
+    // background threads start using it causing multithreading issues
+    [[GWCoreDataManager sharedInstance] mainObjectContext];
         
     [Fabric with:@[CrashlyticsKit]];
     

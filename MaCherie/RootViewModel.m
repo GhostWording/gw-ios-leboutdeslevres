@@ -311,7 +311,8 @@
     if (textsForIntention.count > 100) {
         
         specialOccasionTextArray = [textFilter filterTextsFromArray:textsForIntention];
-        selectedIntentionSlug = theIntention;
+        NSArray *intentions = [theDataManger fetchIntentionsWithAreaName:nil withIntentionsIds:@[theIntention]];
+        selectedIntentionSlug = [(GWIntention*)[intentions firstObject] slugPrototypeLink];
         
         block(textsForIntention, nil);
         
@@ -328,7 +329,11 @@
                 GWDataManager *returnedData = [[GWDataManager alloc] init];
                 NSArray *downloadedTextsForIntention = [returnedData fetchTextsWithIntentionIds:@[theIntention] withTag:nil withCulture:[UserDefaults currentCulture]];
                 specialOccasionTextArray = [textFilter filterTextsFromArray:downloadedTextsForIntention];
-                selectedIntentionSlug = theIntention;
+                specialOccasionTextArray = [textFilter filterTextsFromArray:textsForIntention];
+                
+                NSArray *intentions = [returnedData fetchIntentionsWithAreaName:nil withIntentionsIds:@[theIntention]];
+                selectedIntentionSlug = [(GWIntention*)[intentions firstObject] slugPrototypeLink];
+                
                 NSLog(@"downloaded texts for intention after filter: %d", (int)specialOccasionTextArray.count);
                 block(downloadedTextsForIntention, error);
             });
