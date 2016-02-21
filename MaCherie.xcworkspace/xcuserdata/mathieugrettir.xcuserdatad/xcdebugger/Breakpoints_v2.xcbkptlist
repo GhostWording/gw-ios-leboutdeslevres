@@ -1150,7 +1150,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "994"
             endingLineNumber = "994"
-            landmarkName = "-downloadImageWithRelativeUrl:withCompletion:"
+            landmarkName = "-persistAreaOrUpdateWithJson:withArray:withContext:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1294,7 +1294,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "942"
             endingLineNumber = "942"
-            landmarkName = "-downloadImagesWithUrls:isRelativeURL:withCompletion:"
+            landmarkName = "-updatedTextsWithArea:intentionId:culture:texts:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1326,7 +1326,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1060"
             endingLineNumber = "1060"
-            landmarkName = "-downloadTextsWithBlockForArea:queue:dataMan:withIntentionIds:withCulture:withCompletion:"
+            landmarkName = "-downloadImagesAndPersistWithIntentionSlug:withNumImagesToDownload:withCompletion:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

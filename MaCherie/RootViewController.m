@@ -929,7 +929,7 @@ const int numberOfTextsToLoad = 10;
     model.isSpecialOccasionIntentionChosen = YES;
     [specialOccasionButton setSelected:YES];
     
-    [model fetchTextsForIntention:theIntention.slugPrototypeLink withCompletion:^(NSArray *theTexts, NSError *error) {
+    [model fetchTextsForIntentionId:theIntention.intentionId withCompletion:^(NSArray *theTexts, NSError *error) {
         
         if (!error) {
             

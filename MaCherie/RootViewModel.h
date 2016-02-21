@@ -33,7 +33,7 @@
 @property (nonatomic, strong) NSError *firstLaunchImageError;
 
 -(void)setRandomTextForSpecialOccasionTexts:(NSArray*)theTexts withFilter:(TextFilter*)theFilter;
--(void)setRandomTextForIntention:(NSString*)intentionSlug withNum:(int)num;
+//-(void)setRandomTextForIntention:(NSString*)intentionSlug withNum:(int)num;
 -(void)setRandomImageForCurrentIntention:(NSArray *)imagesForIntention withNum:(int)num;
 
 
@@ -46,7 +46,7 @@
 
 -(BOOL)minimumImagesAndTextsToDownloadWithNumTexts:(int)numTexts withNumImages:(int)numImages;
 
--(void)fetchTextsForIntention:(NSString*)theIntention withCompletion:(void (^)(NSArray *theTexts, NSError *error))block;
+-(void)fetchTextsForIntentionId:(NSString*)theIntention withCompletion:(void (^)(NSArray *theTexts, NSError *error))block;
 -(void)fetchImagesForIntention:(NSString*)theIntention withCompletion:(void (^)(NSArray *theImages, NSError *error))block;
 
 -(void)fetchImagesForThemePath:(NSString*)theThemePath withCompletion:(void (^)(NSArray *theImages, NSError *error))block;

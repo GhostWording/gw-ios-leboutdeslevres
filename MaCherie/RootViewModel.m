@@ -251,7 +251,7 @@
                 
                 NSArray *theTexts = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                 GWDataManager *theDataMan = [[GWDataManager alloc] init];
-                NSArray *fetchedTexts = [theDataMan fetchTextsForCulture:[UserDefaults currentCulture]];
+                NSArray *fetchedTexts = [theDataMan fetchTextsWithIntentionIds:nil withTag:nil withCulture:[UserDefaults currentCulture]];
                 NSMutableArray *textsToReturn = [NSMutableArray array];
                 
                 for (NSDictionary *theDict in theTexts) {
@@ -274,14 +274,14 @@
     
 }
 
--(void)setRandomTextForIntention:(NSString *)intentionSlug withNum:(int)num {
-    
-    GWDataManager *theDataManger = [[GWDataManager alloc] init];
-    
-    specialOccasionTextArray = [theDataManger fetchTextsForIntentionSlug:intentionSlug withCulture:[UserDefaults currentCulture]];
-    selectedIntentionSlug = intentionSlug;
-    
-}
+//-(void)setRandomTextForIntention:(NSString *)intentionSlug withNum:(int)num {
+//    
+//    GWDataManager *theDataManger = [[GWDataManager alloc] init];
+//    
+//    specialOccasionTextArray = [theDataManger fetchTextsForIntentionSlug:intentionSlug withCulture:[UserDefaults currentCulture]];
+//    selectedIntentionSlug = intentionSlug;
+//    
+//}
 
 -(void)setRandomTextForSpecialOccasionTexts:(NSArray*)theTexts withFilter:(TextFilter *)theFilter{
     
@@ -299,12 +299,12 @@
     specialOccasionImageArray = imagesForIntention;
 }
 
--(void)fetchTextsForIntention:(NSString *)theIntention withCompletion:(void (^)(NSArray *, NSError *))block {
+-(void)fetchTextsForIntentionId:(NSString *)theIntention withCompletion:(void (^)(NSArray *, NSError *))block {
     [block copy];
     
     
     GWDataManager *theDataManger = [[GWDataManager alloc] init];
-    NSArray *textsForIntention = [theDataManger fetchTextsForIntentionSlug:theIntention withCulture:[UserDefaults currentCulture]];
+    NSArray *textsForIntention = [theDataManger fetchTextsWithIntentionIds:@[theIntention] withTag:nil withCulture:[UserDefaults currentCulture]];
     
     TextFilter *textFilter = [[TextFilter alloc] init];
     
@@ -320,13 +320,13 @@
     }
     else {
         NSLog(@"get data for intention");
-        [theDataManger downloadTextsWithArea:[ConstantsManager sharedInstance].specialOccasionArea withIntentionSlug:theIntention withCulture:[UserDefaults currentCulture] withCompletion:^(NSArray *textIds, NSError *error) {
+        [theDataManger downloadTextsWithArea:[ConstantsManager sharedInstance].specialOccasionArea withIntentionIds:@[theIntention] withCulture:[UserDefaults currentCulture] withCompletion:^(NSArray *textIds, NSError *error) {
             
             NSLog(@"finished downloading texts");
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 GWDataManager *returnedData = [[GWDataManager alloc] init];
-                NSArray *downloadedTextsForIntention = [returnedData fetchTextsForIntentionSlug:theIntention withCulture:[UserDefaults currentCulture]];
+                NSArray *downloadedTextsForIntention = [returnedData fetchTextsWithIntentionIds:@[theIntention] withTag:nil withCulture:[UserDefaults currentCulture]];
                 specialOccasionTextArray = [textFilter filterTextsFromArray:downloadedTextsForIntention];
                 selectedIntentionSlug = theIntention;
                 NSLog(@"downloaded texts for intention after filter: %d", (int)specialOccasionTextArray.count);
@@ -533,7 +533,7 @@
     
     //NSArray *texts = [dataMan allTexts];
     GWDataManager *theDataManager = [[GWDataManager alloc] init];
-    NSArray *texts = [theDataManager fetchTextsForCulture:[UserDefaults currentCulture]];
+    NSArray *texts = [theDataManager fetchTextsWithIntentionIds:nil withTag:nil withCulture:[UserDefaults currentCulture]];
     
     if (theTextsToIgnore != nil) {
         texts = [self removeTextsFromArray:texts textsToRemove:theTextsToIgnore];
