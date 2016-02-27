@@ -40,6 +40,7 @@
         
         //self.backgroundColor = [UIColor c_darkOverlayColor];
         
+        
         __weak typeof (self) wSelf = self;
         [_viewModel downloadThemesWithCompletion:^(NSArray *theImages, NSError *theError) {
             
@@ -47,14 +48,6 @@
             
         }];
         
-        /*
-        UILabel *appTitle = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) * 0.15, CGRectGetHeight(self.frame) * 0.1, CGRectGetWidth(self.frame) * 0.7, 50)];
-        appTitle.text = @"Mood mode";
-        appTitle.textAlignment = NSTextAlignmentCenter;
-        appTitle.textColor = [UIColor appBlueColor];
-        appTitle.font = [UIFont noteworthyBoldWithSize:34];
-        [self addSubview:appTitle];
-         */
         
     }
     
@@ -102,87 +95,6 @@
         [_imageViews addObject:label];
     }
     
-    /*
-    float width = CGRectGetWidth(self.frame) / 4.0 - 40;
-    
-    if (width > CGRectGetHeight(self.frame) * 0.7) {
-        width = CGRectGetHeight(self.frame) * 0.7;
-    }
-    
-    if ([_viewModel numThemeImages] > 0) {
-        UIButton *firstButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        firstButton.frame = CGRectMake(0, 0, width, width);
-        [firstButton setImage:[_viewModel imageThemeAtIndex:0] forState:UIControlStateNormal];
-        firstButton.layer.cornerRadius = width / 2.0;
-        firstButton.layer.borderWidth = 2.0;
-        firstButton.layer.borderColor = [UIColor appBlueColor].CGColor;
-        firstButton.layer.masksToBounds = YES;
-        [self addSubview:firstButton];
-        [_imageViews addObject:firstButton];
-        
-        UILabel *firstLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(firstButton.frame), CGRectGetMaxY(firstButton.frame) + 2, width, CGRectGetHeight(self.frame) * 0.3 - 2)];
-        firstLabel.font = [UIFont helveticaNeueMediumWitihSize:13.0];
-        firstLabel.textAlignment = NSTextAlignmentCenter;
-        firstLabel.textColor = [UIColor appBlueColor];
-        firstLabel.adjustsFontSizeToFitWidth = YES;
-        firstLabel.text = [_viewModel themeNameAtIndex:0];
-        [self addSubview:firstLabel];
-        [_imageViews addObject:firstLabel];
-    }
-    
-    if([_viewModel numThemeImages] > 1) {
-        UIButton *secondButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        secondButton.frame = CGRectMake(CGRectGetWidth(self.frame) / 2.0 - width / 2.0, 0, width, width);
-        [secondButton setImage:[_viewModel imageThemeAtIndex:1] forState:UIControlStateNormal];
-        secondButton.layer.cornerRadius = width / 2.0;
-        secondButton.layer.borderWidth = 2.0;
-        secondButton.layer.borderColor = [UIColor appBlueColor].CGColor;
-        secondButton.layer.masksToBounds = YES;
-        [self addSubview:secondButton];
-        [_imageViews addObject:secondButton];
-        
-        UILabel *secondLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(secondButton.frame), CGRectGetMaxY(secondButton.frame) + 2, width, CGRectGetHeight(self.frame) * 0.3 - 2)];
-        secondLabel.font = [UIFont helveticaNeueMediumWitihSize:13.0];
-        secondLabel.textAlignment = NSTextAlignmentCenter;
-        secondLabel.textColor = [UIColor appBlueColor];
-        secondLabel.adjustsFontSizeToFitWidth = YES;
-        secondLabel.text = [_viewModel themeNameAtIndex:1];
-        [self addSubview:secondLabel];
-        [_imageViews addObject:secondLabel];
-    }
-    
-    if([_viewModel numThemeImages] > 2) {
-        UIButton *thirdButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        thirdButton.frame = CGRectMake(CGRectGetWidth(self.frame) - width, 0, width, width);
-        [thirdButton setImage:[_viewModel imageThemeAtIndex:2] forState:UIControlStateNormal];
-        thirdButton.layer.cornerRadius = width / 2.0;
-        thirdButton.layer.borderWidth = 2.0;
-        thirdButton.layer.borderColor = [UIColor appBlueColor].CGColor;
-        thirdButton.layer.masksToBounds = YES;
-        [self addSubview:thirdButton];
-        [_imageViews addObject:thirdButton];
-        
-        UILabel *thirdLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(thirdButton.frame), CGRectGetMaxY(thirdButton.frame) + 2, width, CGRectGetHeight(self.frame) * 0.3 - 2)];
-        thirdLabel.font = [UIFont helveticaNeueMediumWitihSize:13.0];
-        thirdLabel.textAlignment = NSTextAlignmentCenter;
-        thirdLabel.textColor = [UIColor appBlueColor];
-        thirdLabel.adjustsFontSizeToFitWidth = YES;
-        thirdLabel.text = [_viewModel themeNameAtIndex:2];
-        [self addSubview:thirdLabel];
-        [_imageViews addObject:thirdLabel];
-        
-    }
-     */
-    
-    //[self insertImages];
-    
-    /*
-    for (int i = 0; i < _themeImages.count; i++) {
-        [self insertImageAtIndex:i];
-    }
-     
-    [_contentView setContentSize:CGSizeMake(CGRectGetWidth(_contentView.frame) * _imageViews.count, CGRectGetHeight(_contentView.frame))];
-     */
 }
 
 -(void)insertImages {

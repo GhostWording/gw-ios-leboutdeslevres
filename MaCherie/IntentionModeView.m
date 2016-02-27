@@ -35,11 +35,20 @@
         _contentView.clipsToBounds = NO;
         [self addSubview:_contentView];
         
-        
-        
         _imageViews = [NSMutableArray array];
         
-        //self.backgroundColor = [UIColor c_darkOverlayColor];
+        
+        // Setup the properties of the objects
+        _textColor = [UIColor appBlueColor];
+        _borderColor = [UIColor appBlueColor];
+        
+        if ([UIScreen mainScreen].bounds.size.height == 480.0f) {
+            _font = [UIFont helveticaNeueMediumWitihSize:12.0];
+        }
+        else {
+            _font = [UIFont helveticaNeueMediumWitihSize:16.0];
+        }
+        
         
         __weak typeof (self) wSelf = self;
         
@@ -78,17 +87,17 @@
             [button addTarget:self action:@selector(intentionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
             button.layer.cornerRadius = width / 2.0;
             button.layer.borderWidth = 2.0;
-            button.layer.borderColor = [UIColor appBlueColor].CGColor;
+            button.layer.borderColor = _borderColor.CGColor;
             button.layer.masksToBounds = YES;
             button.tag = i;
             [self addSubview:button];
             [_imageViews addObject:button];
             
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMidX(button.frame) - width / 2.0 - widthBetween / 2.0 + 2, CGRectGetMaxY(button.frame), width + widthBetween - 4, CGRectGetHeight(self.frame) * 0.2)];
-            label.font = [UIFont helveticaNeueMediumWitihSize:9.0];
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMidX(button.frame) - width / 2.0 - widthBetween / 2.0 + 2, CGRectGetMaxY(button.frame) + 2, width + widthBetween - 4, CGRectGetHeight(self.frame) * 0.2)];
+            label.font = _font;
             label.textAlignment = NSTextAlignmentCenter;
-            label.textColor = [UIColor appBlueColor];
-            label.minimumScaleFactor = 0.65;
+            label.textColor = _textColor;
+            label.minimumScaleFactor = 0.45;
             label.adjustsFontSizeToFitWidth = YES;
             label.text = [_viewModel randomIntentionNameAtIndex:i];
             [self addSubview:label];
@@ -103,16 +112,16 @@
             [button addTarget:self action:@selector(intentionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
             button.layer.cornerRadius = width / 2.0;
             button.layer.borderWidth = 2.0;
-            button.layer.borderColor = [UIColor appBlueColor].CGColor;
+            button.layer.borderColor = _borderColor.CGColor;
             button.layer.masksToBounds = YES;
             button.tag = i;
             [self addSubview:button];
             [_imageViews addObject:button];
             
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMidX(button.frame) - width / 2.0 - widthBetween / 2.0 + 2, CGRectGetMaxY(button.frame), width + widthBetween - 4, CGRectGetHeight(self.frame) * 0.2)];
-            label.font = [UIFont helveticaNeueMediumWitihSize:9.0];
+            label.font = _font;
             label.textAlignment = NSTextAlignmentCenter;
-            label.textColor = [UIColor appBlueColor];
+            label.textColor = _textColor;
             label.minimumScaleFactor = 0.65;
             label.adjustsFontSizeToFitWidth = YES;
             label.text = [_viewModel randomIntentionNameAtIndex:i];

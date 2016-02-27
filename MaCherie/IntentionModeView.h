@@ -12,6 +12,10 @@
 
 @interface IntentionModeView : UIView
 
+@property (nonatomic, strong) UIFont *font;
+@property (nonatomic, strong) UIColor *textColor;
+@property (nonatomic, strong) UIColor *borderColor;
+
 -(void)intentionChosenWithCompletion:(void (^)(GWIntention *theImages))block;
 
 @end

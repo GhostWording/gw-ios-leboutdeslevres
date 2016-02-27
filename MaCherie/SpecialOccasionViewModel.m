@@ -71,6 +71,9 @@
     return intentions.count;
 }
 
+-(NSInteger)numberOfIntentionImages {
+    return intentionImages.count;
+}
 
 -(UIImage*)imageForIntentionAtIndex:(NSInteger)theIndex {
     

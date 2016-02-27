@@ -31,7 +31,6 @@
 
 -(void)setFrame:(CGRect)frame {
     [super setFrame:frame];
-    NSLog(@"setting frame");
     _activityIndicator.frame = CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame));
     _activityLabel.frame = CGRectMake(CGRectGetWidth(self.frame)*0.05, CGRectGetHeight(self.frame)*0.7, CGRectGetWidth(self.frame)*0.9, CGRectGetHeight(self.frame)*0.3);
 }

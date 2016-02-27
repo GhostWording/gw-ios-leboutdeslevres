@@ -14,14 +14,16 @@
 #import "LBDLocalization.h"
 #import "ConstantsManager.h"
 #import "UserDefaults.h"
+#import <MBProgressHUD.h>
 
 #import "IntentionImageAndTextCollectionViewCell.h"
 
-@interface IntentionModeViewController () <UITableViewDataSource, UITableViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource> {
-    UITableView *_intentionTableView;
+@interface IntentionModeViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource> {
+
     UICollectionView *_intentionCollectionView;
     SpecialOccasionViewModel *_viewModel;
     void (^_selectedIntentionBlock)(GWIntention *theIntention);
+    MBProgressHUD *_progress;
 }
 
 @end
@@ -37,17 +39,6 @@
 }
 
 -(void)viewDidLoad {
-    
-    _viewModel = [[SpecialOccasionViewModel alloc] initWithArea:[ConstantsManager sharedInstance].area withCulture:[UserDefaults currentCulture]];
-    
-    
-    [_viewModel downloadImagesWithCompletion:^(NSError *error) {
-        
-        if (error == nil) {
-            [_intentionCollectionView reloadData];
-        }
-        
-    }];
     
     UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 64)];
     header.backgroundColor = [UIColor appBlueColor];
@@ -69,18 +60,6 @@
     [closeButton addTarget:self action:@selector(dismissView) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:closeButton];
     
-    _intentionTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame) - 64)];
-    _intentionTableView.delegate = self;
-    _intentionTableView.dataSource = self;
-    //[self.view addSubview:_intentionTableView];
-    
-    if ([_intentionTableView respondsToSelector:@selector(setSeparatorInset:)]) {
-        [_intentionTableView setSeparatorInset:UIEdgeInsetsZero];
-    }
-    
-    if ([_intentionTableView respondsToSelector:@selector(setLayoutMargins:)]) {
-        [_intentionTableView setLayoutMargins:UIEdgeInsetsZero];
-    }
     
     // creating the collection view
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
@@ -91,14 +70,40 @@
     _intentionCollectionView.dataSource = self;
     _intentionCollectionView.backgroundColor = [UIColor whiteColor];
     [_intentionCollectionView registerClass:[IntentionImageAndTextCollectionViewCell class] forCellWithReuseIdentifier:@"cellIdentifier"];
+    
     [self.view addSubview:_intentionCollectionView];
+    
+    _progress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    _viewModel = [[SpecialOccasionViewModel alloc] initWithArea:[ConstantsManager sharedInstance].area withCulture:[UserDefaults currentCulture]];
+    
+    
+    if ([_viewModel numberOfIntentionImages] != 0) {
+        [_progress hide:YES];
+    }
+    
+    [_viewModel downloadImagesWithCompletion:^(NSError *error) {
+        
+        [_progress hide:YES];
+        
+        if (error == nil) {
+            [_viewModel reloadIntentionsWithArea:[ConstantsManager sharedInstance].area withCulture:[UserDefaults currentCulture]];
+            [_intentionCollectionView reloadData];
+        }
+        
+    }];
+    
     [_viewModel reloadIntentionsWithArea:[ConstantsManager sharedInstance].area withCulture:[UserDefaults currentCulture]];
-    [_intentionTableView reloadData];
     [_intentionCollectionView reloadData];
     
 }
@@ -106,53 +111,6 @@
 -(void)selectedIntentionChosenWithCompletion:(void (^)(GWIntention *theImages))block {
     _selectedIntentionBlock = [block copy];
 }
-
-#pragma mark - Delegate & Datasource
-
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [_viewModel numberOfIntentions];
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 50.0;
-}
-
--(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellIdentifier"];
-    
-    if (cell == nil) {
-        
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cellIdentifier"];
-        
-        cell.textLabel.font = [UIFont helveticaNeueBoldWithSize:16.0];
-        cell.textLabel.textColor = [UIColor c_darkGrayTextColor];
-        
-        if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
-            [cell setLayoutMargins:UIEdgeInsetsZero];
-        }
-    }
-    
-    GWIntention *theIntention = [_viewModel intentionAtIndex:indexPath.row];
-    
-    cell.textLabel.text = theIntention.label;
-    
-    return cell;
-}
-
-
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    GWIntention *theIntention = [_viewModel intentionAtIndex:indexPath.row];
-    [self dismissViewWithIntention:theIntention];
-    
-    
-}
-
 
 #pragma mark - Collection View Delegate
 
@@ -195,6 +153,8 @@
     UIImage *intentionImage = [_viewModel imageForIntentionAtIndex:indexPath.row];
     if (intentionImage != nil) {
         cell.imageView.image = intentionImage;
+        cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
+        cell.imageView.layer.masksToBounds = YES;
     }
     
     return cell;

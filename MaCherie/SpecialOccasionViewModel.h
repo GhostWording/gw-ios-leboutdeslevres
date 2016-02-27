@@ -21,6 +21,7 @@
 
 -(GWIntention*)intentionAtIndex:(NSInteger)theIndex;
 -(NSInteger)numberOfIntentions;
+-(NSInteger)numberOfIntentionImages;
 
 -(UIImage*)imageForIntentionAtIndex:(NSInteger)theIndex;
 

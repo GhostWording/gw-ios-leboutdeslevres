@@ -80,21 +80,6 @@
         self.window.rootViewController = loginController;
     }
     
-    //self.window.rootViewController = rootController;
-    
-    /*
-    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-        
-        RootViewController *rootController = [storyboard instantiateViewControllerWithIdentifier:@"rootViewController"];
-        self.window.rootViewController = rootController;
-        
-    } else if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-        
-        iPadRootViewController *rootController = [[iPadRootViewController alloc] initWithNibName:nil bundle:nil];
-        self.window.rootViewController = rootController;
-        
-    }*/
-    
     didFinishLaunching = YES;
     
     
@@ -142,7 +127,6 @@
     [UserDefaults setLastActiveDate:[NSDate date]];
     
     
-    NSLog(@"scheduled notification: %lu", (unsigned long)[[UIApplication sharedApplication] scheduledLocalNotifications].count);
     
 }
 
@@ -166,8 +150,6 @@
     
     [[CustomAnalytics sharedInstance] postActionWithType:@"AppFocus" actionLocation:@"AppLaunch" targetType:@"" targetId:@"" targetParameter:@""];
     [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_APP_EVENT withAction:@"AppLaunch" withLabel:@"AppFocus" wtihValue:nil];
-
-    NSLog(@"did become active");
     
     
     GWDataManager *downloadIntentions = [[GWDataManager alloc] init];
@@ -183,8 +165,6 @@
         });
         
     }];
-    
-    NSLog(@"did become active");
     
     [viewModel downloadTextsForArea:[ConstantsManager sharedInstance].area withCompletion:^(NSArray *allTexts, NSError *error) {
         

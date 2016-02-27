@@ -96,8 +96,6 @@
     
     NSLog(@"downloading intentions");
     
-    
-    
     GWDataManager *theDataMan = [[GWDataManager alloc] init];
     
     [theDataMan downloadAllTextsWithBlockForArea:theArea withCulture:[UserDefaults currentCulture] withCompletion:block];

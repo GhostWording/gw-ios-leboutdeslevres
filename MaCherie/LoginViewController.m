@@ -200,11 +200,11 @@
 #pragma mark - Login Delegate
 
 -(void)loginButton:(FBSDKLoginButton *)loginButton didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result error:(NSError *)error {
-    if (!result.isCancelled && !error) {
+    
+    if (result.isCancelled == YES && error == nil) {
         
         if ([FBSDKAccessToken currentAccessToken]) {
             [UserDefaults setFacebookUserId:[FBSDKAccessToken currentAccessToken].userID];
-            NSLog(@"facebook user id is: %@", [UserDefaults facebookUserId]);
         }
         
         [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_LOGIN withAction:GA_ACTION_BUTTON_PRESSED withLabel:@"LoginWithFacebook" wtihValue:nil];

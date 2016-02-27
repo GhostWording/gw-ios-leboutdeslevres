@@ -213,7 +213,6 @@ const int numberOfTextsToLoad = 10;
     
     
     timeSinceLastAlert = [[UserDefaults lastTimeAskedForNotificationPermission] timeIntervalSinceNow];
-    NSLog(@"timeSinceLastAlert: %f", timeSinceLastAlert);
     
     
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -252,7 +251,7 @@ const int numberOfTextsToLoad = 10;
     
     if ([[UserDefaults firstLaunchOfApp] boolValue] == YES) {
         
-        if (![self setGenderBasedOnFacebookData]) {
+        if ([self setGenderBasedOnFacebookData] == NO) {
             
             [self createFirstLaunView];
          
@@ -261,25 +260,15 @@ const int numberOfTextsToLoad = 10;
             [self dismissFirstLaunchView];
         }
         
-        __weak typeof (self) wSelf = self;
-        __block BOOL hasDownloadedTextOrImages = NO;
+        
         [model downloadWelcomeTextsWithCompletion:^(NSArray *theTexts, NSError *theError) {
-            if (hasDownloadedTextOrImages == YES) {
-                [wSelf isSufficientResourcesDownloaded];
-            }
-            hasDownloadedTextOrImages = YES;
+            
         }];
         
         [model downloadWelcomeImagesWithCompletion:^(NSArray *theImages, NSError *theError) {
-            if (hasDownloadedTextOrImages == YES) {
-                [wSelf isSufficientResourcesDownloaded];
-            }
-            hasDownloadedTextOrImages = YES;
+            
         }];
         
-        
-        [theTextPagedView shakeAnimateScrollViewAftertime:7.0];
-        [theImagePagedView shakeAnimateScrollViewAfterTime:7.0];
         
     }
     else {
@@ -808,6 +797,7 @@ const int numberOfTextsToLoad = 10;
 }
 
 -(void)keyboardOnScreen:(NSNotification*)notification {
+    
     NSDictionary *info  = notification.userInfo;
     NSValue      *value = info[UIKeyboardFrameEndUserInfoKey];
     
@@ -1014,65 +1004,71 @@ const int numberOfTextsToLoad = 10;
 -(void)dismissFirstLaunchView {
     
     
-    if ([model minimumImagesAndTextsToDownloadWithNumTexts:100 withNumImages:5] && (model.firstLaunchTexts.count != 0 || model.firstLaunchError == nil) && (model.firstLaunchImages.count != 0 || model.firstLaunchImageError == nil)) {
+    if ([model minimumImagesAndTextsToDownloadWithNumTexts:100 withNumImages:5] && model.firstLaunchTexts.count != 0 && model.firstLaunchError == nil && model.firstLaunchImages.count != 0 && model.firstLaunchImageError == nil) {
+        
         
         [UIView animateWithDuration:0.3 animations:^{
             
             firstLaunView.alpha = 0.0f;
         
         } completion:^(BOOL finished) {
-            [firstLaunView removeFromSuperview];
-            firstLaunView = nil;
+            if (finished == YES) {
+                [self updateViewData];
+                [theTextPagedView shakeAnimateScrollViewAftertime:7.0];
+                [theImagePagedView shakeAnimateScrollViewAfterTime:7.0];
+            }
         }];
         
     } else {
-        // show another view
-        newView = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame), 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame))];
-        newView.backgroundColor = [UIColor appLightOverlayColor];
-        [self.view addSubview:newView];
-        
-        UIActivityIndicatorView *activityIndiciator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        activityIndiciator.frame = CGRectMake(CGRectGetWidth(newView.frame)/2.0 - 37/2.0, CGRectGetHeight(newView.frame)*0.35, 37, 37);
-        [newView addSubview:activityIndiciator];
-        [activityIndiciator startAnimating];
-        
-        UILabel *downloadingLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(newView.frame)*0.1, CGRectGetHeight(newView.frame)*0.5, CGRectGetWidth(newView.frame)*0.8, 55)];
-        downloadingLabel.font = [UIFont noteworthyBoldWithSize:25.0f];
-        downloadingLabel.text = LBDLocalizedString(@"<LBDLCurrentlyDownloading>", nil);
-        downloadingLabel.textColor = [UIColor appBlueColor];
-        downloadingLabel.textAlignment = NSTextAlignmentCenter;
-        downloadingLabel.numberOfLines = 2;
-        [newView addSubview:downloadingLabel];
-        
-        [UIView animateWithDuration:0.3 animations:^ {
-            firstLaunView.frame = CGRectMake(-CGRectGetWidth(firstLaunView.frame), CGRectGetMinY(firstLaunView.frame), CGRectGetWidth(firstLaunView.frame), CGRectGetHeight(firstLaunView.frame));
-            newView.frame = CGRectMake(0, 0, CGRectGetWidth(newView.frame), CGRectGetHeight(newView.frame));
-        } completion:^(BOOL completion) {
-            firstLaunView = nil;
-        }];
+        if (newView == nil) {
+            // show another view
+            newView = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame), 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame))];
+            newView.backgroundColor = [UIColor appLightOverlayColor];
+            [self.view addSubview:newView];
+            
+            UIActivityIndicatorView *activityIndiciator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+            activityIndiciator.frame = CGRectMake(CGRectGetWidth(newView.frame)/2.0 - 37/2.0, CGRectGetHeight(newView.frame)*0.35, 37, 37);
+            [newView addSubview:activityIndiciator];
+            [activityIndiciator startAnimating];
+            
+            UILabel *downloadingLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(newView.frame)*0.1, CGRectGetHeight(newView.frame)*0.5, CGRectGetWidth(newView.frame)*0.8, 55)];
+            downloadingLabel.font = [UIFont noteworthyBoldWithSize:25.0f];
+            downloadingLabel.text = LBDLocalizedString(@"<LBDLCurrentlyDownloading>", nil);
+            downloadingLabel.textColor = [UIColor appBlueColor];
+            downloadingLabel.textAlignment = NSTextAlignmentCenter;
+            downloadingLabel.numberOfLines = 2;
+            [newView addSubview:downloadingLabel];
+            
+            [UIView animateWithDuration:0.3 animations:^ {
+                firstLaunView.frame = CGRectMake(-CGRectGetWidth(firstLaunView.frame), CGRectGetMinY(firstLaunView.frame), CGRectGetWidth(firstLaunView.frame), CGRectGetHeight(firstLaunView.frame));
+                newView.frame = CGRectMake(0, 0, CGRectGetWidth(newView.frame), CGRectGetHeight(newView.frame));
+            } completion:^(BOOL completion) {
+                firstLaunView = nil;
+            }];
+            
+            [self isSufficientResourcesDownloaded];
+        }
     }
 }
 
 -(void)isSufficientResourcesDownloaded {
 
      [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(isSufficientResourcesDownloaded) object:nil];
-    if ([model minimumImagesAndTextsToDownloadWithNumTexts:100 withNumImages:5] && (model.firstLaunchTexts.count != 0 || model.firstLaunchError == nil) && (model.firstLaunchImages.count != 0 || model.firstLaunchImageError == nil)) {
+    if ([model minimumImagesAndTextsToDownloadWithNumTexts:100 withNumImages:5] && model.firstLaunchTexts.count != 0 && model.firstLaunchError == nil && model.firstLaunchImages.count != 0 && model.firstLaunchImageError == nil) {
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self performSelector:@selector(updateViewData) withObject:nil afterDelay:1.0];
-        });
-        
-        if (loadingIndicatorView) {
-            [loadingIndicatorView fadeOutWithCompletion:^(BOOL completed) {
-                
+            
+            [self updateViewData];
+            [theTextPagedView shakeAnimateScrollViewAftertime:7.0];
+            [theImagePagedView shakeAnimateScrollViewAfterTime:7.0];
+            
+            [UIView animateWithDuration:0.3 animations:^{
+                newView.alpha = 0.0f;
+            } completion:^(BOOL finished) {
+                newView = nil;
             }];
-        }
-        
-        [UIView animateWithDuration:0.3 animations:^{
-            newView.alpha = 0.0f;
-        } completion:^(BOOL finished) {
-            newView = nil;
-        }];
+            
+        });
         
     } else {
         [self performSelector:@selector(isSufficientResourcesDownloaded) withObject:nil afterDelay:1.0];
@@ -1467,8 +1463,6 @@ const int numberOfTextsToLoad = 10;
 
 -(void)shareButton:(UIButton *)sender {
     
-    NSLog(@"share button pressed");
-    
     [UserDefaults incrementNumberOfFacebookShares];
     [self showRatingViewIfAppropriate];
     
@@ -1535,7 +1529,6 @@ const int numberOfTextsToLoad = 10;
     
     if ([theTextPagedView isLastPage]) {
         [UIView animateWithDuration:0.3 animations:^{
-            NSLog(@"edit button is zero");
             editButton.alpha = 0.0f;
         } completion:^(BOOL finished) {
             
@@ -1571,6 +1564,7 @@ const int numberOfTextsToLoad = 10;
     NSString *imageId = [theImagePagedView selectedImageId];
 
     if (imageId != nil) {
+        
         [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_TEXT_CREATED withAction:GA_ACTION_BUTTON_PRESSED withLabel:imageId wtihValue:nil];
         [[CustomAnalytics sharedInstance] postActionWithType:GA_CATEGORY_TEXT_CREATED actionLocation:GA_SCREEN_MAIN targetType:@"Image" targetId:imageId targetParameter:@""];
         
