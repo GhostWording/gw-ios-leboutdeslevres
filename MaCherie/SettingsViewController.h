@@ -10,4 +10,6 @@
 
 @interface SettingsViewController : UIViewController
 
+-(void)changedLanguageWithCompletion:(void (^)(void))block;
+
 @end

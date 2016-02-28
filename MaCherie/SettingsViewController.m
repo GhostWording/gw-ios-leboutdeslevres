@@ -47,6 +47,8 @@ const float heightOffset = 20.0;
     UIView *activityIndicatorView;
     
     UILabel *maleLabel, *femaleLabel, *genderLabel, *ageLabel, *title, *languageLabel, *notificationLabel;
+    
+    void (^_languageChangeBlock)(void);
 }
 
 @end
@@ -408,6 +410,10 @@ const float heightOffset = 20.0;
 
 -(void)languageButtonPressed:(DefaultButton*)sender {
     
+    if (sender.isSelected == NO && _languageChangeBlock == nil) {
+        _languageChangeBlock();
+    }
+    
     [englishButton setSelected:NO];
     [frenchButton setSelected:NO];
     [spanishButton setSelected:NO];
@@ -446,6 +452,10 @@ const float heightOffset = 20.0;
         
     }];
     
+}
+
+-(void)changedLanguageWithCompletion:(void (^)(void))block {
+    _languageChangeBlock = [block copy];
 }
 
 #pragma mark - Facebook logout delegate

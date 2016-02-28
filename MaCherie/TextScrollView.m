@@ -9,6 +9,7 @@
 #import "TextScrollView.h"
 #import "TextScrollViewModel.h"
 #import "UIFont+ArialAndHelveticaNeue.h"
+#import "UIFont+MAXRobotoExtension.h"
 #import "NSString+TextHeight.h"
 #import "UIColor+Extension.h"
 #import "BoxedActivityIndicatorView.h"
@@ -57,7 +58,7 @@
         
         [self addSubview:textScrollView];
         
-        textFont = [UIFont noteworthyBoldWithSize:19.0];
+        textFont = [UIFont c_robotoLightWithSize:21.0];
         _viewModel = [[TextScrollViewModel alloc] initWithTextArray:textArray];
         scrollViewContents = [[NSMutableArray alloc] init];
         

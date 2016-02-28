@@ -170,42 +170,46 @@
     
     [completion copy];
     
-    if (intentions.count != 0) {
-        
-        NSMutableArray *theImageUrls = [self mediaUrlsFromIntentions:intentions];
-        NSArray *images = [dataMan fetchImagesWithImagePaths:theImageUrls];
-        
-        if (theImageUrls.count != images.count) {
-            theImageUrls = [self removeCommonPathsForPersistedImages:theImageUrls withImages:images];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+       
+        if (intentions.count != 0) {
+            
+            NSMutableArray *theImageUrls = [self mediaUrlsFromIntentions:intentions];
+            NSArray *images = [dataMan fetchImagesWithImagePaths:theImageUrls];
+            
+            if (theImageUrls.count != images.count) {
+                theImageUrls = [self removeCommonPathsForPersistedImages:theImageUrls withImages:images];
+            }
+            else {
+                // we had all the images all along no need to download them
+                return ;
+            }
+            
+            __weak typeof (self) wSelf = self;
+            [dataMan downloadImagesWithUrls:theImageUrls isRelativeURL:YES withCompletion:^(NSArray *theImages, NSError *theError) {
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    [wSelf reloadIntentionsWithArea:currentArea withCulture:[UserDefaults currentCulture]];
+                    [wSelf reloadIntentionImages];
+                    completion(theError);
+                });
+                
+            }];
+            
         }
         else {
-            // we had all the images all along no need to download them
-            return ;
-        }
-        
-        __weak typeof (self) wSelf = self;
-        [dataMan downloadImagesWithUrls:theImageUrls isRelativeURL:YES withCompletion:^(NSArray *theImages, NSError *theError) {
             
-            dispatch_async(dispatch_get_main_queue(), ^{
+            __weak typeof (self) wSelf = self;
+            [self fetchIntentionsForArea:currentArea withCulture:[UserDefaults currentCulture] withCompletion:^(NSArray *theIntentions, NSError *error) {
                 
                 [wSelf reloadIntentionsWithArea:currentArea withCulture:[UserDefaults currentCulture]];
-                [wSelf reloadIntentionImages];
-                completion(theError);
-            });
-            
-        }];
+                [wSelf downloadImagesWithCompletion:completion];
+                
+            }];
+        }
         
-    }
-    else {
-        
-        __weak typeof (self) wSelf = self;
-        [self fetchIntentionsForArea:currentArea withCulture:[UserDefaults currentCulture] withCompletion:^(NSArray *theIntentions, NSError *error) {
-            
-            [wSelf reloadIntentionsWithArea:currentArea withCulture:[UserDefaults currentCulture]];
-            [wSelf downloadImagesWithCompletion:completion];
-            
-        }];
-    }
+    });
     
 }
 

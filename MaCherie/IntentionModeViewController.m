@@ -54,10 +54,11 @@
     [header addSubview:headerLabel];
     
     UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    closeButton.frame = CGRectMake(CGRectGetWidth(self.view.frame) - 32, 20 + 12, 18, 18);
+    closeButton.frame = CGRectMake(CGRectGetWidth(self.view.frame) - 40, 20 + 6, 24, 24);
     [closeButton setTintColor:[UIColor whiteColor]];
     [closeButton setImage:[UIImage imageNamed:@"cancelWhite.png"] forState:UIControlStateNormal];
     [closeButton addTarget:self action:@selector(dismissView) forControlEvents:UIControlEventTouchUpInside];
+    closeButton.imageEdgeInsets = UIEdgeInsetsMake(2, 2, 2, 2);
     [self.view addSubview:closeButton];
     
     

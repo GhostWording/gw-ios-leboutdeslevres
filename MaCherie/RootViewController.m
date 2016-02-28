@@ -37,6 +37,8 @@
 #import "NewFeatureView.h"
 #import "MoodModeViewController.h"
 #import "IntentionModeViewController.h"
+#import "UIFont+MAXRobotoExtension.h"
+#import "SettingsViewController.h"
 
 #import <MobileCoreServices/MobileCoreServices.h>
 
@@ -601,7 +603,19 @@ const int numberOfTextsToLoad = 10;
 {
     [UserDefaults setHasViewedSettings:[NSNumber numberWithBool:YES]];
     [settingsPulse removeFromSuperview];
-    [self performSegueWithIdentifier:@"settingsSegue" sender:self];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    SettingsViewController *settingsController = [storyboard instantiateViewControllerWithIdentifier:@"SettingsViewController"];
+    
+    __weak typeof (self) wSelf = self;
+    [settingsController changedLanguageWithCompletion:^{
+        [wSelf updateViewData];
+    }];
+    
+    [self presentViewController:settingsController animated:YES completion:^{
+        
+        
+    }];
 }
 
 #pragma mark - Edit Text View
@@ -729,7 +743,7 @@ const int numberOfTextsToLoad = 10;
          
         
         textView = [[UITextView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame)*0.05, CGRectGetHeight(self.view.frame)*0.1, CGRectGetWidth(self.view.frame) * 0.9, CGRectGetHeight(self.view.frame) * 0.7)];
-        textView.font = [UIFont noteworthyBoldWithSize:17.0f];
+        textView.font = [UIFont c_robotoLightWithSize:19.0];
         textView.text = editText;
         textView.textAlignment = NSTextAlignmentCenter;
         textView.layer.borderColor = [UIColor appBlueColor].CGColor;
