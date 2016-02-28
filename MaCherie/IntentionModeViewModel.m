@@ -85,21 +85,24 @@
     }
     
     
-    [dataMan downloadImagesWithUrls:relativePaths isRelativeURL:NO withCompletion:^(NSArray *theImageIds, NSError *theError) {
-        
-        GWDataManager *fetchDataMan = [[GWDataManager alloc] init];
-        NSArray *restOfImages = [fetchDataMan fetchImagesWithImagePaths:theImageIds];
-        [_images addObjectsFromArray:restOfImages];
-        
-        _imageAndIntentionData = [self createImageAndIntentionDataWithImages:_images intentions:_intentions];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [dataMan downloadImagesWithUrls:relativePaths isRelativeURL:NO withCompletion:^(NSArray *theImageIds, NSError *theError) {
             
-            [self randomizeData];
-            block(theError);
-            
-        });
-    }];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                GWDataManager *fetchDataMan = [[GWDataManager alloc] init];
+                NSArray *restOfImages = [fetchDataMan fetchImagesWithImagePaths:theImageIds];
+                [_images addObjectsFromArray:restOfImages];
+                
+                _imageAndIntentionData = [self createImageAndIntentionDataWithImages:_images intentions:_intentions];
+                
+                [self randomizeData];
+                block(theError);
+                
+                
+            });
+        }];
+    });
     
 }
 

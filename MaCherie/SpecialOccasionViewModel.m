@@ -151,8 +151,15 @@
     NSArray *theGWImages = [dataMan fetchImagesWithImagePaths:imagePaths];
     
     NSMutableArray *images = [NSMutableArray array];
-    for (GWImage *image in theGWImages) {
-        [images addObject:[UIImage imageWithData:image.imageData]];
+
+    for (NSString *imagePath in imagePaths) {
+        
+        for (GWImage *image in theGWImages) {
+            if ([image.imageId isEqualToString:imagePath] == YES) {
+                [images addObject:[UIImage imageWithData:image.imageData]];
+                break ;
+            }
+        }
     }
     
     intentionImages = images;
