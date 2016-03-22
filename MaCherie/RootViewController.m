@@ -743,7 +743,7 @@ const int numberOfTextsToLoad = 10;
          
         
         textView = [[UITextView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame)*0.05, CGRectGetHeight(self.view.frame)*0.1, CGRectGetWidth(self.view.frame) * 0.9, CGRectGetHeight(self.view.frame) * 0.7)];
-        textView.font = [UIFont c_robotoLightWithSize:19.0];
+        textView.font = [UIFont c_robotoLightWithSize:21.0];
         textView.text = editText;
         textView.textAlignment = NSTextAlignmentCenter;
         textView.layer.borderColor = [UIColor appBlueColor].CGColor;

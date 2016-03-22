@@ -20,10 +20,11 @@
 #import "LBDLocalization.h"
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import "BlocksAlertView.h"
+#import <UIColor+Chameleon.h>
 
 const float heightOffset = 20.0;
 
-@interface SettingsViewController () <FBSDKLoginButtonDelegate> {
+@interface SettingsViewController () <FBSDKLoginButtonDelegate, FBSDKAppInviteDialogDelegate> {
     
     // gender buttons
     DefaultButton *femaleButton;
@@ -242,8 +243,19 @@ const float heightOffset = 20.0;
         [notificationSwitch setOn:NO animated:YES];
     }
     
+    UIButton *facebookAppInviteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    facebookAppInviteButton.frame = CGRectMake(CGRectGetWidth(self.view.frame) / 2.0 - 120, CGRectGetMaxY(notificationSwitch.frame) + 40, 240, 50);
+    facebookAppInviteButton.backgroundColor = [UIColor c_appFacebookBlueColor];
+    facebookAppInviteButton.layer.backgroundColor = [UIColor c_appFacebookBlueColor].CGColor;
+    facebookAppInviteButton.layer.cornerRadius = 4;
+    facebookAppInviteButton.titleLabel.font = [UIFont helveticaNeueMediumWitihSize:15.0];
+    [facebookAppInviteButton setTitle:@"Invite Facebook friends" forState:UIControlStateNormal];
+    [facebookAppInviteButton setTitleColor:[UIColor flatWhiteColor] forState:UIControlStateNormal];
+    [facebookAppInviteButton setTitleColor:[UIColor flatWhiteColorDark] forState:UIControlStateHighlighted];
+    [facebookAppInviteButton addTarget:self action:@selector(facebookInviteButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [scrollView addSubview:facebookAppInviteButton];
     
-    FBSDKLoginButton *facebookLogin = [[FBSDKLoginButton alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame) / 2.0 - 120, CGRectGetMaxY(notificationSwitch.frame) + 40, 240, 50)];
+    FBSDKLoginButton *facebookLogin = [[FBSDKLoginButton alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame) / 2.0 - 120, CGRectGetMaxY(facebookAppInviteButton.frame) + 40, 240, 50)];
     facebookLogin.delegate = self;
     [scrollView addSubview:facebookLogin];
     
@@ -338,6 +350,25 @@ const float heightOffset = 20.0;
     
     [[GoogleAnalyticsCommunication sharedInstance] sendEventWithCategory:GA_CATEGORY_USER_INFORMATION withAction:GA_ACTION_SWITCH_PRESSED withLabel:GA_LABEL_USER_WANTS_NOTIFICATION wtihValue:[NSNumber numberWithBool:sender.isOn]];
     [[CustomAnalytics sharedInstance] postActionWithType:GA_ACTION_BUTTON_PRESSED actionLocation:GA_SCREEN_SETTINGS targetType:@"Command" targetId:@"UserWantsNotification" targetParameter:[NSString stringWithFormat:@"%d", sender.isOn]];
+}
+
+
+#pragma mark - Facebook iOS invites
+
+-(void)facebookInviteButtonPressed {
+    
+    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"fb://"]] == YES) {
+        
+        NSURL *appUrl = [NSURL URLWithString:@"http://www.appstore.com/LeRoiduStatut"];
+        //NSURL *appUrl = [NSURL URLWithString:@"http://www.google.com"];
+        
+        FBSDKAppInviteContent *content = [[FBSDKAppInviteContent alloc] init];
+        content.appLinkURL = appUrl;
+        
+        [FBSDKAppInviteDialog showFromViewController:self withContent:content delegate:self];
+        
+    }
+    
 }
 
 
@@ -465,6 +496,16 @@ const float heightOffset = 20.0;
 }
 
 -(void)loginButton:(FBSDKLoginButton *)loginButton didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result error:(NSError *)error {
+    
+}
+
+#pragma mark - Facebook Invite Delegate
+
+-(void)appInviteDialog:(FBSDKAppInviteDialog *)appInviteDialog didCompleteWithResults:(NSDictionary *)results {
+    
+}
+
+-(void)appInviteDialog:(FBSDKAppInviteDialog *)appInviteDialog didFailWithError:(NSError *)error {
     
 }
 

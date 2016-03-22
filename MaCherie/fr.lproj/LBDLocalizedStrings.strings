@@ -38,13 +38,13 @@
 "<LBDLEmail>" = "Email";
 "<LBDLMessageSendingNotPossible>" = "Cet appareil ne permet pas l'envoi de sms.";
 "<LBDLMailSendingNotPossible>" = "This device does not support sending email messages.";
-"<LBDLSpecialOccasionsTitle>" = "Occasions spéciales";
+"<LBDLSpecialOccasionsTitle>" = "Humeur du jour";
 "<LBDLNewText>" = "Nouveau texte";
 "<LBDLEditText>" = "Modifier le texte";
-"<LBDLAccessNotificationsTitle>" = "Nous souhaitons vous faire des propositions de messages";
+"<LBDLAccessNotificationsTitle>" = "Activer les suggestions du jour";
 "<LBDLAccessNotificationsMessage>" = "Pour recevoir vos idées de messages, merci d'activer les notifications";
-"<LBDLAccessNotificationsCancel>" = "L'année prochaine";
-"<LBDLAccessNotificationsAccept>" = "Maintenant";
+"<LBDLAccessNotificationsCancel>" = " A la Saint-Glinglin";
+"<LBDLAccessNotificationsAccept>" = "OK";
 
 "<LBDLTutorialSubtitleOne>" = "Associez un message et une photo pour faire une carte virtuelle";
 "<LBDLTutorialSubtitleTwo>" = "Envoyez-la à la personne qui vous plaît !";

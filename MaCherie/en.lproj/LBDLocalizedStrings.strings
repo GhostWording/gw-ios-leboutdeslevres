@@ -38,13 +38,13 @@
 "<LBDLEmail>" = "Email";
 "<LBDLMessageSendingNotPossible>" = "This device does not support sending sms messages.";
 "<LBDLMailSendingNotPossible>" = "This device does not support sending email messages.";
-"<LBDLSpecialOccasionsTitle>" = "Special messages";
+"<LBDLSpecialOccasionsTitle>" = "Mood of the day";
 "<LBDLNewText>" = "New text";
 "<LBDLEditText>" = "Edit text";
-"<LBDLAccessNotificationsTitle>" = "We would like to send you messages suggestions";
+"<LBDLAccessNotificationsTitle>" = "Enable daily suggestions";
 "<LBDLAccessNotificationsMessage>" = "We need to enable notifications so that new message ideas can help you get started!";
-"<LBDLAccessNotificationsCancel>" = "Next year";
-"<LBDLAccessNotificationsAccept>" = "Grant access now";
+"<LBDLAccessNotificationsCancel>" = "When cows fly";
+"<LBDLAccessNotificationsAccept>" = "OK";
 
 "<LBDLTutorialSubtitleOne>" = "Match a message idea with a photo";
 "<LBDLTutorialSubtitleTwo>" = "Send them as a postcard to your love";

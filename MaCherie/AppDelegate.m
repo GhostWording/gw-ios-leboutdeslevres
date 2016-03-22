@@ -82,6 +82,11 @@
     
     didFinishLaunching = YES;
     
+    [viewModel downloadTextsForArea:[ConstantsManager sharedInstance].area withCompletion:^(NSArray *allTexts, NSError *error) {
+        
+        NSLog(@"all texts downloaded");
+        
+    }];
     
     return YES;
 }
@@ -163,12 +168,6 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [wSelf performSelector:@selector(downloadAdditionalImages) withObject:nil afterDelay:10];
         });
-        
-    }];
-    
-    [viewModel downloadTextsForArea:[ConstantsManager sharedInstance].area withCompletion:^(NSArray *allTexts, NSError *error) {
-        
-        NSLog(@"all texts downloaded");
         
     }];
     
