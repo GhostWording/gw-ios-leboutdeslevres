@@ -86,7 +86,7 @@
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    _viewModel = [[SpecialOccasionViewModel alloc] initWithArea:[ConstantsManager sharedInstance].area withCulture:[UserDefaults currentCulture]];
+    _viewModel = [[SpecialOccasionViewModel alloc] initWithArea:[ConstantsManager sharedInstance].specialOccasionArea withCulture:[UserDefaults currentCulture]];
     
     
     if ([_viewModel numberOfIntentionImages] != 0) {
@@ -98,13 +98,13 @@
         [_progress hide:YES];
         
         if (error == nil) {
-            [_viewModel reloadIntentionsWithArea:[ConstantsManager sharedInstance].area withCulture:[UserDefaults currentCulture]];
+            [_viewModel reloadIntentionsWithArea:[ConstantsManager sharedInstance].specialOccasionArea withCulture:[UserDefaults currentCulture]];
             [_intentionCollectionView reloadData];
         }
         
     }];
     
-    [_viewModel reloadIntentionsWithArea:[ConstantsManager sharedInstance].area withCulture:[UserDefaults currentCulture]];
+    [_viewModel reloadIntentionsWithArea:[ConstantsManager sharedInstance].specialOccasionArea withCulture:[UserDefaults currentCulture]];
     [_intentionCollectionView reloadData];
     
 }

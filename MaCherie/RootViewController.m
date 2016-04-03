@@ -47,7 +47,7 @@ const float bottomHeight = 60.0f;
 const int numberOfImagesToLoad = 10;
 const int numberOfTextsToLoad = 10;
 
-@interface RootViewController () <UIAlertViewDelegate, TextScrollViewDelegate, TextScrollViewDataSource, ImageScrollViewDataSource, ImageScrollViewDelegate, UIViewControllerTransitioningDelegate, MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, FBSDKSharingDelegate>
+@interface RootViewController () <UIAlertViewDelegate, TextScrollViewDelegate, TextScrollViewDataSource, ImageScrollViewDataSource, ImageScrollViewDelegate, UIViewControllerTransitioningDelegate, MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, FBSDKSharingDelegate, UIDocumentInteractionControllerDelegate>
 {
     UIImagePickerController *imagePicker;
     
@@ -169,7 +169,7 @@ const int numberOfTextsToLoad = 10;
     [normalSendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [normalSendButton setTitleColor:[UIColor appLightGrayColor] forState:UIControlStateSelected];
     [normalSendButton setTitleColor:[UIColor appLightGrayColor] forState:UIControlStateHighlighted];
-    [normalSendButton addTarget:self action:@selector(sendButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [normalSendButton addTarget:self action:@selector(shareButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:normalSendButton];
     
     
@@ -1482,12 +1482,6 @@ const int numberOfTextsToLoad = 10;
     
     NSString *selectedText = [theTextPagedView selectedText];
     
-    FBSDKSharePhoto *photo = [[FBSDKSharePhoto alloc] init];
-    photo.image = [self createImageWithText:selectedText];
-    photo.userGenerated = YES;
-    
-    photoContent.photos = @[photo];
-    
     NSString *selectedTextId = [theTextPagedView selectedTextId];
     NSString *selectedImageId = [theImagePagedView selectedImageId];
     
@@ -1497,7 +1491,23 @@ const int numberOfTextsToLoad = 10;
     [[CustomAnalytics sharedInstance] postActionWithType:@"FacebookShare" actionLocation:GA_SCREEN_MAIN targetType:@"Text" targetId:selectedTextId targetParameter:@""];
     [[CustomAnalytics sharedInstance] postActionWithType:@"FacebookShare" actionLocation:GA_SCREEN_MAIN targetType:@"Image" targetId:selectedImageId targetParameter:@""];
     
-    [FBSDKShareDialog showFromViewController:self withContent:photoContent delegate:self];
+    UIImage *theImage = [self createImageWithText:selectedText];
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *cachesDirectory = paths.firstObject;
+    NSString *filePath = [cachesDirectory stringByAppendingPathComponent:@"temporaryImageToSend.wai"];
+    
+    BOOL success = [UIImagePNGRepresentation(theImage) writeToFile:filePath atomically:YES];
+    
+    if (success == YES) {
+        UIDocumentInteractionController *interactionController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:filePath]];
+        interactionController.UTI = @"net.whatsapp.image";
+        interactionController.name = @"net.whatsapp.image";
+        interactionController.delegate = self;
+        BOOL showed =[interactionController presentOpenInMenuFromRect:self.view.frame inView:self.view animated:YES];
+        NSLog(@"did show: %d", showed);
+    }
+    
     
 }
 

@@ -38,8 +38,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    NSLog(@"did finish launching");
     viewModel = [[RootViewModel alloc] init];
+    
     // create the main object context and persistent coordinator on the main thread before
     // background threads start using it causing multithreading issues
     [[GWCoreDataManager sharedInstance] mainObjectContext];
@@ -71,12 +71,10 @@
     LoginViewController *loginController = [storyboard instantiateViewControllerWithIdentifier:@"loginViewController"];
     
     if ([FBSDKAccessToken currentAccessToken]) {
-        NSLog(@"is there an existing access token");
         self.window.rootViewController = rootController;
         [UserDefaults setFacebookUserId:[FBSDKAccessToken currentAccessToken].userID];
     }
     else {
-        NSLog(@"does not have existing token");
         self.window.rootViewController = loginController;
     }
     

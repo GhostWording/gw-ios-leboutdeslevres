@@ -46,8 +46,7 @@
         
         dataMan = [[GWDataManager alloc] init];
         currentArea = theArea;
-        intentions = [dataMan fetchIntentionsWithAreaName:theArea withIntentionsIds:nil];// [dataMan fetchIntentionsWithArea:theArea withCulture:theCulture];
-        NSLog(@"intentions are: %@", intentions);
+        intentions = [dataMan fetchIntentionsWithAreaName:theArea withIntentionsIds:nil];
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"sortOrderInArea" ascending:YES];
         intentions = [intentions sortedArrayUsingDescriptors:@[sortDescriptor]];
         intentions = [self removeDuplicateIntentions:intentions];
@@ -139,9 +138,11 @@
 }
 
 -(void)reloadIntentionsWithArea:(NSString *)theArea withCulture:(NSString *)theCulture {
-    intentions = [dataMan fetchIntentionsWithAreaName:theArea withIntentionsIds:nil]; //[dataMan fetchIntentionsWithArea:theArea withCulture:theCulture];
+    intentions = [dataMan fetchIntentionsWithAreaName:theArea withIntentionsIds:nil];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"sortOrderInArea" ascending:YES];
+    NSLog(@"intention order before: %@", intentions);
     intentions = [intentions sortedArrayUsingDescriptors:@[sortDescriptor]];
+    NSLog(@"intention order after: %@", intentions);
     intentions = [self removeDuplicateIntentions:intentions];
 }
 
