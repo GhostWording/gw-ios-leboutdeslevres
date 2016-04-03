@@ -124,7 +124,6 @@
                 
                 if (error == nil) {
                     intentions = [dataMan fetchIntentionsWithAreaName:theArea withIntentionsIds:nil];
-                    NSLog(@"The intentions are: %@", intentions);
                 }
                 
                 block(intentionIds, error);
@@ -138,12 +137,12 @@
 }
 
 -(void)reloadIntentionsWithArea:(NSString *)theArea withCulture:(NSString *)theCulture {
+    
     intentions = [dataMan fetchIntentionsWithAreaName:theArea withIntentionsIds:nil];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"sortOrderInArea" ascending:YES];
-    NSLog(@"intention order before: %@", intentions);
     intentions = [intentions sortedArrayUsingDescriptors:@[sortDescriptor]];
-    NSLog(@"intention order after: %@", intentions);
     intentions = [self removeDuplicateIntentions:intentions];
+    
 }
 
 -(void)reloadIntentionImages {
@@ -176,7 +175,7 @@
         if (intentions.count != 0) {
             
             NSMutableArray *theImageUrls = [self mediaUrlsFromIntentions:intentions];
-            NSArray *images = [dataMan fetchImagesWithImagePaths:theImageUrls];
+            NSArray *images = [dataMan fetchImagesWithImagePathsOnBackgroundThread:theImageUrls];
             
             if (theImageUrls.count != images.count) {
                 theImageUrls = [self removeCommonPathsForPersistedImages:theImageUrls withImages:images];
